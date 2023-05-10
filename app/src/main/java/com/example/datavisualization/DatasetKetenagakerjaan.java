@@ -202,10 +202,11 @@ public class DatasetKetenagakerjaan {
 
     ArrayList<Tahun> T;
 
-    public DatasetKetenagakerjaan(int tahun){
-        if(T == null){
-            T = new ArrayList<>();
-        }
+    public DatasetKetenagakerjaan(){
+        T = new ArrayList<>();
+    }
+
+    public void newTahun(int tahun){
         T.add(new Tahun(tahun));
     }
 

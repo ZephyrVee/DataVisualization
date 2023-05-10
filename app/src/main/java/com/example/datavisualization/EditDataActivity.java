@@ -36,7 +36,7 @@ public class EditDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_data);
 
         dp = this.getResources().getDisplayMetrics().density; // this is a scale from dp to int (uses + 0.5f)
-        data = new DatasetKetenagakerjaan(2021);
+        data = new DatasetKetenagakerjaan();
 
         gridM = (HorizontalScrollView) findViewById(R.id.gridM);
         gridF = (HorizontalScrollView) findViewById(R.id.gridF);
