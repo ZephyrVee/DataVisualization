@@ -35,21 +35,21 @@ public class EditDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_data);
 
-        dp = this.getResources().getDisplayMetrics().density; // this is a scale from dp to int (uses + 0.5f)
-        data = new DatasetKetenagakerjaan();
 
-        gridM = (HorizontalScrollView) findViewById(R.id.gridM);
-        gridF = (HorizontalScrollView) findViewById(R.id.gridF);
 
-        gridM.addView(newGrid(DatasetKetenagakerjaan.LAKI_LAKI, 1,2));
-        //initTable();
-
-        this.findViewById(R.id.tahunPopupM).setOnClickListener(new View.OnClickListener() {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onClick(View view) {
-                showMenu(0,view);
+            public void run() {
+                initAll();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initUI();
+                    }
+                });
             }
         });
+        thread.start();
     }
 
     private void showMenu(int gender, View view){
@@ -64,14 +64,36 @@ public class EditDataActivity extends AppCompatActivity {
         menu.show();
     }
 
-    private void changeTable(int gender){
-        HorizontalScrollView grid;
+    private void changeTable(int gender, int g){
         if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
-            grid = gridM;
+            gridM.removeAllViews();
+            gridM.addView(arrayGridM.get(g));
         }
         else {
-            grid = gridF;
+            gridF.addView(arrayGridF.get(g));
         }
+    }
+
+    private void initAll(){
+        dp = this.getResources().getDisplayMetrics().density; // this is a scale from dp to int (uses + 0.5f)
+        data = new DatasetKetenagakerjaan();
+
+        gridM = (HorizontalScrollView) findViewById(R.id.gridM);
+        gridF = (HorizontalScrollView) findViewById(R.id.gridF);
+
+        initTable();
+        initGrid();
+    }
+    private void initUI(){
+        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, 0);
+        changeTable(DatasetKetenagakerjaan.PEREMPUAN, 0);
+
+        this.findViewById(R.id.tahunPopupM).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu(0,view);
+            }
+        });
     }
     private void initGrid(){
         arrayGridM = new ArrayList<>();
