@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditDataActivity"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/tahunPopupM"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+
+                    android:text="Tahun"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/leftM"
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:backgroundTint="@color/white"
+                        app:icon="@drawable/ic_baseline_chevron_left_24"
+                        app:iconTint="@color/black"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="1dp" />
+
+                    <TextView
+                        android:id="@+id/titleM"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:text="THIS IS TITLE"
+                        />
+
+                    <Button
+                        android:id="@+id/rightM"
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:backgroundTint="@color/white"
+                        app:icon="@drawable/ic_baseline_chevron_right_24"
+                        app:iconTint="@color/black"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/gridM"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/grid">
+                </HorizontalScrollView>
+
+                <Button
+                    android:id="@+id/tahunPopupF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="16dp"
+
+                    android:text="Tahun"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/leftF"
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:backgroundTint="@color/white"
+                        app:icon="@drawable/ic_baseline_chevron_left_24"
+                        app:iconTint="@color/black"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="1dp" />
+
+                    <TextView
+                        android:id="@+id/titleF"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="16dp"
+                        android:text="THIS IS TITLE"
+                        />
+
+                    <Button
+                        android:id="@+id/rightF"
+                        style="@style/Widget.AppCompat.Button.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:backgroundTint="@color/white"
+                        app:icon="@drawable/ic_baseline_chevron_right_24"
+                        app:iconTint="@color/black"
+                        app:strokeColor="#000000"
+                        app:strokeWidth="1dp" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:id="@+id/gridF"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/grid">
+                </HorizontalScrollView>
+
+            </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

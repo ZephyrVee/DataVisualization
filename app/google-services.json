@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "902361067714",
+    "project_id": "datavisualization-7d345",
+    "storage_bucket": "datavisualization-7d345.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902361067714:android:d02b8544786d4aaa420b5b",
+        "android_client_info": {
+          "package_name": "com.example.datavisualization"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902361067714-q7s67m3a19bis4vqofr3qulfila1s0kk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4n-nhPY6Y5P6zipGgzoiInDTL7vN2jD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "902361067714-q7s67m3a19bis4vqofr3qulfila1s0kk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

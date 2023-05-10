@@ -1,0 +1,4 @@
+package layout.DataVisualization
+
+include ':app'
+rootProject.name = "Data Visualization"
