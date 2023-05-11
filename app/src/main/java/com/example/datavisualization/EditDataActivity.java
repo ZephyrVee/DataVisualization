@@ -26,6 +26,7 @@ public class EditDataActivity extends AppCompatActivity {
 
     HorizontalScrollView gridM, gridF;
     ArrayList<GridLayout> arrayGridM, arrayGridF;
+    ArrayList<ArrayList<ArrayList<EditText>>> cellM, cellF;
     String[] title;
     ArrayList<int[]> table;
     TextView titleM, titleF, editDataTableIndexM, editDataTableIndexF;
@@ -39,6 +40,7 @@ public class EditDataActivity extends AppCompatActivity {
 
     float dp;
 
+    ArrayList<ArrayList<Integer>> test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,68 +48,13 @@ public class EditDataActivity extends AppCompatActivity {
 
         handler = new Handler();
 
+        test = new ArrayList<>();
+
         Thread thread = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
             initAll();
             runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
         });
         thread.start();
-    }
-
-    private void showMenu(View view){
-        PopupMenu menu = new PopupMenu(EditDataActivity.this, view);
-
-        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                return false;
-            }
-        });
-        menu.show();
-    }
-
-    private void changeTable(int gender, int g){
-        if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
-            gridM.removeAllViews();
-            gridM.addView(arrayGridM.get(g));
-            if(tableM == 0){
-                findViewById(R.id.leftM).setVisibility(View.INVISIBLE);
-            }
-            else {
-                findViewById(R.id.leftM).setVisibility(View.VISIBLE);
-            }
-
-            if(tableM == 34){
-                findViewById(R.id.rightM).setVisibility(View.INVISIBLE);
-            }
-            else {
-                findViewById(R.id.rightM).setVisibility(View.VISIBLE);
-            }
-
-            titleM.setText(title[tableM]);
-            String s = (tableM + 1) + "/35";
-            editDataTableIndexM.setText(s);
-        }
-        else {
-            gridF.removeAllViews();
-            gridF.addView(arrayGridF.get(g));
-            if(tableF == 0){
-                findViewById(R.id.leftF).setVisibility(View.INVISIBLE);
-            }
-            else {
-                findViewById(R.id.leftF).setVisibility(View.VISIBLE);
-            }
-
-            if(tableF == 34){
-                findViewById(R.id.rightF).setVisibility(View.INVISIBLE);
-            }
-            else {
-                findViewById(R.id.rightF).setVisibility(View.VISIBLE);
-            }
-
-            titleF.setText(title[tableF]);
-            String s = (tableF + 1) + "/35";
-            editDataTableIndexF.setText(s);
-        }
     }
 
     private void initAll(){
@@ -124,19 +71,20 @@ public class EditDataActivity extends AppCompatActivity {
         tahunPopup = findViewById(R.id.tahunPopup);
 
         pb = findViewById(R.id.pb);
-        pb.setMax(48);
+        pb.setMax(70);
         pb.setProgress(0);
 
         gridM = findViewById(R.id.gridM);
         gridF = findViewById(R.id.gridF);
 
         initTable();
+        initCell();
         initGrid();
     }
     //These Functions Only Called in Thread
     private void initUI(){
-        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, table.get(tableM)[0]);
-        changeTable(DatasetKetenagakerjaan.PEREMPUAN, table.get(tableF)[0]);
+        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, tableM);
+        changeTable(DatasetKetenagakerjaan.PEREMPUAN, tableF);
 
         findViewById(R.id.tahunPopup).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +97,7 @@ public class EditDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tableM -= 1;
-                changeTable(DatasetKetenagakerjaan.LAKI_LAKI, table.get(tableM)[0]);
+                changeTable(DatasetKetenagakerjaan.LAKI_LAKI, tableM);
             }
         });
 
@@ -157,7 +105,7 @@ public class EditDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tableM += 1;
-                changeTable(DatasetKetenagakerjaan.LAKI_LAKI, table.get(tableM)[0]);
+                changeTable(DatasetKetenagakerjaan.LAKI_LAKI, tableM);
             }
         });
 
@@ -165,7 +113,7 @@ public class EditDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tableF -= 1;
-                changeTable(DatasetKetenagakerjaan.PEREMPUAN, table.get(tableF)[0]);
+                changeTable(DatasetKetenagakerjaan.PEREMPUAN, tableF);
             }
         });
 
@@ -173,86 +121,20 @@ public class EditDataActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tableF += 1;
-                changeTable(DatasetKetenagakerjaan.PEREMPUAN, table.get(tableF)[0]);
+                changeTable(DatasetKetenagakerjaan.PEREMPUAN, tableF);
+            }
+        });
+
+        findViewById(R.id.edit_data_save_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveData();
+                fillTable(DatasetKetenagakerjaan.PEREMPUAN);
             }
         });
 
         ((ConstraintLayout)findViewById(R.id.loadingView).getParent()).removeView(findViewById(R.id.loadingView));
         findViewById(R.id.editView).setVisibility(View.VISIBLE);
-    }
-    private void initGrid(){
-        arrayGridM = new ArrayList<>();
-        arrayGridF = new ArrayList<>();
-
-        int[] from = new int[]{
-                DatasetKetenagakerjaan.UMUR,
-                DatasetKetenagakerjaan.KABUPATEN,
-                DatasetKetenagakerjaan.PENDIDIKAN,
-                DatasetKetenagakerjaan.JAM_KERJA,
-                DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA,
-                DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA,
-                DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA
-        };
-
-        ArrayList<int[]> destination = new ArrayList<>();
-        destination.add(new int[]{ //UMUR
-                DatasetKetenagakerjaan.PENDIDIKAN, //0
-                DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, //1
-                DatasetKetenagakerjaan.JAM_KERJA, //2
-                DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, //3
-                DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, //4
-                DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, //5
-                DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN //6
-        });
-        destination.add(new int[]{ //KABUPATEN
-                DatasetKetenagakerjaan.UMUR, //7
-                DatasetKetenagakerjaan.PENDIDIKAN, //8
-                DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, //9
-                DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, //10
-                DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, //11
-                DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN //12
-        });
-        destination.add(new int[]{ //PENDIDIKAN
-                DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, //13
-                DatasetKetenagakerjaan.JAM_KERJA, //14
-                DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, //15
-                DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN //16
-        });
-        destination.add(new int[]{ //JAM KERJA
-                DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, //17
-                DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA //18
-        });
-        destination.add(new int[]{ //LAPANGAN PEKERJAAN UTAMA
-                DatasetKetenagakerjaan.PENDIDIKAN, //19
-                DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA //20
-        });
-        destination.add(new int[]{ //STATUS PEKERJAAN UTAMA
-                DatasetKetenagakerjaan.PENDIDIKAN, //21
-                DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, //22
-                DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA //23
-        });
-        destination.add(new int[]{  //JENIS PEKERJAAN UTAMA
-                DatasetKetenagakerjaan.PENDIDIKAN //24
-        });
-
-        for(int i = 0; i < from.length; i++){
-            for(int d : destination.get(i)){
-                arrayGridM.add(newGrid(DatasetKetenagakerjaan.LAKI_LAKI, from[i], d));
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        pb.incrementProgressBy(1);
-                    }
-                });
-                arrayGridF.add(newGrid(DatasetKetenagakerjaan.LAKI_LAKI, from[i], d));
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        pb.incrementProgressBy(1);
-                    }
-                });
-            }
-        }
     }
     private void initTable(){
         title = new String[]{
@@ -299,47 +181,76 @@ public class EditDataActivity extends AppCompatActivity {
                 "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT GOLONGAN UMUR DAN KLASIFIKASI PENGANGGURAN, DKI JAKARTA"
         };
         table = new ArrayList<>();
-        table.add(new int[]{0, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{1, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{7, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{13, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{8, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
 
-        table.add(new int[]{9, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{0, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
-        table.add(new int[]{7, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.ANGKATAN_KERJA});
-        table.add(new int[]{8, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
-        table.add(new int[]{0, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
 
-        table.add(new int[]{2, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{3, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{4, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{19, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{21, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
 
-        table.add(new int[]{14, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{17, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{18, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{22, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{24, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
 
-        table.add(new int[]{20, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{23, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{17, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
-        table.add(new int[]{18, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
-        table.add(new int[]{7, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.BEKERJA});
 
-        table.add(new int[]{8, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{10, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{11, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{0, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{8, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
 
-        table.add(new int[]{5, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{15, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{12, DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{16, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{6, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
+    }
+    private void initCell(){
+        cellM = new ArrayList<>();
+        cellF = new ArrayList<>();
+        for(int[] t : table){
+            cellM.add(newEditTextCell(t));
+            cellF.add(newEditTextCell(t));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    pb.incrementProgressBy(1);
+                }
+            });
+        }
+    }
+    private void initGrid(){
+        arrayGridM = new ArrayList<>();
+        arrayGridF = new ArrayList<>();
+
+        for(int i = 0; i < table.size(); i++){
+            arrayGridM.add(newGrid(table.get(i), cellM.get(i)));
+            arrayGridF.add(newGrid(table.get(i), cellF.get(i)));
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    pb.incrementProgressBy(1);
+                }
+            });
+        }
     }
     //These Functions Only Called in Thread
 
@@ -389,14 +300,24 @@ public class EditDataActivity extends AppCompatActivity {
         et.setText(str);
         return et;
     }
-
-    private GridLayout newGrid(int gender, int from, int destination){
+    private ArrayList<ArrayList<EditText>> newEditTextCell(int[] table){
+        ArrayList<ArrayList<EditText>> cell = new ArrayList<>();
+        for(int i = 0; i < data.getSize(table[0]); i++){
+            ArrayList<EditText> row = new ArrayList<>();
+            for(int j = 0; j < data.getSize(table[1]); j++){
+                row.add(addEditTextToGrid());
+            }
+            cell.add(row);
+        }
+        return cell;
+    }
+    private GridLayout newGrid(int[] table, ArrayList<ArrayList<EditText>> cell){
         GridLayout grid = new GridLayout(this);
 
         //Add Header
-        if (destination == DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN){
+        if (table[1] == DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN){
             grid.setColumnCount(DatasetKetenagakerjaan.SKK_LIST.length + 1);
-            grid.addView(addTextViewToGrid(data.getNama(from), 3, 1));
+            grid.addView(addTextViewToGrid(data.getNama(table[0]), 3, 1));
             grid.addView(addTextViewToGrid("Angkatan Kerja", 1, 3));
             grid.addView(addTextViewToGrid("Bukan Angkatan Kerja", 1, 3));
             grid.addView(addTextViewToGrid(DatasetKetenagakerjaan.SKK_LIST[0], 2, 1));
@@ -409,21 +330,133 @@ public class EditDataActivity extends AppCompatActivity {
 
         }
         else {
-            grid.setColumnCount(data.getSize(destination) + 1);
-            grid.addView(addTextViewToGrid(data.getNama(from), 2, 1));
-            grid.addView(addTextViewToGrid(data.getNama(destination), 1, data.getSize(destination)));
-            for(String list : data.getList(destination)){
+            grid.setColumnCount(data.getSize(table[1]) + 1);
+            grid.addView(addTextViewToGrid(data.getNama(table[0]), 2, 1));
+            grid.addView(addTextViewToGrid(data.getNama(table[1]), 1, data.getSize(table[1])));
+            for(String list : data.getList(table[1])){
                 grid.addView(addTextViewToGrid(list));
             }
         }
         //Add Header
 
-        for(int i = 0; i < data.getList(from).length; i++){
-            grid.addView(addTextViewToGrid(data.getList(from)[i]));
-            for(int j = 0; j < data.getList(destination).length; j++){
-                grid.addView(addEditTextToGrid());
+        for(int i = 0; i < cell.size(); i++){
+            grid.addView(addTextViewToGrid(data.getList(table[0])[i]));
+            for(EditText et : cell.get(i)){
+                grid.addView(et);
             }
         }
         return grid;
+    }
+
+    private void showMenu(View view){
+        PopupMenu menu = new PopupMenu(EditDataActivity.this, view);
+        if(data.T.size() > 0){
+            for(int i = 0; i < data.T.size(); i++){
+                menu.getMenu().add(Integer.toString(data.T.get(i).tahun));
+            }
+        }
+        menu.getMenu().add("Tambah ...");
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return false;
+            }
+        });
+        menu.show();
+    }
+    private void changeTable(int gender, int g){
+        if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
+            gridM.removeAllViews();
+            gridM.addView(arrayGridM.get(g));
+            if(tableM == 0){
+                findViewById(R.id.leftM).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.leftM).setVisibility(View.VISIBLE);
+            }
+
+            if(tableM == 34){
+                findViewById(R.id.rightM).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.rightM).setVisibility(View.VISIBLE);
+            }
+
+            titleM.setText(title[tableM]);
+            String s = (tableM + 1) + "/35";
+            editDataTableIndexM.setText(s);
+        }
+        else {
+            gridF.removeAllViews();
+            gridF.addView(arrayGridF.get(g));
+            if(tableF == 0){
+                findViewById(R.id.leftF).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.leftF).setVisibility(View.VISIBLE);
+            }
+
+            if(tableF == 34){
+                findViewById(R.id.rightF).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.rightF).setVisibility(View.VISIBLE);
+            }
+
+            titleF.setText(title[tableF]);
+            String s = (tableF + 1) + "/35";
+            editDataTableIndexF.setText(s);
+        }
+    }
+    private void fillTable(int gender){
+        GridLayout grid;
+        if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
+            grid = arrayGridM.get(tableM);
+        }
+        else {
+            grid = arrayGridF.get(tableF);
+        }
+        int a = 0;
+        int b = 0;
+        for(int i = 0; i < grid.getChildCount(); i++){
+            try{
+                EditText et = (EditText) grid.getChildAt(i);
+                et.setText(test.get(a).get(b).toString());
+                b += 1;
+                if(b == (test.get(a).size() - 1)){
+                    a += 1;
+                    b = 0;
+                }
+            }
+            catch (Exception e){ continue; }
+        }
+    }
+    private void saveData(){
+        //for(int i = 0; i < table.size(); i++){
+            int max = data.getSize(table.get(tableM)[2]);
+            int c = 0;
+            ArrayList<Integer> column = new ArrayList<>();
+            for(int j = 0; j < arrayGridM.get(tableM).getChildCount(); j++){
+                try{
+                    String value = ((EditText) arrayGridM.get(tableM).getChildAt(j)).toString();
+
+                    if(c == 0){ column = new ArrayList<>(); }
+                    if(value.trim().length() == 0){
+                        column.add(-1);
+                    }
+                    else{
+                        column.add(Integer.parseInt(value));
+                    }
+                    if(c == (max - 1)){
+                        test.add(column);
+                        c = 0;
+                    }
+                    else {
+                        c += 1;
+                    }
+                }
+                catch (Exception e){ continue; }
+            }
+        //}
     }
 }

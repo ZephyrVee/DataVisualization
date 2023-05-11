@@ -2,6 +2,7 @@ package com.example.datavisualization;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class DatasetKetenagakerjaan {
 
@@ -212,6 +213,19 @@ public class DatasetKetenagakerjaan {
     }
 
     public void sortTahun(){
+        if(T.size() > 0){
+            Collections.sort(T, new Comparator<Tahun>() {
+                @Override
+                public int compare(Tahun t1, Tahun t2) {
+                    if(t1.tahun < t2.tahun){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                }
+            });
+        }
     }
 
     public String getNama(int kategori){
