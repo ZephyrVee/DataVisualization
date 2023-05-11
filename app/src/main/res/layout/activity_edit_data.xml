@@ -11,7 +11,33 @@
     tools:context=".EditDataActivity"
     >
 
+    <LinearLayout
+        android:id="@+id/loadingView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Initializing Tables. Please wait"
+            android:gravity="center"
+            />
+        <ProgressBar
+            android:id="@+id/pb"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <ScrollView
+        android:id="@+id/editView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
@@ -25,120 +51,162 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/tahunPopup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+
+                android:text="Pilih Tahun" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/tahunPopupM"
+                    android:id="@+id/leftM"
+                    style="@style/Widget.AppCompat.Button.Small"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-
-                    android:text="Tahun"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/leftM"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        app:backgroundTint="@color/white"
-                        app:icon="@drawable/ic_baseline_chevron_left_24"
-                        app:iconTint="@color/black"
-                        app:strokeColor="#000000"
-                        app:strokeWidth="1dp" />
+                    android:layout_gravity="center"
+                    app:backgroundTint="@color/white"
+                    app:icon="@drawable/ic_baseline_chevron_left_24"
+                    app:iconTint="@color/black"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="1dp" />
 
-                    <TextView
-                        android:id="@+id/titleM"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="16dp"
-                        android:text="THIS IS TITLE"
-                        />
-
-                    <Button
-                        android:id="@+id/rightM"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        app:backgroundTint="@color/white"
-                        app:icon="@drawable/ic_baseline_chevron_right_24"
-                        app:iconTint="@color/black"
-                        app:strokeColor="#000000"
-                        app:strokeWidth="1dp" />
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:id="@+id/gridM"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/titleM"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:background="@drawable/grid">
-                </HorizontalScrollView>
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="THIS IS TITLE" />
 
                 <Button
-                    android:id="@+id/tahunPopupF"
+                    android:id="@+id/rightM"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:backgroundTint="@color/white"
+                    app:icon="@drawable/ic_baseline_chevron_right_24"
+                    app:iconTint="@color/black"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/edit_data_table_index_m"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginTop="16dp"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="1/35" />
 
-                    android:text="Tahun"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <Button
-                        android:id="@+id/leftF"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        app:backgroundTint="@color/white"
-                        app:icon="@drawable/ic_baseline_chevron_left_24"
-                        app:iconTint="@color/black"
-                        app:strokeColor="#000000"
-                        app:strokeWidth="1dp" />
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
 
-                    <TextView
-                        android:id="@+id/titleF"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="16dp"
-                        android:text="THIS IS TITLE"
-                        />
-
-                    <Button
-                        android:id="@+id/rightF"
-                        style="@style/Widget.AppCompat.Button.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        app:backgroundTint="@color/white"
-                        app:icon="@drawable/ic_baseline_chevron_right_24"
-                        app:iconTint="@color/black"
-                        app:strokeColor="#000000"
-                        app:strokeWidth="1dp" />
-                </LinearLayout>
-
-                <HorizontalScrollView
-                    android:id="@+id/gridF"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/grid">
-                </HorizontalScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="LAKI-LAKI" />
 
             </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/gridM"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/grid"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/leftF"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:backgroundTint="@color/white"
+                    app:icon="@drawable/ic_baseline_chevron_left_24"
+                    app:iconTint="@color/black"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="1dp" />
+
+                <TextView
+                    android:id="@+id/titleF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:text="THIS IS TITLE" />
+
+                <Button
+                    android:id="@+id/rightF"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    app:backgroundTint="@color/white"
+                    app:icon="@drawable/ic_baseline_chevron_right_24"
+                    app:iconTint="@color/black"
+                    app:strokeColor="#000000"
+                    app:strokeWidth="1dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/edit_data_table_index_f"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="1/35" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="2dp"
+                    android:text="PEREMPUAN" />
+
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/gridF"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/grid"/>
+
+
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

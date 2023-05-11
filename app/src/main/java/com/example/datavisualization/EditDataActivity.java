@@ -1,19 +1,25 @@
 package com.example.datavisualization;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -21,12 +27,18 @@ public class EditDataActivity extends AppCompatActivity {
 
     DatasetKetenagakerjaan data;
 
+    HorizontalScrollView gridM, gridF;
     ArrayList<GridLayout> arrayGridM, arrayGridF;
     String[] title;
     ArrayList<int[]> table;
-    int tableM = 1;
-    int tableF = 1;
-    HorizontalScrollView gridM, gridF;
+    TextView titleM, titleF, editDataTableIndexM, editDataTableIndexF;
+    Button tahunPopup;
+
+    int tableM = 0;
+    int tableF = 0;
+
+    ProgressBar pb;
+    Handler handler;
 
     float dp;
 
@@ -35,7 +47,7 @@ public class EditDataActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_data);
 
-
+        handler = new Handler();
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -68,32 +80,116 @@ public class EditDataActivity extends AppCompatActivity {
         if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
             gridM.removeAllViews();
             gridM.addView(arrayGridM.get(g));
+            if(tableM == 0){
+                findViewById(R.id.leftM).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.leftM).setVisibility(View.VISIBLE);
+            }
+
+            if(tableM == 34){
+                findViewById(R.id.rightM).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.rightM).setVisibility(View.VISIBLE);
+            }
+
+            titleM.setText(title[tableM]);
+            String s = (tableM + 1) + "/35";
+            editDataTableIndexM.setText(s);
         }
         else {
+            gridF.removeAllViews();
             gridF.addView(arrayGridF.get(g));
+            if(tableF == 0){
+                findViewById(R.id.leftF).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.leftF).setVisibility(View.VISIBLE);
+            }
+
+            if(tableF == 34){
+                findViewById(R.id.rightF).setVisibility(View.INVISIBLE);
+            }
+            else {
+                findViewById(R.id.rightF).setVisibility(View.VISIBLE);
+            }
+
+            titleF.setText(title[tableF]);
+            String s = (tableF + 1) + "/35";
+            editDataTableIndexF.setText(s);
         }
     }
 
     private void initAll(){
+        findViewById(R.id.editView).setVisibility(View.INVISIBLE);
+
         dp = this.getResources().getDisplayMetrics().density; // this is a scale from dp to int (uses + 0.5f)
+
         data = new DatasetKetenagakerjaan();
 
-        gridM = (HorizontalScrollView) findViewById(R.id.gridM);
-        gridF = (HorizontalScrollView) findViewById(R.id.gridF);
+        titleM = findViewById(R.id.titleM);
+        titleF = findViewById(R.id.titleF);
+        editDataTableIndexM = findViewById(R.id.edit_data_table_index_m);
+        editDataTableIndexF = findViewById(R.id.edit_data_table_index_f);
+        tahunPopup = findViewById(R.id.tahunPopup);
+
+        pb = findViewById(R.id.pb);
+        pb.setMax(48);
+        pb.setProgress(0);
+
+        gridM = findViewById(R.id.gridM);
+        gridF = findViewById(R.id.gridF);
 
         initTable();
         initGrid();
     }
+    //These Functions Only Called in Thread
     private void initUI(){
-        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, 0);
-        changeTable(DatasetKetenagakerjaan.PEREMPUAN, 0);
+        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, table.get(tableM)[0]);
+        changeTable(DatasetKetenagakerjaan.PEREMPUAN, table.get(tableF)[0]);
 
-        this.findViewById(R.id.tahunPopupM).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.tahunPopup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showMenu(0,view);
             }
         });
+
+        findViewById(R.id.leftM).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableM -= 1;
+                changeTable(DatasetKetenagakerjaan.LAKI_LAKI, table.get(tableM)[0]);
+            }
+        });
+
+        findViewById(R.id.rightM).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableM += 1;
+                changeTable(DatasetKetenagakerjaan.LAKI_LAKI, table.get(tableM)[0]);
+            }
+        });
+
+        findViewById(R.id.leftF).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableF -= 1;
+                changeTable(DatasetKetenagakerjaan.PEREMPUAN, table.get(tableF)[0]);
+            }
+        });
+
+        findViewById(R.id.rightF).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tableF += 1;
+                changeTable(DatasetKetenagakerjaan.PEREMPUAN, table.get(tableF)[0]);
+            }
+        });
+
+        ((ConstraintLayout)findViewById(R.id.loadingView).getParent()).removeView(findViewById(R.id.loadingView));
+        findViewById(R.id.editView).setVisibility(View.VISIBLE);
     }
     private void initGrid(){
         arrayGridM = new ArrayList<>();
@@ -153,7 +249,19 @@ public class EditDataActivity extends AppCompatActivity {
         for(int i = 0; i < from.length; i++){
             for(int d : destination.get(i)){
                 arrayGridM.add(newGrid(DatasetKetenagakerjaan.LAKI_LAKI, from[i], d));
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        pb.incrementProgressBy(1);
+                    }
+                });
                 arrayGridF.add(newGrid(DatasetKetenagakerjaan.LAKI_LAKI, from[i], d));
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        pb.incrementProgressBy(1);
+                    }
+                });
             }
         }
     }
@@ -244,6 +352,7 @@ public class EditDataActivity extends AppCompatActivity {
         table.add(new int[]{16, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
         table.add(new int[]{6, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
     }
+    //These Functions Only Called in Thread
 
     private int dpToInt(int d){
         int dps = (int)(d*dp + 0.5f);
