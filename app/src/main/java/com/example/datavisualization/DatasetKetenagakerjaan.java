@@ -463,7 +463,7 @@ public class DatasetKetenagakerjaan {
             T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(dataF.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
         }
     }
-    public ArrayList<ArrayList<ArrayList<Integer>>> get(int tahun, int gender, int from, int destination, int classification){
+    public ArrayList<ArrayList<ArrayList<Integer>>> get(int tahun, int gender){
         ArrayList<ArrayList<ArrayList<Integer>>> data = new ArrayList<>();
         for(int i = 0; i < table.size(); i++){
             data.add(T.get(getTahunIndex(tahun)).JK.get(gender).getData(table.get(i)[0], table.get(i)[1], table.get(i)[2]));

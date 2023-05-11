@@ -34,6 +34,7 @@ public class EditDataActivity extends AppCompatActivity {
 
     int tableM = 0;
     int tableF = 0;
+    int tahun;
 
     ProgressBar pb;
     Handler handler;
@@ -274,6 +275,9 @@ public class EditDataActivity extends AppCompatActivity {
             }
         });
         menu.show();
+    }
+    private void changeTahun(int t){
+
     }
     private void changeTable(int gender, int g){
         if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
