@@ -1,5 +1,9 @@
 package com.example.datavisualization;
 
+import android.widget.EditText;
+
+import org.checkerframework.checker.units.qual.A;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -36,6 +40,52 @@ public class DatasetKetenagakerjaan {
     public static final String[] JPU_LIST = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
     public static final String[] KATEGORI_PENGANGGURAN_LIST = new String[]{"Mencari Pekerjaan", "Mempersiapkan Usaha", "Merasa Tidak Mungkin Mendapatkan Pekerjaan", "Sudah Punya Pekerjaan Tapi Belum Mulai Bekerja"};
     public static final String[] KLASIFIKASI_PENGANGGURAN_LIST = new String[]{"Pengangguran Terbuka", "Sukarela", "Terpaksa"};
+
+    final String[] tableTitle = new String[] {
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT GOLONGAN UMUR DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT GOLONGAN UMUR DAN JENIS KEGIATAN SELAMA SEMINGGU YANG LALU, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT KABUPATEN/KOTA DAN GOLONGAN UMUR DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT PENDIDIKAN TERTINGGI YANG DITAMATKAN DAN JENIS KEGIATAN SELAMA SEMINGGU YANG LALU, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT KABUPATEN/KOTA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT KABUPATEN/KOTA DAN JENIS KEGIATAN SELAMA SEMINGGU YANG LALU, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK ANGKATAN KERJA MENURUT GOLONGAN UMUR DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK ANGKATAN KERJA MENURUT KABUPATEN/KOTA DAN GOLONGAN UMUR, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK ANGKATAN KERJA MENURUT KABUPATEN/KOTA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT GOLONGAN UMUR DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT GOLONGAN UMUR DAN JUMLAH JAM KERJA SELURUHNYA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT GOLONGAN UMUR DAN LAPANGAN PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT GOLONGAN UMUR DAN STATUS PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT LAPANGAN PEKERJAAN UTAMA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA 2022",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT STATUS PEKERJAAN UTAMA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT PENDIDIKAN TERTINGGI YANG DITAMATKAN DAN JUMLAH JAM KERJA SELURUHNYA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT JUMLAH JAM KERJA SELURUHNYA DAN LAPANGAN PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT JUMLAH JAM KERJA SELURUHNYA DAN STATUS PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT STATUS PEKERJAAN UTAMA DAN LAPANGAN PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT JENIS PEKERJAAN UTAMA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT LAPANGAN PEKERJAAN UTAMA DAN JENIS PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT STATUS PEKERJAAN UTAMA DAN JENIS PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT JUMLAH JAM KERJA PADA PEKERJAAN UTAMA DAN LAPANGAN PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT JUMLAH JAM KERJA PADA PEKERJAAN UTAMA, DAN STATUS PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT KABUPATEN/KOTA DAN GOLONGAN UMUR, DKI JAKARTA",
+
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT KABUPATEN/KOTA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT KABUPATEN/KOTA DAN LAPANGAN PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG BEKERJA MENURUT KABUPATEN/KOTA DAN STATUS PEKERJAAN UTAMA, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK PENGANGGURAN TERBUKA *) MENURUT GOLONGAN UMUR DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK PENGANGGURAN TERBUKA *) MENURUT KABUPATEN/KOTA DAN PENDIDIKAN TERTINGGI YANG DITAMATKAN, DKI JAKARTA",
+
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK PENGANGGURAN TERBUKA MENURUT GOLONGAN UMUR DAN KATEGORI PENGANGGURAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK PENGANGGURAN TERBUKA MENURUT PENDIDIKAN TERTINGGI YANG DITAMATKAN DAN KATEGORI PENGANGGURAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS YANG TERMASUK PENGANGGURAN TERBUKA MENURUT KABUPATEN/KOTA DAN KATEGORI PENGANGGURAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT PENDIDIKAN TERTINGGI YANG DITAMATKAN DAN KLASIFIKASI PENGANGGURAN, DKI JAKARTA",
+            "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT GOLONGAN UMUR DAN KLASIFIKASI PENGANGGURAN, DKI JAKARTA"
+    };
+
+    ArrayList<int[]> table;
 
     class Tahun{
         int tahun;
@@ -206,10 +256,54 @@ public class DatasetKetenagakerjaan {
 
     public DatasetKetenagakerjaan(){
         T = new ArrayList<>();
+
+        table = new ArrayList<>();
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
+
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+
+        table.add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
+        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.BEKERJA});
+
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
+        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
     }
 
     public void newTahun(int tahun){
         T.add(new Tahun(tahun));
+        sortTahun();
     }
 
     public void sortTahun(){
@@ -235,7 +329,7 @@ public class DatasetKetenagakerjaan {
                 nama = "Golongan Umur";
                 break;
             case PENDIDIKAN:
-                nama = "Pendidikan";
+                nama = "Pendidikan Tertinggi Yang Ditamatkan";
                 break;
             case KABUPATEN:
                 nama = "Kabupaten/Kota";
@@ -361,10 +455,19 @@ public class DatasetKetenagakerjaan {
     }
 
 
-    public void set(ArrayList<ArrayList<Integer>> data,int tahun, int gender, int from, int destination, int classification){
-        T.get(getTahunIndex(tahun)).JK.get(gender).setData(data, from, destination, classification);
+    public void set(ArrayList<ArrayList<ArrayList<Integer>>> dataM, ArrayList<ArrayList<ArrayList<Integer>>> dataF, int tahun){
+        for(int i = 0; i < dataM.size(); i++){
+            T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).setData(dataM.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+        }
+        for(int i = 0; i < dataM.size(); i++){
+            T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(dataF.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+        }
     }
-    public ArrayList<ArrayList<Integer>> get(int tahun, int gender, int from, int destination, int classification){
-        return T.get(getTahunIndex(tahun)).JK.get(gender).getData(from, destination, classification);
+    public ArrayList<ArrayList<ArrayList<Integer>>> get(int tahun, int gender, int from, int destination, int classification){
+        ArrayList<ArrayList<ArrayList<Integer>>> data = new ArrayList<>();
+        for(int i = 0; i < table.size(); i++){
+            data.add(T.get(getTahunIndex(tahun)).JK.get(gender).getData(table.get(i)[0], table.get(i)[1], table.get(i)[2]));
+        }
+        return data;
     }
 }
