@@ -16,10 +16,7 @@ import android.widget.GridLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -49,24 +46,16 @@ public class EditDataActivity extends AppCompatActivity {
 
         handler = new Handler();
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                initAll();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initUI();
-                    }
-                });
-            }
+        Thread thread = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
+            initAll();
+            runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
         });
         thread.start();
     }
 
-    private void showMenu(int gender, View view){
+    private void showMenu(View view){
         PopupMenu menu = new PopupMenu(EditDataActivity.this, view);
-        menu.inflate(R.menu.kategori_popup);
+
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -152,7 +141,7 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.tahunPopup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMenu(0,view);
+                showMenu(view);
             }
         });
 

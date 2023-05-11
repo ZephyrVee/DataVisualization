@@ -1,6 +1,7 @@
 package com.example.datavisualization;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DatasetKetenagakerjaan {
 
@@ -208,6 +209,9 @@ public class DatasetKetenagakerjaan {
 
     public void newTahun(int tahun){
         T.add(new Tahun(tahun));
+    }
+
+    public void sortTahun(){
     }
 
     public String getNama(int kategori){
