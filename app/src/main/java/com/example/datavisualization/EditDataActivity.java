@@ -144,7 +144,7 @@ public class EditDataActivity extends AppCompatActivity {
     private void initCell(){
         cellM = new ArrayList<>();
         cellF = new ArrayList<>();
-        for(int[] t : data.table){
+        for(int[] t : DatasetKetenagakerjaan.table){
             cellM.add(newEditTextCell(t));
             cellF.add(newEditTextCell(t));
             handler.post(new Runnable() {
@@ -159,9 +159,9 @@ public class EditDataActivity extends AppCompatActivity {
         arrayGridM = new ArrayList<>();
         arrayGridF = new ArrayList<>();
 
-        for(int i = 0; i < data.table.size(); i++){
-            arrayGridM.add(newGrid(data.table.get(i), cellM.get(i)));
-            arrayGridF.add(newGrid(data.table.get(i), cellF.get(i)));
+        for(int i = 0; i < DatasetKetenagakerjaan.table.size(); i++){
+            arrayGridM.add(newGrid(DatasetKetenagakerjaan.table.get(i), cellM.get(i)));
+            arrayGridF.add(newGrid(DatasetKetenagakerjaan.table.get(i), cellF.get(i)));
             handler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -400,7 +400,7 @@ public class EditDataActivity extends AppCompatActivity {
         }
     }
     private void loadData(){
-        for(int i = 0; i < data.table.size(); i++){
+        for(int i = 0; i < DatasetKetenagakerjaan.table.size(); i++){
             ArrayList<ArrayList<Integer>> dM = data.get(tahun, DatasetKetenagakerjaan.LAKI_LAKI).get(i);
             for(int j = 0; j < cellM.get(i).size(); j++){
                 for(int k = 0; k < cellM.get(i).get(j).size(); k++){

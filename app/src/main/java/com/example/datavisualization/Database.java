@@ -5,10 +5,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Database {
@@ -26,10 +31,7 @@ public class Database {
     private static final String databaseName = Enkripsi.encrypt(databaseNamePlain);
     private static final String documentName = Enkripsi.encrypt(documentNamePlain);
 
-
-
-    private static final String jenisKelaminCol = Enkripsi.encrypt(jenisKelaminColPlain);
-    private static final String namaJenisKelaminField = Enkripsi.encrypt(namaJenisKelaminFieldPlain);
+    private static final String dataDB = Enkripsi.encrypt("Ketenagakerjaan");
 
 
     public Database(){
@@ -47,5 +49,62 @@ public class Database {
             return docRef(dr, query);
         }
         return cr.document(query.get(0));
+    }
+
+    public void save(ArrayList<ArrayList<ArrayList<Integer>>> data, int tahun, int gender){
+        List<int[]> table = DatasetKetenagakerjaan.table;
+        for(int i = 0; i < data.size(); i++){ //ArrayList<ArrayList<Integer>>
+            DocumentReference saveTo = database.
+                    collection( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
+                    document( Enkripsi.encrypt(Integer.toString(gender)) ). //gender
+                    collection( Enkripsi.encrypt(Integer.toString(table.get(i)[0])) ). //from
+                    document( Enkripsi.encrypt(Integer.toString(table.get(i)[1])) ); //destination
+
+            String[] r = DatasetKetenagakerjaan.getList(table.get(i)[0]);
+            String[] c = DatasetKetenagakerjaan.getList(table.get(i)[1]);
+
+            for(int j = 0; j < data.get(i).size(); j++){ //ArrayList<Integer>
+                for(int k = 0; k < data.get(i).get(j).size(); k++){ //Integer
+                    Map<String, String> hm = new HashMap<>();
+                    hm.put( Enkripsi.encrypt(Integer.toString(table.get(i)[2])), Enkripsi.encrypt(data.get(i).get(j).get(k).toString()) );
+                    saveTo.
+                            collection( Enkripsi.encrypt(r[j]) ).
+                            document( Enkripsi.encrypt(c[k]) ).
+                            set(hm, SetOptions.merge());
+                }
+            }
+        }
+    }
+    public ArrayList<ArrayList<ArrayList<Integer>>> loadByTahun(int tahun, int gender){
+        List<int[]> table = DatasetKetenagakerjaan.table;
+        ArrayList<ArrayList<ArrayList<Integer>>> data = new ArrayList<>();
+        for(int i = 0; i < table.size(); i++){
+            String[] r = DatasetKetenagakerjaan.getList(table.get(i)[0]);
+            String[] c = DatasetKetenagakerjaan.getList(table.get(i)[1]);
+            ArrayList<ArrayList<Integer>> cell = new ArrayList<>();
+            DocumentReference loadFrom = database.
+                    collection( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
+                    document( Enkripsi.encrypt(Integer.toString(gender)) ). //gender
+                    collection( Enkripsi.encrypt(Integer.toString(table.get(i)[0])) ). //from
+                    document( Enkripsi.encrypt(Integer.toString(table.get(i)[1])) ); //destination
+
+            final int index = i;
+            for(int j = 0; j < r.length; j++){
+                ArrayList<Integer> row = new ArrayList<>();
+                CollectionReference cr = loadFrom.collection( Enkripsi.encrypt(r[j]) );
+                for(int k = 0; k < c.length; k++){
+                    cr.document( Enkripsi.encrypt(c[k]) ).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            String s = documentSnapshot.getString( Enkripsi.encrypt(Integer.toString(table.get(index)[2])) );
+                            row.add(Integer.parseInt(Enkripsi.decrypt(s)));
+                        }
+                    });
+                }
+                cell.add(row);
+            }
+            data.add(cell);
+        }
+        return data;
     }
 }

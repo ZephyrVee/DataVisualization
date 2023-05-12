@@ -7,6 +7,7 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class DatasetKetenagakerjaan {
 
@@ -85,7 +86,49 @@ public class DatasetKetenagakerjaan {
             "PENDUDUK BERUMUR 15 TAHUN KE ATAS MENURUT GOLONGAN UMUR DAN KLASIFIKASI PENGANGGURAN, DKI JAKARTA"
     };
 
-    ArrayList<int[]> table;
+    public static final List<int[]> table = Collections.unmodifiableList(new ArrayList<int[]>(){{
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.NONE});
+        add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
+
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+
+        add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+
+        add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
+        add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.BEKERJA});
+
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
+        add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
+        add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
+    }});
 
     class Tahun{
         int tahun;
@@ -257,48 +300,7 @@ public class DatasetKetenagakerjaan {
     public DatasetKetenagakerjaan(){
         T = new ArrayList<>();
 
-        table = new ArrayList<>();
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.NONE});
 
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.ANGKATAN_KERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.ANGKATAN_KERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-
-        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-
-        table.add(new int[]{DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.JENIS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
-        table.add(new int[]{DatasetKetenagakerjaan.JAM_KERJA, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.PADA_PEKERJAAN_UTAMA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.BEKERJA});
-
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.LAPANGAN_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.STATUS_PEKERJAAN_UTAMA, DatasetKetenagakerjaan.BEKERJA});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{DatasetKetenagakerjaan.KABUPATEN, DatasetKetenagakerjaan.KATEGORI_PENGANGGURAN, DatasetKetenagakerjaan.PENGANGGURAN_TERBUKA});
-        table.add(new int[]{DatasetKetenagakerjaan.PENDIDIKAN, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
-        table.add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
     }
 
     public void newTahun(int tahun){
@@ -407,7 +409,7 @@ public class DatasetKetenagakerjaan {
         }
         return size;
     }
-    public String[] getList(int kategori){
+    public static String[] getList(int kategori){
         String[] list;
         switch (kategori){
             case UMUR:
@@ -476,5 +478,9 @@ public class DatasetKetenagakerjaan {
             data.add(T.get(getTahunIndex(tahun)).JK.get(gender).getData(table.get(i)[0], table.get(i)[1], table.get(i)[2]));
         }
         return data;
+    }
+
+    public void saveToDatabase(){
+
     }
 }
