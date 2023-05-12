@@ -1,9 +1,11 @@
 package com.example.datavisualization;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -271,7 +273,34 @@ public class EditDataActivity extends AppCompatActivity {
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                return false;
+                if(menuItem.getTitle().equals("Tambah ...")){
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(EditDataActivity.this);
+                    View dialogView = getLayoutInflater().inflate(R.layout.dialog_tambah_tahun, null);
+                    dialog.setView(dialogView);
+                    dialog.setCancelable(true);
+                    dialog.setTitle("Tambah");
+
+                    TextView warningTextView = (TextView) dialogView.findViewById(R.id.dialog_warning_text_view);
+                    EditText inputNumberEditText = (EditText) dialogView.findViewById(R.id.dialog_input_number_edit_text);
+                    inputNumberEditText.setText(null);
+
+                    dialog.setPositiveButton("Submit", null);
+                    dialog.setNegativeButton("Cancel", null);
+
+                    AlertDialog ad = dialog.show();
+                    ad.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(inputNumberEditText.getText().toString().trim().length() == 0){
+                                warningTextView.setText("Tahun yang dimasukkan tidak boleh kosong");
+                            }
+                            else {
+                                ad.dismiss();
+                            }
+                        }
+                    });
+;                }
+                return true;
             }
         });
         menu.show();
