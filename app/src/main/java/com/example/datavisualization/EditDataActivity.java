@@ -36,7 +36,7 @@ public class EditDataActivity extends AppCompatActivity {
 
     int tableM = 0;
     int tableF = 0;
-    int tahun;
+    int tahun = -1;
 
     ProgressBar pb;
     Handler handler;
@@ -321,11 +321,17 @@ public class EditDataActivity extends AppCompatActivity {
         menu.show();
     }
     private void changeTahun(int t){
+        if(tahun > 0){
+            saveData();
+        }
+
         tahun = t;
         tableM = 0;
         tableF = 0;
         changeTable(DatasetKetenagakerjaan.LAKI_LAKI, tableM);
         changeTable(DatasetKetenagakerjaan.PEREMPUAN, tableF);
+
+        loadData();
 
         if(findViewById(R.id.edit_data_linear_layout_1_m).getVisibility() == View.INVISIBLE) {
             findViewById(R.id.edit_data_linear_layout_1_m).setVisibility(View.VISIBLE);
@@ -370,8 +376,6 @@ public class EditDataActivity extends AppCompatActivity {
             titleM.setText(data.tableTitle[tableM]);
             String s = (tableM + 1) + "/35";
             editDataTableIndexM.setText(s);
-
-            fillTable(gender);
         }
         else {
             gridF.removeAllViews();
@@ -393,38 +397,68 @@ public class EditDataActivity extends AppCompatActivity {
             titleF.setText(data.tableTitle[tableF]);
             String s = (tableF + 1) + "/35";
             editDataTableIndexF.setText(s);
-
-            fillTable(gender);
         }
     }
-    private void fillTable(int gender){
-        if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
-            ArrayList<ArrayList<EditText>> cell = cellM.get(tableM);
-            ArrayList<ArrayList<Integer>> d = data.get(tahun, gender).get(tableM);
-            for(int i = 0; i < cell.size(); i++){
-                for(int j = 0; j < cell.get(i).size(); j++){
-                    Integer number = d.get(i).get(j);
+    private void loadData(){
+        for(int i = 0; i < data.table.size(); i++){
+            ArrayList<ArrayList<Integer>> dM = data.get(tahun, DatasetKetenagakerjaan.LAKI_LAKI).get(i);
+            for(int j = 0; j < cellM.get(i).size(); j++){
+                for(int k = 0; k < cellM.get(i).get(j).size(); k++){
+                    Integer number = dM.get(j).get(k);
                     if(number != -1){
-                        cellM.get(tableM).get(i).get(j).setText(Integer.toString(number));
+                        cellM.get(i).get(j).get(k).setText(Integer.toString(number));
+                    } else {
+                        cellM.get(i).get(j).get(k).setText(null);
                     }
                 }
             }
-        }
-        else {
-            ArrayList<ArrayList<EditText>> cell = cellF.get(tableF);
-            ArrayList<ArrayList<Integer>> d = data.get(tahun, gender).get(tableF);
-            for(int i = 0; i < cell.size(); i++){
-                for(int j = 0; j < cell.get(i).size(); j++){
-                    Integer number = d.get(i).get(j);
+            ArrayList<ArrayList<Integer>> dF = data.get(tahun, DatasetKetenagakerjaan.PEREMPUAN).get(i);
+            for(int j = 0; j < cellF.get(i).size(); j++){
+                for(int k = 0; k < cellF.get(i).get(j).size(); k++){
+                    Integer number = dF.get(j).get(k);
                     if(number != -1){
-                        cellF.get(tableF).get(i).get(j).setText(Integer.toString(number));
+                        cellF.get(i).get(j).get(k).setText(Integer.toString(number));
+                    } else {
+                        cellF.get(i).get(j).get(k).setText(null);
                     }
                 }
             }
         }
     }
     private void saveData(){
-
+        ArrayList<ArrayList<ArrayList<Integer>>> datasetM = new ArrayList<>();
+        for(ArrayList<ArrayList<EditText>> cell: cellM){
+            ArrayList<ArrayList<Integer>> dataM = new ArrayList<>();
+            for(ArrayList<EditText> row : cell){
+                ArrayList<Integer> rowM = new ArrayList<>();
+                for(EditText et : row){
+                    Integer number = -1;
+                    if(et.getText().toString().trim().length() > 0){
+                        number = Integer.parseInt(et.getText().toString());
+                    }
+                    rowM.add(number);
+                }
+                dataM.add(rowM);
+            }
+            datasetM.add(dataM);
+        }
+        ArrayList<ArrayList<ArrayList<Integer>>> datasetF = new ArrayList<>();
+        for(ArrayList<ArrayList<EditText>> cell: cellF){
+            ArrayList<ArrayList<Integer>> dataF = new ArrayList<>();
+            for(ArrayList<EditText> row : cell){
+                ArrayList<Integer> rowF = new ArrayList<>();
+                for(EditText et : row){
+                    Integer number = -1;
+                    if(et.getText().toString().trim().length() > 0){
+                        number = Integer.parseInt(et.getText().toString());
+                    }
+                    rowF.add(number);
+                }
+                dataF.add(rowF);
+            }
+            datasetF.add(dataF);
+        }
+        data.set(datasetM, datasetF, tahun);
     }
     private boolean isComplete(){
         for(ArrayList<ArrayList<EditText>> cell : cellM){
