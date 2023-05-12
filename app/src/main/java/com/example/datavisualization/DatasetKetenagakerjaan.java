@@ -13,16 +13,16 @@ public class DatasetKetenagakerjaan {
     public static final int LAKI_LAKI = 0;
     public static final int PEREMPUAN = 1;
 
-    public static final int UMUR = 1;
+    public static final int UMUR = 0;
+    public static final int KABUPATEN = 1;
     public static final int PENDIDIKAN = 2;
-    public static final int KABUPATEN = 3;
-    public static final int STATUS_KEADAAN_KETENAGAKERJAAN = 4;
-    public static final int JAM_KERJA = 5;
-    public static final int LAPANGAN_PEKERJAAN_UTAMA = 6;
-    public static final int STATUS_PEKERJAAN_UTAMA = 7;
-    public static final int JENIS_PEKERJAAN_UTAMA = 8;
-    public static final int KATEGORI_PENGANGGURAN = 9;
-    public static final int KLASIFIKASI_PENGANGGURAN = 10;
+    public static final int JAM_KERJA = 3;
+    public static final int LAPANGAN_PEKERJAAN_UTAMA = 4;
+    public static final int STATUS_PEKERJAAN_UTAMA = 5;
+    public static final int JENIS_PEKERJAAN_UTAMA = 6;
+    public static final int STATUS_KEADAAN_KETENAGAKERJAAN = 7;
+    public static final int KATEGORI_PENGANGGURAN = 8;
+    public static final int KLASIFIKASI_PENGANGGURAN = 9;
 
     public static final int NONE = 0;
     public static final int ANGKATAN_KERJA = 1;
@@ -305,7 +305,6 @@ public class DatasetKetenagakerjaan {
         T.add(new Tahun(tahun));
         sortTahun();
     }
-
     public void sortTahun(){
         if(T.size() > 0){
             Collections.sort(T, new Comparator<Tahun>() {
@@ -320,6 +319,14 @@ public class DatasetKetenagakerjaan {
                 }
             });
         }
+    }
+    public boolean isTahunExist(int tahun){
+        for(Tahun t : T){
+            if(t.tahun == tahun){
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getNama(int kategori){

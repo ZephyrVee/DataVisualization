@@ -61,7 +61,14 @@ public class EditDataActivity extends AppCompatActivity {
     }
 
     private void initAll(){
-        findViewById(R.id.editView).setVisibility(View.INVISIBLE);
+        findViewById(R.id.tahunPopup).setVisibility(View.INVISIBLE);
+        findViewById(R.id.edit_data_linear_layout_1_m).setVisibility(View.INVISIBLE);
+        findViewById(R.id.edit_data_linear_layout_2_m).setVisibility(View.INVISIBLE);
+        findViewById(R.id.edit_data_linear_layout_1_f).setVisibility(View.INVISIBLE);
+        findViewById(R.id.edit_data_linear_layout_2_f).setVisibility(View.INVISIBLE);
+        findViewById(R.id.gridM).setVisibility(View.INVISIBLE);
+        findViewById(R.id.gridF).setVisibility(View.INVISIBLE);
+        findViewById(R.id.edit_data_save_button).setVisibility(View.INVISIBLE);
 
         pb = findViewById(R.id.pb);
         pb.setMax(70);
@@ -85,9 +92,6 @@ public class EditDataActivity extends AppCompatActivity {
     }
     //These Functions Only Called in Thread
     private void initUI(){
-        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, tableM);
-        changeTable(DatasetKetenagakerjaan.PEREMPUAN, tableF);
-
         findViewById(R.id.tahunPopup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,12 +134,12 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.edit_data_save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fillTable(DatasetKetenagakerjaan.LAKI_LAKI);
+
             }
         });
 
         ((ConstraintLayout)findViewById(R.id.loadingView).getParent()).removeView(findViewById(R.id.loadingView));
-        findViewById(R.id.editView).setVisibility(View.VISIBLE);
+        findViewById(R.id.tahunPopup).setVisibility(View.VISIBLE);
     }
     private void initCell(){
         cellM = new ArrayList<>();
@@ -295,23 +299,60 @@ public class EditDataActivity extends AppCompatActivity {
                                 warningTextView.setText("Tahun yang dimasukkan tidak boleh kosong");
                             }
                             else {
-                                ad.dismiss();
+                                int t = Integer.parseInt(inputNumberEditText.getText().toString());
+                                if(data.isTahunExist(t) == true){
+                                    warningTextView.setText("Tahun yang dimasukkan sudah ada");
+                                }
+                                else {
+                                    data.newTahun(t);
+                                    changeTahun(t);
+                                    ad.dismiss();
+                                }
                             }
                         }
                     });
 ;                }
+                else {
+                    changeTahun(Integer.parseInt(menuItem.getTitle().toString()));
+                }
                 return true;
             }
         });
         menu.show();
     }
     private void changeTahun(int t){
+        tahun = t;
+        tableM = 0;
+        tableF = 0;
+        changeTable(DatasetKetenagakerjaan.LAKI_LAKI, tableM);
+        changeTable(DatasetKetenagakerjaan.PEREMPUAN, tableF);
 
+        if(findViewById(R.id.edit_data_linear_layout_1_m).getVisibility() == View.INVISIBLE) {
+            findViewById(R.id.edit_data_linear_layout_1_m).setVisibility(View.VISIBLE);
+        }
+        if(findViewById(R.id.edit_data_linear_layout_2_m).getVisibility() == View.INVISIBLE) {
+            findViewById(R.id.edit_data_linear_layout_2_m).setVisibility(View.VISIBLE);
+        }
+        if(findViewById(R.id.edit_data_linear_layout_1_f).getVisibility() == View.INVISIBLE) {
+            findViewById(R.id.edit_data_linear_layout_1_f).setVisibility(View.VISIBLE);
+        }
+        if(findViewById(R.id.edit_data_linear_layout_2_f).getVisibility() == View.VISIBLE) {
+            findViewById(R.id.edit_data_linear_layout_2_f).setVisibility(View.VISIBLE);
+        }
+        if(findViewById(R.id.gridM).getVisibility() == View.INVISIBLE) {
+            findViewById(R.id.gridM).setVisibility(View.VISIBLE);
+        }
+        if(findViewById(R.id.gridF).getVisibility() == View.INVISIBLE) {
+            findViewById(R.id.gridF).setVisibility(View.VISIBLE);
+        }
+        if(findViewById(R.id.edit_data_save_button).getVisibility() == View.INVISIBLE) {
+            findViewById(R.id.edit_data_save_button).setVisibility(View.VISIBLE);
+        }
     }
-    private void changeTable(int gender, int g){
+    private void changeTable(int gender, int t){
         if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
             gridM.removeAllViews();
-            gridM.addView(arrayGridM.get(g));
+            gridM.addView(arrayGridM.get(t));
             if(tableM == 0){
                 findViewById(R.id.leftM).setVisibility(View.INVISIBLE);
             }
@@ -329,10 +370,12 @@ public class EditDataActivity extends AppCompatActivity {
             titleM.setText(data.tableTitle[tableM]);
             String s = (tableM + 1) + "/35";
             editDataTableIndexM.setText(s);
+
+            fillTable(gender);
         }
         else {
             gridF.removeAllViews();
-            gridF.addView(arrayGridF.get(g));
+            gridF.addView(arrayGridF.get(t));
             if(tableF == 0){
                 findViewById(R.id.leftF).setVisibility(View.INVISIBLE);
             }
@@ -350,27 +393,34 @@ public class EditDataActivity extends AppCompatActivity {
             titleF.setText(data.tableTitle[tableF]);
             String s = (tableF + 1) + "/35";
             editDataTableIndexF.setText(s);
+
+            fillTable(gender);
         }
     }
     private void fillTable(int gender){
         if(gender == DatasetKetenagakerjaan.LAKI_LAKI){
-            ArrayList<ArrayList<EditText>> cell = cellM.get(0);
+            ArrayList<ArrayList<EditText>> cell = cellM.get(tableM);
+            ArrayList<ArrayList<Integer>> d = data.get(tahun, gender).get(tableM);
             for(int i = 0; i < cell.size(); i++){
                 for(int j = 0; j < cell.get(i).size(); j++){
-                    int number;
-                    if(cell.get(i).get(j).getText().toString().trim().length() == 0){
-                        number = -1;
-                    }
-                    else {
-                        number = Integer.parseInt(cell.get(i).get(j).getText().toString());
-                    }
+                    Integer number = d.get(i).get(j);
                     if(number != -1){
-                        cellF.get(0).get(i).get(j).setText(Integer.toString(number));
+                        cellM.get(tableM).get(i).get(j).setText(Integer.toString(number));
                     }
                 }
             }
         }
         else {
+            ArrayList<ArrayList<EditText>> cell = cellF.get(tableF);
+            ArrayList<ArrayList<Integer>> d = data.get(tahun, gender).get(tableF);
+            for(int i = 0; i < cell.size(); i++){
+                for(int j = 0; j < cell.get(i).size(); j++){
+                    Integer number = d.get(i).get(j);
+                    if(number != -1){
+                        cellF.get(tableF).get(i).get(j).setText(Integer.toString(number));
+                    }
+                }
+            }
         }
     }
     private void saveData(){
