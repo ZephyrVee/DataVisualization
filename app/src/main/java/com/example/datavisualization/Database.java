@@ -12,6 +12,8 @@ import com.google.firebase.firestore.SetOptions;
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +25,7 @@ public class Database {
     private static final String databaseNamePlain = "col_database";
     private static final String documentNamePlain = "doc_Skripsi221810477";
 
-
+    //private final String akunCollection = Enkripsi.encrypt("col_akun");
 
     private static final String jenisKelaminColPlain = "col_jenis_kelamin";
     private static final String namaJenisKelaminFieldPlain = "nama_jenis_kelamin";
@@ -55,8 +57,8 @@ public class Database {
         List<int[]> table = DatasetKetenagakerjaan.table;
         for(int i = 0; i < data.size(); i++){ //ArrayList<ArrayList<Integer>>
             DocumentReference saveTo = database.
-                    collection( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
-                    document( Enkripsi.encrypt(Integer.toString(gender)) ). //gender
+                    collection( Enkripsi.encrypt(Integer.toString(gender)) ). // gender
+                    document( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
                     collection( Enkripsi.encrypt(Integer.toString(table.get(i)[0])) ). //from
                     document( Enkripsi.encrypt(Integer.toString(table.get(i)[1])) ); //destination
 
@@ -83,8 +85,8 @@ public class Database {
             String[] c = DatasetKetenagakerjaan.getList(table.get(i)[1]);
             ArrayList<ArrayList<Integer>> cell = new ArrayList<>();
             DocumentReference loadFrom = database.
-                    collection( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
-                    document( Enkripsi.encrypt(Integer.toString(gender)) ). //gender
+                    collection( Enkripsi.encrypt(Integer.toString(gender)) ). // gender
+                    document( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
                     collection( Enkripsi.encrypt(Integer.toString(table.get(i)[0])) ). //from
                     document( Enkripsi.encrypt(Integer.toString(table.get(i)[1])) ); //destination
 
@@ -106,5 +108,18 @@ public class Database {
             data.add(cell);
         }
         return data;
+    }
+    public ArrayList<Integer> loadAllTahun(){
+        ArrayList<Integer> t = new ArrayList<>();
+        database.collection( Enkripsi.encrypt(Integer.toString(0)) ).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                List<DocumentSnapshot> ds = queryDocumentSnapshots.getDocuments();
+                for(DocumentSnapshot documentSnapshot :  ds){
+                    t.add( Integer.parseInt( Enkripsi.decrypt(documentSnapshot.getId())) );
+                }
+            }
+        });
+        return t;
     }
 }

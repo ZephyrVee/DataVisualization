@@ -134,7 +134,7 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.edit_data_save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                data.saveToDatabase();
             }
         });
 

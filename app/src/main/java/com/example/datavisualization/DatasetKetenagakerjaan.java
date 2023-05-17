@@ -7,7 +7,9 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DatasetKetenagakerjaan {
 
@@ -194,6 +196,10 @@ public class DatasetKetenagakerjaan {
         public ArrayList<ArrayList<Integer>> getData(int from, int destination, int classification){
             return K.get(getIndex(K, from)).getData(destination, classification);
         }
+
+        public Boolean isComplete(int from, int destination, int classification){
+            return K.get(getIndex(K, from)).isComplete(destination, classification);
+        }
     }
     class Value{
         Integer value, akvalue, bvalue, puvalue, ptvalue;
@@ -222,6 +228,9 @@ public class DatasetKetenagakerjaan {
         public ArrayList<Integer> getRow(int destination, int classification){
             return K.get(getIndex(K, destination)).getRow(classification);
         }
+        public boolean isComplete(int destination, int classification){
+            return K.get(getIndex(K, destination)).isComplete(classification);
+        }
     }
     class Kategori{
         String nama;
@@ -241,6 +250,25 @@ public class DatasetKetenagakerjaan {
                 V.add(new Value(direction));
             }
         }
+
+        public boolean isComplete(int destination, int classification){
+            for(int i = 0; i < V.size(); i++){
+                if(!V.get(i).isComplete(destination, classification)){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public boolean isComplete(int classification){
+            for(Integer i : getRow(classification)){
+                if(i == -1){
+                    return false;
+                }
+            }
+            return true;
+        }
+
 
         public void setData(ArrayList<ArrayList<Integer>> data, int destination, int classification){
             for(int i = 0; i < data.size(); i++){
@@ -295,11 +323,15 @@ public class DatasetKetenagakerjaan {
         }
     }
 
+    Database database;
     ArrayList<Tahun> T;
+    HashMap<Integer, List<Integer>> notCompleteM, notCompleteF;
 
     public DatasetKetenagakerjaan(){
+        database = new Database();
         T = new ArrayList<>();
-
+        notCompleteM = new HashMap<>();
+        notCompleteF = new HashMap<>();
 
     }
 
@@ -309,6 +341,15 @@ public class DatasetKetenagakerjaan {
     }
     public void sortTahun(){
         if(T.size() > 0){
+            Collections.sort(T, (t1, t2) -> {
+                if(t1.tahun < t2.tahun){
+                    return -1;
+                }
+                else{
+                    return 1;
+                }
+            });
+            /* replaced from
             Collections.sort(T, new Comparator<Tahun>() {
                 @Override
                 public int compare(Tahun t1, Tahun t2) {
@@ -320,6 +361,7 @@ public class DatasetKetenagakerjaan {
                     }
                 }
             });
+             */
         }
     }
     public boolean isTahunExist(int tahun){
@@ -481,6 +523,30 @@ public class DatasetKetenagakerjaan {
     }
 
     public void saveToDatabase(){
+        for(Tahun t : T){
+            database.save(get(t.tahun, LAKI_LAKI), t.tahun, LAKI_LAKI);
+            database.save(get(t.tahun, PEREMPUAN), t.tahun, PEREMPUAN);
+        }
+    }
 
+    public void whichNotComplete(){
+        notCompleteM =  new HashMap<>();
+        notCompleteF =  new HashMap<>();
+        for(Tahun t : T){
+            ArrayList<Integer> alM = new ArrayList<>();
+            ArrayList<Integer> alF = new ArrayList<>();
+            for(int i = 0; i < table.size(); i++){
+                if(t.JK.get(LAKI_LAKI).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2]) == false){
+                    alM.add(i);
+                }
+            }
+            for(int i = 0; i < table.size(); i++){
+                if(t.JK.get(PEREMPUAN).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2]) == false){
+                    alF.add(i);
+                }
+            }
+            notCompleteM.put(t.tahun, alM);
+            notCompleteF.put(t.tahun, alF);
+        }
     }
 }
