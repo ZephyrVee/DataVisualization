@@ -39,6 +39,7 @@ public class EditDataActivity extends AppCompatActivity {
     int tahun = -1;
 
     ProgressBar pb;
+    Thread saving;
     Handler handler;
 
     float dp;
@@ -53,11 +54,17 @@ public class EditDataActivity extends AppCompatActivity {
 
         test = new ArrayList<>();
 
-        Thread thread = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
+        Thread initialize = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
             initAll();
             runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
         });
-        thread.start();
+
+        saving = new Thread(() -> {
+            saveData();
+            data.saveToDatabase();
+        });
+
+        initialize.start();
     }
 
     private void initAll(){
@@ -134,7 +141,9 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.edit_data_save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                data.saveToDatabase();
+                if(!saving.isAlive()){
+                    saving.start();
+                }
             }
         });
 

@@ -1,15 +1,9 @@
 package com.example.datavisualization;
 
-import android.widget.EditText;
-
-import org.checkerframework.checker.units.qual.A;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DatasetKetenagakerjaan {
 
@@ -325,13 +319,10 @@ public class DatasetKetenagakerjaan {
 
     Database database;
     ArrayList<Tahun> T;
-    HashMap<Integer, List<Integer>> notCompleteM, notCompleteF;
 
     public DatasetKetenagakerjaan(){
         database = new Database();
         T = new ArrayList<>();
-        notCompleteM = new HashMap<>();
-        notCompleteF = new HashMap<>();
 
     }
 
@@ -524,29 +515,31 @@ public class DatasetKetenagakerjaan {
 
     public void saveToDatabase(){
         for(Tahun t : T){
-            database.save(get(t.tahun, LAKI_LAKI), t.tahun, LAKI_LAKI);
-            database.save(get(t.tahun, PEREMPUAN), t.tahun, PEREMPUAN);
+        //    if(isComplete(t.tahun)) {
+                database.save(get(t.tahun, LAKI_LAKI), t.tahun, LAKI_LAKI);
+                database.save(get(t.tahun, PEREMPUAN), t.tahun, PEREMPUAN);
+        //    }
         }
     }
 
-    public void whichNotComplete(){
-        notCompleteM =  new HashMap<>();
-        notCompleteF =  new HashMap<>();
-        for(Tahun t : T){
-            ArrayList<Integer> alM = new ArrayList<>();
-            ArrayList<Integer> alF = new ArrayList<>();
-            for(int i = 0; i < table.size(); i++){
-                if(t.JK.get(LAKI_LAKI).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2]) == false){
-                    alM.add(i);
-                }
+    public boolean isComplete(int tahun){
+        for(int i = 0; i < table.size(); i++){
+            if(!T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2])){
+                return false;
             }
-            for(int i = 0; i < table.size(); i++){
-                if(t.JK.get(PEREMPUAN).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2]) == false){
-                    alF.add(i);
-                }
+            else if(!T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2])){
+                return false;
             }
-            notCompleteM.put(t.tahun, alM);
-            notCompleteF.put(t.tahun, alF);
         }
+        return true;
+    }
+    public ArrayList<Integer> whichNotComplete(int tahun, int gender){
+        ArrayList<Integer> al = new ArrayList<>();
+        for(int i = 0; i < table.size(); i++){
+            if(!T.get(getTahunIndex(tahun)).JK.get(gender).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2])){
+                al.add(i);
+            }
+        }
+        return al;
     }
 }
