@@ -78,7 +78,6 @@ public class Database {
         }
     }
     public void loadRow(int tahun, int gender, int from, int destination, int row, int classification){
-
     }
     public ArrayList<ArrayList<ArrayList<Integer>>> loadByTahun(int tahun, int gender){
         List<int[]> table = DatasetKetenagakerjaan.table;

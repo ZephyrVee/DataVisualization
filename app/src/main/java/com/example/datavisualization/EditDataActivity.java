@@ -222,11 +222,6 @@ public class EditDataActivity extends AppCompatActivity {
 
         return et;
     }
-    private EditText addEditTextToGrid(String str){
-        EditText et = addEditTextToGrid();
-        et.setText(str);
-        return et;
-    }
     private ArrayList<ArrayList<EditText>> newEditTextCell(int[] table){
         ArrayList<ArrayList<EditText>> cell = new ArrayList<>();
         for(int i = 0; i < data.getSize(table[0]); i++){
