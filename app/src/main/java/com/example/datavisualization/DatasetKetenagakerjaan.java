@@ -323,6 +323,10 @@ public class DatasetKetenagakerjaan {
         database = new Database();
         T = new ArrayList<>();
 
+        for(Integer t : database.loadAllTahun()){
+            newTahun(t);
+            set(database.loadByTahun(t, LAKI_LAKI), database.loadByTahun(t, PEREMPUAN), t);
+        }
     }
 
     public void newTahun(int tahun){

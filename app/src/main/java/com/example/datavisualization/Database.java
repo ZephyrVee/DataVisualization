@@ -11,6 +11,7 @@ import com.google.firebase.firestore.SetOptions;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -77,8 +78,20 @@ public class Database {
             }
         }
     }
-    public void loadRow(int tahun, int gender, int from, int destination, int row, int classification){
+    /*
+    public ArrayList<ArrayList<Integer>> loadRow(int tahun, int gender, int tableIndex){
+        ArrayList<ArrayList<Integer>> al = new ArrayList<>();
+        int[] table = DatasetKetenagakerjaan.table.get(tableIndex);
+        DocumentReference loadFrom = database.
+                collection( Enkripsi.encrypt(Integer.toString(gender)) ). // gender
+                document( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
+                collection( Enkripsi.encrypt(Integer.toString(table[0])) ). //from
+                document( Enkripsi.encrypt(Integer.toString(table[1])) ); //destination
+        String[] r = DatasetKetenagakerjaan.getList(table[0]);
+        String[] c = DatasetKetenagakerjaan.getList(table[1]);
     }
+
+     */
     public ArrayList<ArrayList<ArrayList<Integer>>> loadByTahun(int tahun, int gender){
         List<int[]> table = DatasetKetenagakerjaan.table;
         ArrayList<ArrayList<ArrayList<Integer>>> data = new ArrayList<>();
@@ -122,6 +135,7 @@ public class Database {
                 }
             }
         });
+        // t.add(2022); (Its not synchronized)
         return t;
     }
 }
