@@ -39,7 +39,7 @@ public class EditDataActivity extends AppCompatActivity {
     int tahun = -1;
 
     ProgressBar pb;
-    Thread saving;
+    Thread initialize, saving;
     Handler handler;
 
     float dp;
@@ -54,8 +54,9 @@ public class EditDataActivity extends AppCompatActivity {
 
         test = new ArrayList<>();
 
-        Thread initialize = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
-            initAll();
+        Thread
+        initialize = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
+            init();
             runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
         });
 
@@ -67,7 +68,7 @@ public class EditDataActivity extends AppCompatActivity {
         initialize.start();
     }
 
-    private void initAll(){
+    private synchronized void init(){
         findViewById(R.id.tahunPopup).setVisibility(View.INVISIBLE);
         findViewById(R.id.edit_data_linear_layout_1_m).setVisibility(View.INVISIBLE);
         findViewById(R.id.edit_data_linear_layout_2_m).setVisibility(View.INVISIBLE);
@@ -98,7 +99,7 @@ public class EditDataActivity extends AppCompatActivity {
         initGrid();
     }
     //These Functions Only Called in Thread
-    private void initUI(){
+    private synchronized void initUI(){
         findViewById(R.id.tahunPopup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,8 +150,9 @@ public class EditDataActivity extends AppCompatActivity {
 
         ((ConstraintLayout)findViewById(R.id.loadingView).getParent()).removeView(findViewById(R.id.loadingView));
         findViewById(R.id.tahunPopup).setVisibility(View.VISIBLE);
+        initialize.interrupt();
     }
-    private void initCell(){
+    private synchronized void initCell(){
         cellM = new ArrayList<>();
         cellF = new ArrayList<>();
         for(int[] t : DatasetKetenagakerjaan.table){
@@ -206,7 +208,7 @@ public class EditDataActivity extends AppCompatActivity {
         tv.setText(str);
         return tv;
     }
-    private EditText addEditTextToGrid(){
+    private synchronized EditText addEditTextToGrid(){
         EditText et = new EditText(this);
         GridLayout.LayoutParams pr = new GridLayout.LayoutParams();
         pr.setGravity(Gravity.FILL);
@@ -233,7 +235,7 @@ public class EditDataActivity extends AppCompatActivity {
         }
         return cell;
     }
-    private GridLayout newGrid(int[] table, ArrayList<ArrayList<EditText>> cell){
+    private synchronized GridLayout newGrid(int[] table, ArrayList<ArrayList<EditText>> cell){
         GridLayout grid = new GridLayout(this);
 
         //Add Header

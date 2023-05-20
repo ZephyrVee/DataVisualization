@@ -1,5 +1,8 @@
 package com.example.datavisualization;
 
+import android.os.Handler;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -54,7 +57,7 @@ public class Database {
         return cr.document(query.get(0));
     }
 
-    public void save(ArrayList<ArrayList<ArrayList<Integer>>> data, int tahun, int gender){
+    public synchronized void save(ArrayList<ArrayList<ArrayList<Integer>>> data, int tahun, int gender){
         List<int[]> table = DatasetKetenagakerjaan.table;
         for(int i = 0; i < data.size(); i++){ //ArrayList<ArrayList<Integer>>
             DocumentReference saveTo = database.
@@ -125,17 +128,22 @@ public class Database {
         return data;
     }
     public ArrayList<Integer> loadAllTahun(){
-        ArrayList<Integer> t = new ArrayList<>();
-        database.collection( Enkripsi.encrypt(Integer.toString(0)) ).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        ArrayList<Integer> ar = new ArrayList<>();
+        final boolean[] processing = {false};
+        database.collection( Enkripsi.encrypt(Integer.toString(1)) ).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                List<DocumentSnapshot> ds = queryDocumentSnapshots.getDocuments();
-                for(DocumentSnapshot documentSnapshot :  ds){
-                    t.add( Integer.parseInt( Enkripsi.decrypt(documentSnapshot.getId())) );
+                List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
+                for(DocumentSnapshot ds : documentSnapshots){
+                    String s = Enkripsi.decrypt(ds.getId());
+                    ar.add( Integer.parseInt(s) );
                 }
+                processing[0] = true;
             }
         });
-        // t.add(2022); (Its not synchronized)
-        return t;
+        while(!processing[0]){
+
+        }
+        return ar;
     }
 }
