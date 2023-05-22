@@ -57,44 +57,21 @@ public class Database {
         return cr.document(query.get(0));
     }
 
-    public synchronized void save(ArrayList<ArrayList<ArrayList<Integer>>> data, int tahun, int gender){
-        List<int[]> table = DatasetKetenagakerjaan.table;
-        for(int i = 0; i < data.size(); i++){ //ArrayList<ArrayList<Integer>>
-            DocumentReference saveTo = database.
-                    collection( Enkripsi.encrypt(Integer.toString(gender)) ). // gender
-                    document( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
-                    collection( Enkripsi.encrypt(Integer.toString(table.get(i)[0])) ). //from
-                    document( Enkripsi.encrypt(Integer.toString(table.get(i)[1])) ); //destination
-
-            String[] r = DatasetKetenagakerjaan.getList(table.get(i)[0]);
-            String[] c = DatasetKetenagakerjaan.getList(table.get(i)[1]);
-
-            for(int j = 0; j < data.get(i).size(); j++){ //ArrayList<Integer>
-                for(int k = 0; k < data.get(i).get(j).size(); k++){ //Integer
-                    Map<String, String> hm = new HashMap<>();
-                    hm.put( Enkripsi.encrypt(Integer.toString(table.get(i)[2])), Enkripsi.encrypt(data.get(i).get(j).get(k).toString()) );
-                    saveTo.
-                            collection( Enkripsi.encrypt(r[j]) ).
-                            document( Enkripsi.encrypt(c[k]) ).
-                            set(hm, SetOptions.merge());
-                }
+    public synchronized void save(ArrayList<ArrayList<Integer>> data, int index, int tahun, int gender){
+        Map<String, String> map = new HashMap<>();
+        int idx = 0;
+        for(ArrayList<Integer> d : data){
+            for(Integer i : d){
+                map.put( Enkripsi.encrypt(Integer.toString(idx)), Enkripsi.encrypt(Integer.toString(i)) );
+                idx += 1;
             }
         }
+        String t = Enkripsi.encrypt(Integer.toString(tahun));
+        String g = Enkripsi.encrypt(Integer.toString(gender));
+        String i = Enkripsi.encrypt(Integer.toString(index));
+        database.collection(dataDB).document(t).collection(g).document(i).set(map, SetOptions.merge());
+        map.clear();
     }
-    /*
-    public ArrayList<ArrayList<Integer>> loadRow(int tahun, int gender, int tableIndex){
-        ArrayList<ArrayList<Integer>> al = new ArrayList<>();
-        int[] table = DatasetKetenagakerjaan.table.get(tableIndex);
-        DocumentReference loadFrom = database.
-                collection( Enkripsi.encrypt(Integer.toString(gender)) ). // gender
-                document( Enkripsi.encrypt(Integer.toString(tahun)) ). // tahun
-                collection( Enkripsi.encrypt(Integer.toString(table[0])) ). //from
-                document( Enkripsi.encrypt(Integer.toString(table[1])) ); //destination
-        String[] r = DatasetKetenagakerjaan.getList(table[0]);
-        String[] c = DatasetKetenagakerjaan.getList(table[1]);
-    }
-
-     */
     public ArrayList<ArrayList<ArrayList<Integer>>> loadByTahun(int tahun, int gender){
         List<int[]> table = DatasetKetenagakerjaan.table;
         ArrayList<ArrayList<ArrayList<Integer>>> data = new ArrayList<>();

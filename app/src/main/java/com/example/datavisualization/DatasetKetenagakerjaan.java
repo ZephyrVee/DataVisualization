@@ -517,11 +517,17 @@ public class DatasetKetenagakerjaan {
         return data;
     }
 
-    public void saveToDatabase(){
+    public synchronized void saveToDatabase(){
         for(Tahun t : T){
         //    if(isComplete(t.tahun)) {
-                database.save(get(t.tahun, LAKI_LAKI), t.tahun, LAKI_LAKI);
-                database.save(get(t.tahun, PEREMPUAN), t.tahun, PEREMPUAN);
+            ArrayList<ArrayList<ArrayList<Integer>>> m = get(t.tahun, LAKI_LAKI);
+            for(int i = 0; i < m.size(); i++){
+                database.save(m.get(i), i, t.tahun, LAKI_LAKI);
+            }
+            ArrayList<ArrayList<ArrayList<Integer>>> f = get(t.tahun, PEREMPUAN);
+            for(int i = 0; i < f.size(); i++){
+                database.save(f.get(i), i, t.tahun, PEREMPUAN);
+            }
         //    }
         }
     }

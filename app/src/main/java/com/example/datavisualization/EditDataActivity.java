@@ -39,7 +39,7 @@ public class EditDataActivity extends AppCompatActivity {
     int tahun = -1;
 
     ProgressBar pb;
-    Thread initialize, saving;
+    Thread saving;
     Handler handler;
 
     float dp;
@@ -51,21 +51,38 @@ public class EditDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_data);
 
         handler = new Handler();
+        pb = findViewById(R.id.pb);
+        pb.setMax(70);
+        pb.setProgress(0);
 
         test = new ArrayList<>();
 
-        Thread
-        initialize = new Thread(() -> { //new Runnable can be replaced by lambda { () -> }
-            init();
-            runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
-        });
+        if(!MainActivity.thread.containsKey("edit_data_init_tables")){
+            MainActivity.thread.put("edit_data_init_tables", new Thread(() -> {
+                init();
+                initCell();
+                initGrid();
+                runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
+            }));
+        }
 
         saving = new Thread(() -> {
             saveData();
             data.saveToDatabase();
         });
+        MainActivity.thread.get("edit_data_init_tables").start();
+    }
 
-        initialize.start();
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MainActivity.thread.get("edit_data_init_tables").interrupt();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainActivity.thread.get("edit_data_init_tables").interrupt();
     }
 
     private synchronized void init(){
@@ -78,9 +95,7 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.gridF).setVisibility(View.INVISIBLE);
         findViewById(R.id.edit_data_save_button).setVisibility(View.INVISIBLE);
 
-        pb = findViewById(R.id.pb);
-        pb.setMax(70);
-        pb.setProgress(0);
+
 
         dp = this.getResources().getDisplayMetrics().density; // this is a scale from dp to int (uses + 0.5f)
 
@@ -95,8 +110,6 @@ public class EditDataActivity extends AppCompatActivity {
         gridM = findViewById(R.id.gridM);
         gridF = findViewById(R.id.gridF);
 
-        initCell();
-        initGrid();
     }
     //These Functions Only Called in Thread
     private synchronized void initUI(){
@@ -150,7 +163,6 @@ public class EditDataActivity extends AppCompatActivity {
 
         ((ConstraintLayout)findViewById(R.id.loadingView).getParent()).removeView(findViewById(R.id.loadingView));
         findViewById(R.id.tahunPopup).setVisibility(View.VISIBLE);
-        initialize.interrupt();
     }
     private synchronized void initCell(){
         cellM = new ArrayList<>();
@@ -166,7 +178,7 @@ public class EditDataActivity extends AppCompatActivity {
             });
         }
     }
-    private void initGrid(){
+    private synchronized void initGrid(){
         arrayGridM = new ArrayList<>();
         arrayGridF = new ArrayList<>();
 
@@ -188,10 +200,10 @@ public class EditDataActivity extends AppCompatActivity {
         return dps;
     }
 
-    private TextView addTextViewToGrid(String str){
+    private synchronized TextView addTextViewToGrid(String str){
         return addTextViewToGrid(str, 1, 1);
     }
-    private TextView addTextViewToGrid(String str, int rowSpan, int colSpan){
+    private synchronized TextView addTextViewToGrid(String str, int rowSpan, int colSpan){
         TextView tv = new TextView(this);
         GridLayout.LayoutParams pr = new GridLayout.LayoutParams();
         pr.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, rowSpan);
@@ -224,7 +236,7 @@ public class EditDataActivity extends AppCompatActivity {
 
         return et;
     }
-    private ArrayList<ArrayList<EditText>> newEditTextCell(int[] table){
+    private synchronized ArrayList<ArrayList<EditText>> newEditTextCell(int[] table){
         ArrayList<ArrayList<EditText>> cell = new ArrayList<>();
         for(int i = 0; i < data.getSize(table[0]); i++){
             ArrayList<EditText> row = new ArrayList<>();
@@ -431,7 +443,7 @@ public class EditDataActivity extends AppCompatActivity {
             }
         }
     }
-    private void saveData(){
+    private synchronized void saveData(){
         ArrayList<ArrayList<ArrayList<Integer>>> datasetM = new ArrayList<>();
         for(ArrayList<ArrayList<EditText>> cell: cellM){
             ArrayList<ArrayList<Integer>> dataM = new ArrayList<>();

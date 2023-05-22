@@ -33,6 +33,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    public static Map<String, Thread> thread;
+
     DocumentReference database;
     String databaseName;
     String documentname;
@@ -56,16 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        database = new Database().database;
+        thread = new HashMap<>();
+
+        //database = new Database().database;
 
         textView = (TextView) findViewById(R.id.openedFile);
         barChart = new Intent(getApplicationContext(), BarChartActivity.class);
         pieChart = new Intent(getApplicationContext(), PieChartActivity.class);
         lineChart = new Intent(getApplicationContext(), LineChartActivity.class);
-
-        databaseName = Enkripsi.encrypt("col_database", false);
-        documentname = Enkripsi.encrypt("doc_Skripsi221810477", false);
-        akunCol = Enkripsi.encrypt("col_akun", false);
 
         tv = (TextView) findViewById(R.id.textTestButton);
         idT = (TextView) findViewById(R.id.idLogin);
@@ -206,27 +206,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return content;
-    }
-
-    public void login(){
-        String id = Enkripsi.encrypt(idT.getText().toString());
-        String pass = Enkripsi.encrypt(passT.getText().toString(), true);
-
-        database.collection(Key.TABEL_AKUN.key()).document(id).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                    if(documentSnapshot.getString(Key.PASSWORD.key()).equals(pass)) {
-                        tv.setText("hello " + Enkripsi.decrypt(documentSnapshot.getString(Key.USERNAME.key())));
-                    }
-                    else{
-                        tv.setText("Wrong Password");
-                    }
-                }
-                else {
-                    tv.setText("wrong id");
-                }
-            }
-        });
     }
 }

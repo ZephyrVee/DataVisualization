@@ -20,12 +20,16 @@ import java.util.List;
 public class LoginActivity extends AppCompatActivity {
     EditText username, password;
 
+    Database db;
+
     TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        db = new Database();
 
         username = (EditText) findViewById(R.id.usernameEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
@@ -51,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(){
-        Database db = new Database();
         CollectionReference tabelAkun = db.database.collection(Key.TABEL_AKUN.key());
         tabelAkun.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
