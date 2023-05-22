@@ -65,12 +65,18 @@ public class EditDataActivity extends AppCompatActivity {
                 runOnUiThread(this::initUI); //Lambda can be replaced by method reference { this::<MethodName> }
             }));
         }
-
-        saving = new Thread(() -> {
-            saveData();
-            data.saveToDatabase();
-        });
-        MainActivity.thread.get("edit_data_init_tables").start();
+        if(!MainActivity.thread.containsKey("edit_data_save")){
+            MainActivity.thread.put("edit_data_save", new Thread(() -> {
+                saveData();
+                data.saveToDatabase();
+            }));
+        }
+        try{
+            MainActivity.thread.get("edit_data_init_tables").start();
+        }
+        catch(IllegalThreadStateException e){
+            MainActivity.thread.get("edit_data_init_tables").run();
+        }
     }
 
     @Override
@@ -155,8 +161,13 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.edit_data_save_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!saving.isAlive()){
-                    saving.start();
+                if(!MainActivity.thread.get("edit_data_save").isAlive()){
+                    try{
+                        MainActivity.thread.get("edit_data_save").start();
+                    }
+                    catch(IllegalThreadStateException e){
+                        MainActivity.thread.get("edit_data_save").run();
+                    }
                 }
             }
         });

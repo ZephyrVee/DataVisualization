@@ -59,6 +59,9 @@ public class Database {
 
     public synchronized void save(ArrayList<ArrayList<Integer>> data, int index, int tahun, int gender){
         Map<String, String> map = new HashMap<>();
+        //map.put( Enkripsi.encrypt(Integer.toString(gender)), Enkripsi.encrypt(Integer.toString(tahun)) );
+        //database.collection( Enkripsi.encrypt("tahun") ).document(Enkripsi.encrypt(Integer.toString(tahun))).set(map, SetOptions.merge());
+        //map = new HashMap<>();
         int idx = 0;
         for(ArrayList<Integer> d : data){
             for(Integer i : d){
@@ -104,10 +107,10 @@ public class Database {
         }
         return data;
     }
-    public ArrayList<Integer> loadAllTahun(){
+    public synchronized ArrayList<Integer> loadAllTahun(){
         ArrayList<Integer> ar = new ArrayList<>();
-        final boolean[] processing = {false};
-        database.collection( Enkripsi.encrypt(Integer.toString(1)) ).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        final boolean[] isProcessing = {false};
+        database.collection( dataDB ).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
@@ -115,10 +118,10 @@ public class Database {
                     String s = Enkripsi.decrypt(ds.getId());
                     ar.add( Integer.parseInt(s) );
                 }
-                processing[0] = true;
+                isProcessing[0] = true;
             }
         });
-        while(!processing[0]){
+        while (!isProcessing[0]){
 
         }
         return ar;
