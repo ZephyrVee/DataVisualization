@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="270dp"
+        android:layout_height="240dp"
         android:background="@drawable/visualisasi_background_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,15 +35,17 @@
                 android:gravity="center|top">
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
+                    android:id="@+id/visualisasi_bar_chart_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="270dp"
+                    android:layout_marginBottom="16dp"
                     app:srcCompat="@mipmap/ic_launcher" />
 
                 <ImageButton
-                    android:id="@+id/imageButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     app:srcCompat="@mipmap/ic_launcher" />
             </LinearLayout>
 
@@ -55,15 +57,17 @@
                 android:gravity="center|top">
 
                 <ImageButton
-                    android:id="@+id/imageButton4"
+                    android:id="@+id/visualisasi_right_top_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="270dp"
+                    android:layout_marginBottom="16dp"
                     app:srcCompat="@mipmap/ic_launcher" />
 
                 <ImageButton
-                    android:id="@+id/imageButton2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     app:srcCompat="@mipmap/ic_launcher" />
             </LinearLayout>
         </LinearLayout>
