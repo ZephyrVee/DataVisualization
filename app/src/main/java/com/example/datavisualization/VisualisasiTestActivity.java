@@ -17,7 +17,7 @@ public class VisualisasiTestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_visualisasi);
+        setContentView(R.layout.activity_visualisasi_test);
 
         bar = new BarChartFragment();
         line = new LineChartFragment();
