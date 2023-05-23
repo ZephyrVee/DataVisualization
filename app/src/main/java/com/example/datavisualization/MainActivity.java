@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView, tv, idT, passT;
     Intent barChart;
     Intent pieChart;
-    Intent lineChart;
+    Intent lineChart, editData;
     ArrayList<String> content = null;
 
     @Override
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         barChart = new Intent(getApplicationContext(), BarChartActivity.class);
         pieChart = new Intent(getApplicationContext(), PieChartActivity.class);
         lineChart = new Intent(getApplicationContext(), LineChartActivity.class);
+        editData = new Intent(getApplicationContext(), EditDataActivity.class);
 
         tv = (TextView) findViewById(R.id.textTestButton);
         idT = (TextView) findViewById(R.id.idLogin);
@@ -82,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttonBar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), EditDataActivity.class);
-                startActivity(i);
+                startActivity(editData);
             }
         });
 

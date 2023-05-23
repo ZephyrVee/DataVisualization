@@ -23,6 +23,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class EditDataActivity extends AppCompatActivity {
+    DatasetKetenagakerjaan data =  MainActivity.database.dataset;
+
     HorizontalScrollView gridM, gridF;
     ArrayList<GridLayout> arrayGridM, arrayGridF;
     ArrayList<ArrayList<ArrayList<EditText>>> cellM, cellF;
@@ -40,19 +42,17 @@ public class EditDataActivity extends AppCompatActivity {
     Handler handler;
 
     float dp;
-
-    ArrayList<ArrayList<Integer>> test;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_data);
 
+        System.out.println("create called");
+
         handler = new Handler();
         pb = findViewById(R.id.pb);
         pb.setMax(70);
         pb.setProgress(0);
-
-        test = new ArrayList<>();
 
         if(!MainActivity.thread.containsKey("edit_data_init_tables")){
             MainActivity.thread.put("edit_data_init_tables", new Thread(() -> {
@@ -67,12 +67,23 @@ public class EditDataActivity extends AppCompatActivity {
                 saveData(true);
             }));
         }
+
         try{
             MainActivity.thread.get("edit_data_init_tables").start();
         }
         catch(IllegalThreadStateException e){
             MainActivity.thread.get("edit_data_init_tables").run();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
     }
 
     @Override
@@ -84,7 +95,18 @@ public class EditDataActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MainActivity.thread.get("edit_data_init_tables").interrupt();
+        arrayGridM.clear();
+        arrayGridF.clear();
+        cellM.clear();
+        cellF.clear();
+        MainActivity.thread.remove("edit_data_init_tables");
+        MainActivity.thread.remove("edit_data_save");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
     }
 
     //These Functions Only Called in Thread
@@ -164,7 +186,7 @@ public class EditDataActivity extends AppCompatActivity {
             }
         });
 
-        ((ConstraintLayout)findViewById(R.id.loadingView).getParent()).removeView(findViewById(R.id.loadingView));
+        findViewById(R.id.loadingView).setVisibility(View.INVISIBLE);
         findViewById(R.id.tahunPopup).setVisibility(View.VISIBLE);
     }
     private synchronized void initCell(){
@@ -241,9 +263,9 @@ public class EditDataActivity extends AppCompatActivity {
     }
     private synchronized ArrayList<ArrayList<EditText>> newEditTextCell(int[] table){
         ArrayList<ArrayList<EditText>> cell = new ArrayList<>();
-        for(int i = 0; i < MainActivity.database.dataset.getSize(table[0]); i++){
+        for(int i = 0; i < data.getSize(table[0]); i++){
             ArrayList<EditText> row = new ArrayList<>();
-            for(int j = 0; j < MainActivity.database.dataset.getSize(table[1]); j++){
+            for(int j = 0; j < data.getSize(table[1]); j++){
                 row.add(addEditTextToGrid());
             }
             cell.add(row);
@@ -256,7 +278,7 @@ public class EditDataActivity extends AppCompatActivity {
         //Add Header
         if (table[1] == DatasetKetenagakerjaan.STATUS_KEADAAN_KETENAGAKERJAAN){
             grid.setColumnCount(DatasetKetenagakerjaan.SKK_LIST.length + 1);
-            grid.addView(addTextViewToGrid(MainActivity.database.dataset.getNama(table[0]), 3, 1));
+            grid.addView(addTextViewToGrid(data.getNama(table[0]), 3, 1));
             grid.addView(addTextViewToGrid("Angkatan Kerja", 1, 3));
             grid.addView(addTextViewToGrid("Bukan Angkatan Kerja", 1, 3));
             grid.addView(addTextViewToGrid(DatasetKetenagakerjaan.SKK_LIST[0], 2, 1));
@@ -269,17 +291,17 @@ public class EditDataActivity extends AppCompatActivity {
 
         }
         else {
-            grid.setColumnCount(MainActivity.database.dataset.getSize(table[1]) + 1);
-            grid.addView(addTextViewToGrid(MainActivity.database.dataset.getNama(table[0]), 2, 1));
-            grid.addView(addTextViewToGrid(MainActivity.database.dataset.getNama(table[1]), 1, MainActivity.database.dataset.getSize(table[1])));
-            for(String list : MainActivity.database.dataset.getList(table[1])){
+            grid.setColumnCount(data.getSize(table[1]) + 1);
+            grid.addView(addTextViewToGrid(data.getNama(table[0]), 2, 1));
+            grid.addView(addTextViewToGrid(data.getNama(table[1]), 1, data.getSize(table[1])));
+            for(String list : data.getList(table[1])){
                 grid.addView(addTextViewToGrid(list));
             }
         }
         //Add Header
 
         for(int i = 0; i < cell.size(); i++){
-            grid.addView(addTextViewToGrid(MainActivity.database.dataset.getList(table[0])[i]));
+            grid.addView(addTextViewToGrid(data.getList(table[0])[i]));
             for(EditText et : cell.get(i)){
                 grid.addView(et);
             }
@@ -289,9 +311,9 @@ public class EditDataActivity extends AppCompatActivity {
 
     private void showMenu(View view){
         PopupMenu menu = new PopupMenu(EditDataActivity.this, view);
-        if(MainActivity.database.dataset.T.size() > 0){
-            for(int i = 0; i < MainActivity.database.dataset.T.size(); i++){
-                menu.getMenu().add(Integer.toString(MainActivity.database.dataset.T.get(i).tahun));
+        if(data.T.size() > 0){
+            for(int i = 0; i < data.T.size(); i++){
+                menu.getMenu().add(Integer.toString(data.T.get(i).tahun));
             }
         }
         menu.getMenu().add("Tambah ...");
@@ -321,11 +343,11 @@ public class EditDataActivity extends AppCompatActivity {
                             }
                             else {
                                 int t = Integer.parseInt(inputNumberEditText.getText().toString());
-                                if(MainActivity.database.dataset.isTahunExist(t) == true){
+                                if(data.isTahunExist(t) == true){
                                     warningTextView.setText("Tahun yang dimasukkan sudah ada");
                                 }
                                 else {
-                                    MainActivity.database.dataset.newTahun(t);
+                                    data.newTahun(t);
                                     changeTahun(t);
                                     ad.dismiss();
                                 }
@@ -394,7 +416,7 @@ public class EditDataActivity extends AppCompatActivity {
                 findViewById(R.id.rightM).setVisibility(View.VISIBLE);
             }
 
-            titleM.setText(MainActivity.database.dataset.tableTitle[tableM]);
+            titleM.setText(data.tableTitle[tableM]);
             String s = (tableM + 1) + "/35";
             editDataTableIndexM.setText(s);
         }
@@ -415,14 +437,14 @@ public class EditDataActivity extends AppCompatActivity {
                 findViewById(R.id.rightF).setVisibility(View.VISIBLE);
             }
 
-            titleF.setText(MainActivity.database.dataset.tableTitle[tableF]);
+            titleF.setText(data.tableTitle[tableF]);
             String s = (tableF + 1) + "/35";
             editDataTableIndexF.setText(s);
         }
     }
     private void loadData(){
         for(int i = 0; i < DatasetKetenagakerjaan.table.size(); i++){
-            ArrayList<ArrayList<Integer>> dM = MainActivity.database.dataset.get(tahun, DatasetKetenagakerjaan.LAKI_LAKI).get(i);
+            ArrayList<ArrayList<Integer>> dM = data.get(tahun, DatasetKetenagakerjaan.LAKI_LAKI).get(i);
             for(int j = 0; j < cellM.get(i).size(); j++){
                 for(int k = 0; k < cellM.get(i).get(j).size(); k++){
                     Integer number = dM.get(j).get(k);
@@ -433,7 +455,7 @@ public class EditDataActivity extends AppCompatActivity {
                     }
                 }
             }
-            ArrayList<ArrayList<Integer>> dF = MainActivity.database.dataset.get(tahun, DatasetKetenagakerjaan.PEREMPUAN).get(i);
+            ArrayList<ArrayList<Integer>> dF = data.get(tahun, DatasetKetenagakerjaan.PEREMPUAN).get(i);
             for(int j = 0; j < cellF.get(i).size(); j++){
                 for(int k = 0; k < cellF.get(i).get(j).size(); k++){
                     Integer number = dF.get(j).get(k);
@@ -486,7 +508,7 @@ public class EditDataActivity extends AppCompatActivity {
             MainActivity.database.save(datasetM, datasetF, tahun);
         }
         else {
-            MainActivity.database.dataset.set(datasetM, datasetF, tahun);
+            data.set(datasetM, datasetF, tahun);
         }
     }
     private boolean isComplete(){
