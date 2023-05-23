@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class EditDataActivity extends AppCompatActivity {
 
-    DatasetKetenagakerjaan data;
+    DatasetKetenagakerjaan data = MainActivity.database.dataset;
 
     HorizontalScrollView gridM, gridF;
     ArrayList<GridLayout> arrayGridM, arrayGridF;
@@ -67,8 +67,7 @@ public class EditDataActivity extends AppCompatActivity {
         }
         if(!MainActivity.thread.containsKey("edit_data_save")){
             MainActivity.thread.put("edit_data_save", new Thread(() -> {
-                saveData();
-                data.saveToDatabase();
+                saveData(true);
             }));
         }
         try{
@@ -101,11 +100,7 @@ public class EditDataActivity extends AppCompatActivity {
         findViewById(R.id.gridF).setVisibility(View.INVISIBLE);
         findViewById(R.id.edit_data_save_button).setVisibility(View.INVISIBLE);
 
-
-
         dp = this.getResources().getDisplayMetrics().density; // this is a scale from dp to int (uses + 0.5f)
-
-        data = new DatasetKetenagakerjaan();
 
         titleM = findViewById(R.id.titleM);
         titleF = findViewById(R.id.titleF);
@@ -455,6 +450,9 @@ public class EditDataActivity extends AppCompatActivity {
         }
     }
     private synchronized void saveData(){
+        saveData(false);
+    }
+    private synchronized void saveData(boolean toDatabase){
         ArrayList<ArrayList<ArrayList<Integer>>> datasetM = new ArrayList<>();
         for(ArrayList<ArrayList<EditText>> cell: cellM){
             ArrayList<ArrayList<Integer>> dataM = new ArrayList<>();
@@ -487,7 +485,12 @@ public class EditDataActivity extends AppCompatActivity {
             }
             datasetF.add(dataF);
         }
-        data.set(datasetM, datasetF, tahun);
+        if(toDatabase){
+            MainActivity.database.save(datasetM, datasetF, tahun);
+        }
+        else {
+            data.set(datasetM, datasetF, tahun);
+        }
     }
     private boolean isComplete(){
         for(ArrayList<ArrayList<EditText>> cell : cellM){

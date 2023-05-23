@@ -125,6 +125,7 @@ public class DatasetKetenagakerjaan {
         add(new int[]{DatasetKetenagakerjaan.UMUR, DatasetKetenagakerjaan.KLASIFIKASI_PENGANGGURAN, DatasetKetenagakerjaan.NONE});
     }});
 
+    //Subclasses
     class Tahun{
         int tahun;
         ArrayList<JenisKelamin> JK;
@@ -136,7 +137,6 @@ public class DatasetKetenagakerjaan {
             JK.add(new JenisKelamin());
         }
     }
-
     class JenisKelamin{
         ArrayList<Kategori> K;
 
@@ -315,19 +315,12 @@ public class DatasetKetenagakerjaan {
             return al;
         }
     }
+    //Subclasses
 
-    Database database;
     ArrayList<Tahun> T;
 
     public DatasetKetenagakerjaan(){
-        database = new Database();
         T = new ArrayList<>();
-
-        ArrayList<Integer> allTahun = database.loadAllTahun();
-        for(Integer t : allTahun){
-            newTahun(t);
-            //set(database.loadByTahun(t, LAKI_LAKI), database.loadByTahun(t, PEREMPUAN), t);
-        }
     }
 
     public void newTahun(int tahun){
@@ -446,7 +439,7 @@ public class DatasetKetenagakerjaan {
         }
         return size;
     }
-    public static String[] getList(int kategori){
+    public String[] getList(int kategori){
         String[] list;
         switch (kategori){
             case UMUR:
@@ -501,12 +494,28 @@ public class DatasetKetenagakerjaan {
     }
 
 
-    public void set(ArrayList<ArrayList<ArrayList<Integer>>> dataM, ArrayList<ArrayList<ArrayList<Integer>>> dataF, int tahun){
-        for(int i = 0; i < dataM.size(); i++){
-            T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).setData(dataM.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+    public synchronized void set(ArrayList<ArrayList<ArrayList<Integer>>> dataM, ArrayList<ArrayList<ArrayList<Integer>>> dataF, int tahun){
+        set(dataM, tahun, LAKI_LAKI);
+        set(dataF, tahun, PEREMPUAN);
+    }
+    public synchronized void set(ArrayList<ArrayList<ArrayList<Integer>>> data, int tahun, int gender){
+        if(gender == LAKI_LAKI){
+            for(int i = 0; i < data.size(); i++){
+                T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).setData(data.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+            }
         }
-        for(int i = 0; i < dataF.size(); i++){
-            T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(dataF.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+        else {
+            for(int i = 0; i < data.size(); i++){
+                T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(data.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+            }
+        }
+    }
+    public synchronized void set(ArrayList<ArrayList<Integer>> data, int index, int tahun, int gender){
+        if(gender == LAKI_LAKI){
+            T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).setData(data, table.get(index)[0], table.get(index)[1], table.get(index)[2]);
+        }
+        else {
+            T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(data, table.get(index)[0], table.get(index)[1], table.get(index)[2]);
         }
     }
     public ArrayList<ArrayList<ArrayList<Integer>>> get(int tahun, int gender){
@@ -515,21 +524,6 @@ public class DatasetKetenagakerjaan {
             data.add(T.get(getTahunIndex(tahun)).JK.get(gender).getData(table.get(i)[0], table.get(i)[1], table.get(i)[2]));
         }
         return data;
-    }
-
-    public synchronized void saveToDatabase(){
-        for(Tahun t : T){
-        //    if(isComplete(t.tahun)) {
-            ArrayList<ArrayList<ArrayList<Integer>>> m = get(t.tahun, LAKI_LAKI);
-            for(int i = 0; i < m.size(); i++){
-                database.save(m.get(i), i, t.tahun, LAKI_LAKI);
-            }
-            ArrayList<ArrayList<ArrayList<Integer>>> f = get(t.tahun, PEREMPUAN);
-            for(int i = 0; i < f.size(); i++){
-                database.save(f.get(i), i, t.tahun, PEREMPUAN);
-            }
-        //    }
-        }
     }
 
     public boolean isComplete(int tahun){
@@ -542,14 +536,5 @@ public class DatasetKetenagakerjaan {
             }
         }
         return true;
-    }
-    public ArrayList<Integer> whichNotComplete(int tahun, int gender){
-        ArrayList<Integer> al = new ArrayList<>();
-        for(int i = 0; i < table.size(); i++){
-            if(!T.get(getTahunIndex(tahun)).JK.get(gender).isComplete(table.get(i)[0], table.get(i)[1], table.get(i)[2])){
-                al.add(i);
-            }
-        }
-        return al;
     }
 }

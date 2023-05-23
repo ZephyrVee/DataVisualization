@@ -34,8 +34,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static Map<String, Thread> thread;
+    public static Database database;
 
-    DocumentReference database;
     String databaseName;
     String documentname;
     String akunCol;
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         thread = new HashMap<>();
+        database = new Database();
 
         //database = new Database().database;
 
