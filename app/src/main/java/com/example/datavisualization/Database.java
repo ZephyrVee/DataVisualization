@@ -76,13 +76,13 @@ public class Database {
             int idx = 0;
             for (ArrayList<Integer> d : data.get(i)) {
                 for (Integer in : d) {
-                    map.put(Enkripsi.encrypt(Integer.toString(idx)), Enkripsi.encrypt(Integer.toString(in)));
+                    map.put(Integer.toString(idx), Enkripsi.encrypt(Integer.toString(in)));
                     idx++;
                 }
             }
             String tahunDocument = Enkripsi.encrypt(Integer.toString(tahun));
-            String genderCollection = Enkripsi.encrypt(Integer.toString(gender));
-            String indexDocument = Enkripsi.encrypt(Integer.toString(i));
+            String genderCollection = Integer.toString(gender);
+            String indexDocument = Integer.toString(i);
             database.collection(dataDB).document(tahunDocument).collection(genderCollection).document(indexDocument).set(map, SetOptions.merge());
             map.clear();
         }
@@ -110,22 +110,21 @@ public class Database {
         for(int i = 0; i < DatasetKetenagakerjaan.table.size(); i++){
             ArrayList<ArrayList<Integer>> data = new ArrayList<>();
             String tahunDocument = Enkripsi.encrypt(Integer.toString(tahun));
-            String genderCollection = Enkripsi.encrypt(Integer.toString(gender));
-            String indexDocument = Enkripsi.encrypt(Integer.toString(i));
+            String genderCollection = Integer.toString(gender);
+            String indexDocument = Integer.toString(i);
             final int idx = i;
             database.collection(dataDB).document(tahunDocument).collection(genderCollection).document(indexDocument).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     int colSize = dataset.getSize(DatasetKetenagakerjaan.table.get(idx)[0]);
                     int rowSize = dataset.getSize(DatasetKetenagakerjaan.table.get(idx)[1]);
-                    ArrayList<Integer> row = new ArrayList<>();
-                    for(int i = 0; i < rowSize * colSize; i++){
-                        String s = Enkripsi.decrypt( documentSnapshot.getString( Enkripsi.encrypt(Integer.toString(i)) ) );
-                        row.add( Integer.parseInt(s) );
-                        if(row.size() == rowSize){
-                            data.add(row);
-                            row.clear();
+                    for(int i = 0; i < colSize; i++){
+                        ArrayList<Integer> row = new ArrayList<>();
+                        for(int j = 0; j < rowSize; j++){
+                            String s = Enkripsi.decrypt( documentSnapshot.getString( Integer.toString((i * rowSize) + j) ) );
+                            row.add( Integer.parseInt(s) );
                         }
+                        data.add(row);
                     }
                     dataset.set(data, idx, tahun, gender);
                 }

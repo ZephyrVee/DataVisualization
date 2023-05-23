@@ -499,24 +499,12 @@ public class DatasetKetenagakerjaan {
         set(dataF, tahun, PEREMPUAN);
     }
     public synchronized void set(ArrayList<ArrayList<ArrayList<Integer>>> data, int tahun, int gender){
-        if(gender == LAKI_LAKI){
-            for(int i = 0; i < data.size(); i++){
-                T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).setData(data.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
-            }
-        }
-        else {
-            for(int i = 0; i < data.size(); i++){
-                T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(data.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
-            }
+        for(int i = 0; i < data.size(); i++){
+            T.get(getTahunIndex(tahun)).JK.get(gender).setData(data.get(i), table.get(i)[0], table.get(i)[1], table.get(i)[2]);
         }
     }
     public synchronized void set(ArrayList<ArrayList<Integer>> data, int index, int tahun, int gender){
-        if(gender == LAKI_LAKI){
-            T.get(getTahunIndex(tahun)).JK.get(LAKI_LAKI).setData(data, table.get(index)[0], table.get(index)[1], table.get(index)[2]);
-        }
-        else {
-            T.get(getTahunIndex(tahun)).JK.get(PEREMPUAN).setData(data, table.get(index)[0], table.get(index)[1], table.get(index)[2]);
-        }
+            T.get(getTahunIndex(tahun)).JK.get(gender).setData(data, table.get(index)[0], table.get(index)[1], table.get(index)[2]);
     }
     public ArrayList<ArrayList<ArrayList<Integer>>> get(int tahun, int gender){
         ArrayList<ArrayList<ArrayList<Integer>>> data = new ArrayList<>();
