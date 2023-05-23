@@ -61,7 +61,7 @@ public class Database {
     public synchronized void save(ArrayList<ArrayList<ArrayList<Integer>>> dataM, ArrayList<ArrayList<ArrayList<Integer>>> dataF, int tahun){
         Map<String, String> map = new HashMap<>();
         String tahunField = Enkripsi.encrypt(Integer.toString(tahun));
-        map.put(tahunField, tahunField);
+        map.put(tahunField, Integer.toString(0));
 
         database.collection(dataDB).document(tahunListDocument).set(map, SetOptions.merge());
 
