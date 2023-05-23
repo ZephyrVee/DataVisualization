@@ -2,10 +2,8 @@ package com.example.datavisualization;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -28,8 +26,6 @@ public class EditDataActivity extends AppCompatActivity {
     HorizontalScrollView gridM, gridF;
     ArrayList<GridLayout> arrayGridM, arrayGridF;
     ArrayList<ArrayList<ArrayList<EditText>>> cellM, cellF;
-    //String[] title;
-    //ArrayList<int[]> table;
     TextView titleM, titleF, editDataTableIndexM, editDataTableIndexF;
     Button tahunPopup;
 
