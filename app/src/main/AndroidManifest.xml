@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DataVisualization">
         <activity android:name=".EditDataActivity"></activity>
-        <activity android:name=".VisualisasiActivity" />
+        <activity android:name=".VisualisasiTestActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RadarChartActivity" />
         <activity android:name=".BarChartActivity" />

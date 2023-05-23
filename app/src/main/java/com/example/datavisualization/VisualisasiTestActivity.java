@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class VisualisasiActivity extends AppCompatActivity {
+public class VisualisasiTestActivity extends AppCompatActivity {
 
     Fragment bar, line;
     TextView guide;

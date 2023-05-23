@@ -18,9 +18,8 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
+    Database db = MainActivity.database;
     EditText username, password;
-
-    Database db;
 
     TextView status;
 
@@ -29,12 +28,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db = new Database();
+        username = findViewById(R.id.usernameEditText);
+        password = findViewById(R.id.passwordEditText);
 
-        username = (EditText) findViewById(R.id.usernameEditText);
-        password = (EditText) findViewById(R.id.passwordEditText);
-
-        status = (TextView) findViewById(R.id.statusTextView);
+        status = findViewById(R.id.statusTextView);
 
         findViewById(R.id.loginButton).setOnClickListener(new View.OnClickListener() {
             @Override
