@@ -44,6 +44,16 @@ public class Database {
         this.database = db.collection(databaseName).document(documentName);
 
         dataset = new DatasetKetenagakerjaan();
+        /*
+        InitDataByAdmin in = new InitDataByAdmin();
+        String tahunDocument = Enkripsi.encrypt("2022");
+        for(int i = 0; i < in.male.size(); i++){
+            database.collection(dataDB).document(tahunDocument).collection("0").document(Integer.toString(i)).set(in.male.get(i), SetOptions.merge());
+        }
+        for(int i = 0; i < in.female.size(); i++){
+            database.collection(dataDB).document(tahunDocument).collection("1").document(Integer.toString(i)).set(in.female.get(i), SetOptions.merge());
+        }
+         */
         load();
     }
 
