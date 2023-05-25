@@ -1,6 +1,9 @@
 package com.example.datavisualization.database;
 
+import com.example.datavisualization.DatasetKetenagakerjaan;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DatasetKetenagakerjaanKabupaten {
     public static final int UMUR = 0;
@@ -157,6 +160,25 @@ public class DatasetKetenagakerjaanKabupaten {
 
     public void newTahun(int t){
         tahun.add(new Tahun(t));
+        sortTahun();
+    }
+    public void sortTahun(){
+        if(tahun.size() > 1){
+            Collections.sort(tahun, (t1, t2) -> t1.value.compareTo(t2.value));
+            /* replaced from
+            Collections.sort(T, new Comparator<Tahun>() {
+                @Override
+                public int compare(Tahun t1, Tahun t2) {
+                    if(t1.tahun < t2.tahun){
+                        return -1;
+                    }
+                    else{
+                        return 1;
+                    }
+                }
+            });
+             */
+        }
     }
     public int getTahunIndex(int t){
         int idx = 0;
@@ -166,6 +188,14 @@ public class DatasetKetenagakerjaanKabupaten {
             }
         }
         return idx;
+    }
+    public boolean isTahunExist(int t){
+        for(DatasetKetenagakerjaanKabupaten.Tahun thn : tahun){
+            if(thn.value == t){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static String[] getList(int kategori){
@@ -251,10 +281,10 @@ public class DatasetKetenagakerjaanKabupaten {
         return getList(kategori).length;
     }
 
-    public void setAll(ArrayList<ArrayList<Integer>> dataL, ArrayList<ArrayList<Integer>> dataP, int t){
+    public synchronized void setAll(ArrayList<ArrayList<Integer>> dataL, ArrayList<ArrayList<Integer>> dataP, int t){
         tahun.get(getTahunIndex(t)).setAll(dataL, dataP);
     }
-    public void setAll(ArrayList<ArrayList<Integer>> data, int t, int jk){
+    public synchronized void setAll(ArrayList<ArrayList<Integer>> data, int t, int jk){
         tahun.get(getTahunIndex(t)).setAll(data, jk);
     }
     public ArrayList<Integer> get(int t, int k){

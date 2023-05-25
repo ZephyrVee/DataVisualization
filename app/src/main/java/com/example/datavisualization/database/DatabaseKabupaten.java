@@ -3,6 +3,7 @@ package com.example.datavisualization.database;
 import com.example.datavisualization.Enkripsi;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class DatabaseKabupaten {
         data = new DatasetKetenagakerjaanKabupaten();
     }
 
-    public void save(){
+    public synchronized void save(){
         for(DatasetKetenagakerjaanKabupaten.Tahun t : data.tahun){
             for(DatasetKetenagakerjaanKabupaten.Kabupaten kab : t.kabupaten) {
                 for (DatasetKetenagakerjaanKabupaten.JenisKelamin jk : kab.jenisKelamin) {
@@ -32,14 +33,14 @@ public class DatabaseKabupaten {
                         for (int i = 0; i < k.value.size(); i++) {
                             map.put(Integer.toString(i), Enkripsi.encrypt(Integer.toString(k.value.get(i))));
                         }
-                        //db.collection(databaseName).document()
+                        db.collection(Enkripsi.encrypt(Integer.toString(t.value))).document(Integer.toString(kab.index)).collection(Integer.toString(jk.index)).document(Integer.toString(k.index)).set(map, SetOptions.merge());
                     }
                 }
             }
         }
     }
 
-    public void load(){
+    public synchronized void load(){
 
     }
 }

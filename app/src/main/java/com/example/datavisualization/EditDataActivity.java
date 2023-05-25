@@ -21,7 +21,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class EditDataActivity extends AppCompatActivity {
-    DatasetKetenagakerjaan data =  MainActivity.database.dataset;
+    DatasetKetenagakerjaan data =  MainActivity.database1.dataset;
 
     HorizontalScrollView gridM, gridF;
     ArrayList<GridLayout> arrayGridM, arrayGridF;
@@ -501,7 +501,7 @@ public class EditDataActivity extends AppCompatActivity {
             datasetF.add(dataF);
         }
         if(toDatabase){
-            MainActivity.database.save(datasetM, datasetF, tahun);
+            MainActivity.database1.save(datasetM, datasetF, tahun);
         }
         else {
             data.set(datasetM, datasetF, tahun);

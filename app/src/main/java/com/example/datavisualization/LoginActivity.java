@@ -13,12 +13,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-    Database db = MainActivity.database;
+    Database db = MainActivity.database1;
     EditText username, password;
 
     TextView status;

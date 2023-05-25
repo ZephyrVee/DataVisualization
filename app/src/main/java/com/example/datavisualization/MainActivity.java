@@ -15,6 +15,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.datavisualization.database.DatabaseKabupaten;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +28,8 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static Map<String, Thread> thread;
-    public static Database database;
+    public static Database database1;
+    public static DatabaseKabupaten database;
 
     String databaseName;
     String documentname;
@@ -51,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         thread = new HashMap<>();
-        database = new Database();
+        database1 = new Database();
+        database = new DatabaseKabupaten();
 
         //database = new Database().database;
 
