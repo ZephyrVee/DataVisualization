@@ -57,6 +57,7 @@ public class DatasetKetenagakerjaanKabupaten {
             for(int i = 0; i < kategori.size(); i++){
                 al.add(get(i));
             }
+            return al;
         }
     }
 
