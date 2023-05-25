@@ -11,5 +11,6 @@
 
     <color name="red">#FFFF0000</color>
 
-    <color name="kelola_data_activity_background_color">#FFE11BD7</color>
+    <color name="pink_1">#FFE11BD7</color>
+    <color name="blue_1">#BF00FFFF</color>
 </resources>
