@@ -12,14 +12,82 @@ public class DatasetKetenagakerjaanKabupaten {
     public static final int JENIS_PEKERJAAN_UTAMA = 6;
     public static final int PENGANGGURAN = 7;
 
+    public static final int LAKI_LAKI = 0;
+    public static final int PEREMPUAN = 1;
+
+    public static final int JAKARTA_UTARA = 0;
+
     class Tahun{
         final Integer value;
-        ArrayList<JenisKelamin> jenisKelamin;
+        ArrayList<Kabupaten> kabupaten;
         public Tahun(int t){
             value = t;
+
+            kabupaten = new ArrayList<>();
+            kabupaten.add(new Kabupaten("Jakarta Utara", JAKARTA_UTARA));
+        }
+
+        public void setAll(ArrayList<ArrayList<Integer>> dataL, ArrayList<ArrayList<Integer>> dataP){
+            kabupaten.get(0).setAll(dataL, dataP);
+        }
+        public void setAll(ArrayList<ArrayList<Integer>> data, int jk){
+            kabupaten.get(0).setAll(data, jk);
+        }
+        public ArrayList<Integer> get(int k){
+            return kabupaten.get(0).get(k);
+        }
+        public ArrayList<Integer> get(int jk, int k){
+            return kabupaten.get(0).get(jk, k);
+        }
+        public ArrayList<ArrayList<Integer>> getAll(){
+            return kabupaten.get(0).getAll();
+        }
+        public ArrayList<ArrayList<Integer>> getAll(int jk){
+            return kabupaten.get(0).getAll(jk);
+        }
+    }
+
+    class Kabupaten{
+        final String nama;
+        final int index;
+
+        ArrayList<JenisKelamin> jenisKelamin;
+
+        public Kabupaten(String n, int i){
+            nama = n;
+            index = i;
+
             jenisKelamin = new ArrayList<>();
-            jenisKelamin.add(new JenisKelamin("Laki_laki", 0));
-            jenisKelamin.add(new JenisKelamin("Perempuan", 1));
+            jenisKelamin.add(new JenisKelamin("Laki_laki", LAKI_LAKI));
+            jenisKelamin.add(new JenisKelamin("Perempuan", PEREMPUAN));
+        }
+
+        public void setAll(ArrayList<ArrayList<Integer>> dataL, ArrayList<ArrayList<Integer>> dataP){
+            setAll(dataL, LAKI_LAKI);
+            setAll(dataP, PEREMPUAN);
+        }
+        public void setAll(ArrayList<ArrayList<Integer>> data, int jk){
+            jenisKelamin.get(jk).setAll(data);
+        }
+        public ArrayList<Integer> get(int k){
+            ArrayList<Integer> al = new ArrayList<>();
+            for(int i = 0; i < getSize(k); i++){
+                al.add( get(LAKI_LAKI, k).get(i) + get(PEREMPUAN, k).get(i) );
+            }
+            return al;
+        }
+        public ArrayList<Integer> get(int jk, int k){
+            return jenisKelamin.get(jk).get(k);
+        }
+        public ArrayList<ArrayList<Integer>> getAll(){
+            ArrayList<ArrayList<Integer>> al = new ArrayList<>();
+            for(int i = 0; i < 8; i++){
+                al.add(get(i));
+            }
+            return al;
+        }
+        public ArrayList<ArrayList<Integer>> getAll(int jk){
+            return jenisKelamin.get(jk).getAll();
         }
     }
 
@@ -28,25 +96,27 @@ public class DatasetKetenagakerjaanKabupaten {
         final int index;
 
         ArrayList<Kategori> kategori;
-
-        public JenisKelamin(String n, int i){
+        public JenisKelamin(String n, int idx){
             nama = n;
-            index = i;
+            index = idx;
 
             kategori = new ArrayList<>();
-            kategori.add(new Kategori("Golongan Umur", 0));
-            kategori.add(new Kategori("Pendidikan Tertinggi Yang Ditamatkan", 1));
-            kategori.add(new Kategori("Jenis Kegiatan Selama Seminggu Lalu", 2));
-            kategori.add(new Kategori("Jumlah Jam Kerja", 3));
-            kategori.add(new Kategori("Lapangan Pekerjaan Utama", 4));
-            kategori.add(new Kategori("Status Pekerjaan Utama", 5));
-            kategori.add(new Kategori("Jenis Pekerjaan Utama", 6));
-            kategori.add(new Kategori("Pengangguran", 7));
+            kategori.add(new Kategori("Golongan Umur", UMUR));
+            kategori.add(new Kategori("Pendidikan Tertinggi Yang Ditamatkan", PENDIDIKAN));
+            kategori.add(new Kategori("Jenis Kegiatan Selama Seminggu Lalu", JENIS_KEGIATAN));
+            kategori.add(new Kategori("Jumlah Jam Kerja", JAM_KERJA));
+            kategori.add(new Kategori("Lapangan Pekerjaan Utama", LAPANGAN_PEKERJAAN_UTAMA));
+            kategori.add(new Kategori("Status Pekerjaan Utama", STATUS_PEKERJAAN_UTAMA));
+            kategori.add(new Kategori("Jenis Pekerjaan Utama", JENIS_PEKERJAAN_UTAMA));
+            kategori.add(new Kategori("Pengangguran", PENGANGGURAN));
         }
 
-        public void set(ArrayList<ArrayList<Integer>> data){
+        public void set(ArrayList<Integer> data, int k){
+            kategori.get(k).value = data;
+        }
+        public void setAll(ArrayList<ArrayList<Integer>> data){
             for(int i = 0; i < kategori.size(); i++){
-                kategori.get(i).value = data.get(i);
+                set(data.get(i), i);
             }
         }
         public ArrayList<Integer> get(int k){
@@ -71,7 +141,7 @@ public class DatasetKetenagakerjaanKabupaten {
         public Kategori(String n, int idx) {
             nama = n;
             index = idx;
-            size = getTableList(idx).length;
+            size = getSize(idx);
             value = new ArrayList<>();
             for(int i = 0; i < size; i++){
                 value.add(-1);
@@ -87,6 +157,15 @@ public class DatasetKetenagakerjaanKabupaten {
 
     public void newTahun(int t){
         tahun.add(new Tahun(t));
+    }
+    public int getTahunIndex(int t){
+        int idx = 0;
+        for(int i = 0; i < tahun.size(); i++){
+            if(tahun.get(i).value == t){
+                idx = i;
+            }
+        }
+        return idx;
     }
 
     public static String[] getList(int kategori){
@@ -167,5 +246,27 @@ public class DatasetKetenagakerjaanKabupaten {
                 return new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
         }
         return null;
+    }
+    public static int getSize(int kategori){
+        return getList(kategori).length;
+    }
+
+    public void setAll(ArrayList<ArrayList<Integer>> dataL, ArrayList<ArrayList<Integer>> dataP, int t){
+        tahun.get(getTahunIndex(t)).setAll(dataL, dataP);
+    }
+    public void setAll(ArrayList<ArrayList<Integer>> data, int t, int jk){
+        tahun.get(getTahunIndex(t)).setAll(data, jk);
+    }
+    public ArrayList<Integer> get(int t, int k){
+        return tahun.get(getTahunIndex(t)).get(k);
+    }
+    public ArrayList<Integer> get(int t, int jk, int k){
+        return tahun.get(getTahunIndex(t)).get(jk, k);
+    }
+    public ArrayList<ArrayList<Integer>> getAll(int t){
+        return tahun.get(getTahunIndex(t)).getAll();
+    }
+    public ArrayList<ArrayList<Integer>> getAll(int t, int jk){
+        return tahun.get(getTahunIndex(t)).getAll(jk);
     }
 }
