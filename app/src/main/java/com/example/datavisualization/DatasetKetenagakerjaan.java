@@ -193,6 +193,13 @@ public class DatasetKetenagakerjaan {
         public Boolean isComplete(int from, int destination, int classification){
             return K.get(getIndex(K, from)).isComplete(destination, classification);
         }
+
+        public ArrayList<Integer> sumRowList(int from, int destination, int classification){
+            return K.get(getIndex(K, from)).sumRowList(destination, classification);
+        }
+        public ArrayList<Integer> sumColList(int from, int destination, int classification){
+            return K.get(getIndex(K, from)).sumColList(destination, classification);
+        }
     }
     class Value{
         Integer value, akvalue, bvalue, puvalue, ptvalue;
@@ -224,6 +231,51 @@ public class DatasetKetenagakerjaan {
         public boolean isComplete(int destination, int classification){
             return K.get(getIndex(K, destination)).isComplete(classification);
         }
+
+        public Integer getValue(int classification){
+            switch (classification){
+                case NONE:
+                    return value;
+                case ANGKATAN_KERJA:
+                    return akvalue;
+                case BEKERJA:
+                    return bvalue;
+                case PADA_PEKERJAAN_UTAMA:
+                    return puvalue;
+                case PENGANGGURAN_TERBUKA:
+                    return ptvalue;
+                default:
+                    return -1;
+            }
+        }
+        public void setValue(int classification, Integer i){
+            switch (classification){
+                case NONE:
+                    value = i;
+                    break;
+                case ANGKATAN_KERJA:
+                    akvalue = i;
+                    break;
+                case BEKERJA:
+                    bvalue = i;
+                    break;
+                case PADA_PEKERJAAN_UTAMA:
+                    puvalue = i;
+                    break;
+                case PENGANGGURAN_TERBUKA:
+                    ptvalue = i;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public Integer sumRow(int destination, int classification){
+            return K.get(getIndex(K, destination)).sumRow(classification);
+        }
+        public Integer getCol(int col, int destination, int classification){
+            return K.get(getIndex(K, destination)).getCol(col, classification);
+        }
     }
     class Kategori{
         String nama;
@@ -252,7 +304,6 @@ public class DatasetKetenagakerjaan {
             }
             return true;
         }
-
         public boolean isComplete(int classification){
             for(Integer i : getRow(classification)){
                 if(i == -1){
@@ -261,7 +312,6 @@ public class DatasetKetenagakerjaan {
             }
             return true;
         }
-
 
         public void setData(ArrayList<ArrayList<Integer>> data, int destination, int classification){
             for(int i = 0; i < data.size(); i++){
@@ -275,44 +325,46 @@ public class DatasetKetenagakerjaan {
         }
 
         public void setRow(ArrayList<Integer> row, int classification){
-            switch (classification){
-                case NONE:
-                    for(int i = 0; i < row.size(); i++){ V.get(i).value = row.get(i); }
-                    break;
-                case ANGKATAN_KERJA:
-                    for(int i = 0; i < row.size(); i++){ V.get(i).akvalue = row.get(i); }
-                    break;
-                case BEKERJA:
-                    for(int i = 0; i < row.size(); i++){ V.get(i).bvalue = row.get(i); }
-                    break;
-                case PADA_PEKERJAAN_UTAMA:
-                    for(int i = 0; i < row.size(); i++){ V.get(i).puvalue = row.get(i); }
-                    break;
-                case PENGANGGURAN_TERBUKA:
-                    for(int i = 0; i < row.size(); i++){ V.get(i).ptvalue = row.get(i); }
-                    break;
+            for(int i = 0; i < row.size(); i++){
+                V.get(i).setValue(classification, row.get(i));
             }
         }
         public ArrayList<Integer> getRow(int classification){
             ArrayList<Integer> al = new ArrayList<>();
-            switch (classification){
-                case NONE:
-                    for(int i = 0; i < V.size(); i++){ al.add(V.get(i).value); }
-                    break;
-                case ANGKATAN_KERJA:
-                    for(int i = 0; i < V.size(); i++){ al.add(V.get(i).akvalue); }
-                    break;
-                case BEKERJA:
-                    for(int i = 0; i < V.size(); i++){ al.add(V.get(i).bvalue); }
-                    break;
-                case PADA_PEKERJAAN_UTAMA:
-                    for(int i = 0; i < V.size(); i++){ al.add(V.get(i).puvalue); }
-                    break;
-                case PENGANGGURAN_TERBUKA:
-                    for(int i = 0; i < V.size(); i++){ al.add(V.get(i).ptvalue); }
-                    break;
+            for(int i = 0; i < V.size(); i++){ al.add(V.get(i).getValue(classification)); }
+            return al;
+        }
+
+        public ArrayList<Integer> sumRowList(int destination, int classification){
+            ArrayList<Integer> al = new ArrayList<>();
+            for(int i = 0; i < V.size(); i++){
+                al.add(V.get(i).sumRow(destination,classification));
             }
             return al;
+        }
+        public Integer sumRow(int classification){
+            Integer in = 0;
+            for(int i = 0; i < V.size(); i++){
+                in += V.get(i).getValue(classification);
+            }
+            return in;
+        }
+        public ArrayList<Integer> sumColList(int destination, int classification){
+            ArrayList<Integer> al = new ArrayList<>();
+            for(int i = 0; i < V.size(); i++){
+                al.add(sumCol(i, destination, classification));
+            }
+            return al;
+        }
+        public Integer sumCol(int col, int destination, int classification){
+            Integer in = 0;
+            for(int i = 0; i < V.size(); i++){
+                in += V.get(i).getCol(col, destination, classification);
+            }
+            return in;
+        }
+        public Integer getCol(int col, int classification){
+            return V.get(col).getValue(classification);
         }
     }
     //Subclasses
@@ -524,5 +576,34 @@ public class DatasetKetenagakerjaan {
             }
         }
         return true;
+    }
+
+    public ArrayList<Integer> listOf(int tahun, int kategori){
+        ArrayList<Integer> al = new ArrayList<>();
+        ArrayList<Integer> alM = listOf(tahun, LAKI_LAKI, kategori);
+        ArrayList<Integer> alF = listOf(tahun, PEREMPUAN, kategori);
+        for(int i = 0; i < alM.size(); i++){
+            al.add(alM.get(i) + alF.get(i));
+        }
+        return al;
+    }
+    public ArrayList<Integer> listOf(int tahun, int gender, int kategori){
+        ArrayList<Integer> al = new ArrayList<>();
+        boolean searching = true;
+        int i = 0;
+        while(searching){
+            if(table.get(i)[0] == kategori){
+                al = T.get(getTahunIndex(tahun)).JK.get(gender).sumRowList(table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+                searching = false;
+            }
+            else if(table.get(i)[1] == kategori){
+                al = T.get(getTahunIndex(tahun)).JK.get(gender).sumColList(table.get(i)[0], table.get(i)[1], table.get(i)[2]);
+                searching = false;
+            }
+            else {
+                i++;
+            }
+        }
+        return al;
     }
 }

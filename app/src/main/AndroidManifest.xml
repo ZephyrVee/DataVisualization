@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DataVisualization">
-        <activity android:name=".VisualisasiActivity"></activity>
+        <activity android:name=".visualisasi.MainPage"></activity>
+        <activity android:name=".VisualisasiActivity" />
         <activity android:name=".EditDataActivity" />
         <activity android:name=".VisualisasiTestActivity" />
         <activity android:name=".LoginActivity" />
