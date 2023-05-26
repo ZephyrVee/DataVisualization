@@ -1,6 +1,4 @@
-package com.example.datavisualization.database;
-
-import com.example.datavisualization.DatasetKetenagakerjaan;
+package com.example.datavisualization;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,6 +17,8 @@ public class DatasetKetenagakerjaanKabupaten {
     public static final int PEREMPUAN = 1;
 
     public static final int JAKARTA_UTARA = 0;
+
+    public static final String[] KATEGORI = new String[]{"Golongan Umur", "Pendidikan Tertinggi Yang Ditamatkan", "Jenis Kegiatan Selama Seminggu Lalu", "Jumlah Jam Kerja", "Lapangan Pekerjaan Utama", "Status Pekerjaan Utama", "Jenis Pekerjaan Utama", "Pengangguran"};
 
     class Tahun{
         final Integer value;
@@ -104,14 +104,9 @@ public class DatasetKetenagakerjaanKabupaten {
             index = idx;
 
             kategori = new ArrayList<>();
-            kategori.add(new Kategori("Golongan Umur", UMUR));
-            kategori.add(new Kategori("Pendidikan Tertinggi Yang Ditamatkan", PENDIDIKAN));
-            kategori.add(new Kategori("Jenis Kegiatan Selama Seminggu Lalu", JENIS_KEGIATAN));
-            kategori.add(new Kategori("Jumlah Jam Kerja", JAM_KERJA));
-            kategori.add(new Kategori("Lapangan Pekerjaan Utama", LAPANGAN_PEKERJAAN_UTAMA));
-            kategori.add(new Kategori("Status Pekerjaan Utama", STATUS_PEKERJAAN_UTAMA));
-            kategori.add(new Kategori("Jenis Pekerjaan Utama", JENIS_PEKERJAAN_UTAMA));
-            kategori.add(new Kategori("Pengangguran", PENGANGGURAN));
+            for(int i = 0; i < KATEGORI.length; i++){
+                kategori.add(new Kategori(KATEGORI[i], i));
+            }
         }
 
         public void set(ArrayList<Integer> data, int k){
@@ -257,7 +252,7 @@ public class DatasetKetenagakerjaanKabupaten {
                         "Pekerja Kasar"
                 };
             case PENGANGGURAN:
-                return new String[]{"Mencari Pekerjaan", "Mempersiapkan Usaha", "Merasa Tidak Mungkin Mendapatkan Pekerjaan", "Sudah Punya Pekerjaan Tapi Belum Mulai Bekerja", "Pengangguran Terbuka", "Sukarela", "Terpaksa"};
+                return new String[]{"Mencari Pekerjaan", "Mempersiapkan Usaha", "Merasa Tidak Mungkin Mendapatkan Pekerjaan", "Sudah Punya Pekerjaan Tapi Belum Mulai Bekerja", "Sukarela", "Terpaksa"};
         }
         return null;
     }
@@ -286,6 +281,9 @@ public class DatasetKetenagakerjaanKabupaten {
     }
     public synchronized void setAll(ArrayList<ArrayList<Integer>> data, int t, int jk){
         tahun.get(getTahunIndex(t)).setAll(data, jk);
+    }
+    public synchronized  void set(ArrayList<Integer> data, int t, int jk, int k){
+        tahun.get(getTahunIndex(t)).kabupaten.get(0).jenisKelamin.get(jk).kategori.get(k).value = data;
     }
     public ArrayList<Integer> get(int t, int k){
         return tahun.get(getTahunIndex(t)).get(k);

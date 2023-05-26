@@ -12,5 +12,6 @@
     <color name="red">#FFFF0000</color>
 
     <color name="pink_1">#FFE11BD7</color>
-    <color name="blue_1">#BF00FFFF</color>
+    <color name="blue_1">#4000FFFF</color>
+    <color name="pink_2">#40F786FF</color>
 </resources>

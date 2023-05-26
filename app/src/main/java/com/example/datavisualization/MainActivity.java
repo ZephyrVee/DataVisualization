@@ -15,8 +15,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.example.datavisualization.database.DatabaseKabupaten;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         thread = new HashMap<>();
-        database1 = new Database();
+        //database1 = new Database();
         database = new DatabaseKabupaten();
 
         //database = new Database().database;
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         barChart = new Intent(getApplicationContext(), BarChartActivity.class);
         pieChart = new Intent(getApplicationContext(), PieChartActivity.class);
         lineChart = new Intent(getApplicationContext(), LineChartActivity.class);
-        editData = new Intent(getApplicationContext(), EditDataActivity.class);
+        editData = new Intent(getApplicationContext(), KelolaDataActivity.class);
 
         tv = (TextView) findViewById(R.id.textTestButton);
         idT = (TextView) findViewById(R.id.idLogin);
