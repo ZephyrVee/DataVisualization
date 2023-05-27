@@ -4,199 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/kelola_data_activity_background"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:gravity="center"
+        android:text="Data Visualization"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-        <!-- or center|bottom -->
-        <LinearLayout
-            android:id="@+id/linearLayoutTop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:orientation="vertical"
-            android:gravity="center"
-
-            android:layout_weight="1"
-            >
-            <EditText
-                android:id="@+id/idLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <EditText
-                android:id="@+id/passLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <Button
-                android:id="@+id/testButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginHorizontal="16dp"
-
-                android:text="Goto Login"
-                />
-
-            <Button
-                android:id="@+id/visualizeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginHorizontal="16dp"
-
-                android:text="Goto Visualization page"
-                />
-
-            <TextView
-                android:id="@+id/textTestButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:gravity="center"
-
-                android:textColor="#000000"
-                android:textSize="24sp"
-
-                android:text="Visualize your data \n in a variety of charts"
-                />
-
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutMiddle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="horizontal"
-            >
-
-            <TextView
-                android:id="@+id/label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginHorizontal="16dp"
-                android:gravity="center"
-
-                android:textColor="#000000"
-                android:textSize="24sp"
-
-                android:text="File : "
-                />
-
-            <TextView
-                android:id="@+id/openedFile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1"
-                android:layout_marginHorizontal="16dp"
-
-                android:textSize="24sp"
-
-                android:text=""
-                />
-
-            <Button
-                android:id="@+id/buttonOpenFile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_marginHorizontal="16dp"
-
-                android:text="Open File"
-                />
-
-        </LinearLayout>
-
+            android:layout_height="160dp"/>
         <LinearLayout
-            android:id="@+id/linearLayoutMiddle1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:orientation="horizontal"
-            android:gravity="center|bottom"
-
-            android:layout_weight="1"
-            >
-
-            <TextView
-                android:id="@+id/guide2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:layout_marginHorizontal="16dp"
-                android:gravity="center"
-
-                android:textColor="#000000"
-                android:textSize="24sp"
-
-                android:text="Choose the type of chart"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayoutBottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
 
-            android:gravity="center|bottom"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="32dp"
             >
 
-            <Button
-                android:id="@+id/buttonBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1"
-                android:layout_marginHorizontal="4dp"
-
-
-                android:text="Test Input Data"
-                />
-
-            <Button
-                android:id="@+id/buttonPie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1"
-                android:layout_marginHorizontal="4dp"
-
-                android:text="Pie"
-                />
-
-            <Button
-                android:id="@+id/buttonLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_weight="1"
-                android:layout_marginHorizontal="4dp"
-
-                android:text="Line"
-                />
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

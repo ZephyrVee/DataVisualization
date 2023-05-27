@@ -46,6 +46,7 @@ public class Enkripsi extends AppCompatActivity {
         return null;
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     public static String decrypt(String stringCipherText){
         try {
             SecretKeySpec secretKey = generateKey();
@@ -53,8 +54,10 @@ public class Enkripsi extends AppCompatActivity {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] byteCipherText = strNumbersToByte(stringCipherText);
+            System.out.println(Base64.getEncoder().encodeToString(byteCipherText));
             byte[] byteText = cipher.doFinal(byteCipherText);
             String stringText = new String(byteText);
+            System.out.println(stringText);
             return stringText;
         }
         catch(Exception e){
