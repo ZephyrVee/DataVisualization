@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     Intent barChart;
     Intent pieChart;
-    Intent lineChart, kelolaDataActivity, loginActivity;
+    Intent lineChart, kelolaDataActivity, loginActivity, visualisasiActivity;
     ArrayList<String> content = null;
     ActivityResultLauncher<Intent> login = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -76,8 +76,15 @@ public class MainActivity extends AppCompatActivity {
         lineChart = new Intent(getApplicationContext(), LineChartActivity.class);
         kelolaDataActivity = new Intent(getApplicationContext(), KelolaDataActivity.class);
         loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
+        visualisasiActivity = new Intent(getApplicationContext(), VisualisasiActivity.class);
 
-
+        findViewById(R.id.main_bar_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                visualisasiActivity.putExtra("Chart", "Bar");
+                startActivity(visualisasiActivity);
+            }
+        });
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
