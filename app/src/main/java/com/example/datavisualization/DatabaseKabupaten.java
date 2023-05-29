@@ -1,6 +1,7 @@
 package com.example.datavisualization;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,8 +14,11 @@ import java.util.Map;
 public class DatabaseKabupaten {
     private FirebaseFirestore ff;
     DocumentReference db;
+    CollectionReference akun;
 
     DatasetKetenagakerjaanKabupaten data;
+
+    private static final String akunCollection = Enkripsi.encrypt("col_akun");
 
     private static final String collectionName = Enkripsi.encrypt("col_database");
     private static final String documentName = Enkripsi.encrypt("doc_Skripsi221810477");
@@ -24,6 +28,7 @@ public class DatabaseKabupaten {
     public DatabaseKabupaten(){
         ff = FirebaseFirestore.getInstance();
         db = ff.collection(collectionName).document(documentName);
+        akun = db.collection(akunCollection);
         data = new DatasetKetenagakerjaanKabupaten();
         load();
     }

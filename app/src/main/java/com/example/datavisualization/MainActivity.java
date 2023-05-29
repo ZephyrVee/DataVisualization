@@ -7,11 +7,19 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.PopupMenu;
+import android.widget.RelativeLayout;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -29,104 +37,45 @@ public class MainActivity extends AppCompatActivity {
     public static Database database1;
     public static DatabaseKabupaten database;
 
-    String databaseName;
-    String documentname;
-    String akunCol;
-
-    TextView textView, tv, idT, passT;
     Intent barChart;
     Intent pieChart;
-    Intent lineChart, editData;
+    Intent lineChart, kelolaDataActivity, loginActivity;
     ArrayList<String> content = null;
+    ActivityResultLauncher<Intent> login = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Button kelolaDataButton = new Button(MainActivity.this);
+                        kelolaDataButton.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+                        kelolaDataButton.setText("Kelola data");
+                        kelolaDataButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(kelolaDataActivity);
+                            }
+                        });
+                        RelativeLayout rl = findViewById(R.id.main_kelola_data_button_field);
+                        rl.addView(kelolaDataButton);
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //hide status bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide();
-        //hide status bar
-
         setContentView(R.layout.activity_main);
 
         thread = new HashMap<>();
-        //database1 = new Database();
         database = new DatabaseKabupaten();
-
-        //database = new Database().database;
-
-        textView = (TextView) findViewById(R.id.openedFile);
         barChart = new Intent(getApplicationContext(), BarChartActivity.class);
         pieChart = new Intent(getApplicationContext(), PieChartActivity.class);
         lineChart = new Intent(getApplicationContext(), LineChartActivity.class);
-        editData = new Intent(getApplicationContext(), KelolaDataActivity.class);
-
-        tv = (TextView) findViewById(R.id.textTestButton);
-        idT = (TextView) findViewById(R.id.idLogin);
-        passT = (TextView) findViewById(R.id.passLogin);
-
-        findViewById(R.id.buttonOpenFile).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFile(null);
-            }
-        });
-
-        findViewById(R.id.buttonBar).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(editData);
-            }
-        });
-
-        findViewById(R.id.buttonPie).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(content != null){
-                    pieChart.putExtra("table", content);
-                    startActivity(pieChart);
-                }
-            }
-        });
-
-        findViewById(R.id.buttonLine).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(content != null){
-                    lineChart.putExtra("table", content);
-                    startActivity(lineChart);
-                }
-            }
-        });
-
-        findViewById(R.id.testButton).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                /*
-                String id = Enkripsi.encrypt("A01");
-                String username = Enkripsi.encrypt("Admin");
-                String password = Enkripsi.encrypt("admin123", true);
-                Map<String, String> field = new HashMap<>();
-                field.put(Key.USERNAME.key(), username);
-                field.put(Key.PASSWORD.key(), password);
-
-                database.collection(Key.TABEL_AKUN.key()).document(id).set(field);
-                 */
-
-                Intent login = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(login);
-            }
-        });
-
-        findViewById(R.id.visualizeButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), VisualisasiTestActivity.class);
-                startActivity(i);
-            }
-        });
+        kelolaDataActivity = new Intent(getApplicationContext(), KelolaDataActivity.class);
+        loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
 
 
 
@@ -134,6 +83,34 @@ public class MainActivity extends AppCompatActivity {
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 PackageManager.PERMISSION_GRANTED
         );
+    }
+
+    @Override
+    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        showMenu();
+        return true;
+    }
+
+    private void showMenu(){
+        PopupMenu menu = new PopupMenu(MainActivity.this, MainActivity.this.findViewById(R.id.account));
+        menu.getMenu().add("Login");
+        menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(menuItem.getTitle().equals("Login")){
+                    login.launch(loginActivity);
+                }
+                return true;
+            }
+        });
+        menu.show();
     }
 
     public void openFile(Uri pickerInitialUri){
@@ -180,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
                         i--;
                     }
                     String fileName = uri.getPath().substring(i + 1);
-                    textView.setText(fileName);
                 }
                 catch(Exception e){
 

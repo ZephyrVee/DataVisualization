@@ -1,7 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">DataVisualization</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="p">Hello \n blank fragment</string>
     <string name="cell_padding">4dp</string>
+
+
+    <string name="login_page_background" tools:ignore="ReferenceType">@drawable/kelola_data_activity_background</string>
+    <string name="login_panel_background" tools:ignore="ReferenceType">@drawable/kelola_data_linear_layout_background</string>
 </resources>

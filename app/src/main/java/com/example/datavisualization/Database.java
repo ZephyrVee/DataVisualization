@@ -30,7 +30,7 @@ public class Database {
     private static final String databaseNamePlain = "col_database";
     private static final String documentNamePlain = "doc_Skripsi221810477";
 
-    //private final String akunCollection = Enkripsi.encrypt("col_akun");
+    public static final String akunCollection = Enkripsi.encrypt("col_akun");
     private final String tahunListDocument = Enkripsi.encrypt("tahun");
 
     private static final String databaseName = Enkripsi.encrypt(databaseNamePlain);

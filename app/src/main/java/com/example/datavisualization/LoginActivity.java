@@ -16,7 +16,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-    Database db = MainActivity.database1;
     EditText username, password;
 
     TextView status;
@@ -49,8 +48,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        setResult(RESULT_CANCELED);
+        this.finish();
+    }
+
     private void login(){
-        CollectionReference tabelAkun = db.database.collection(Key.TABEL_AKUN.key());
+        CollectionReference tabelAkun = MainActivity.database.akun;
         tabelAkun.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -63,8 +69,8 @@ public class LoginActivity extends AppCompatActivity {
                         String userName = ds.get(i).getString(Key.USERNAME.key());
                         String userPass = ds.get(i).getString(Key.PASSWORD.key());
                         if((name.equals(userName)) && (pass.equals(userPass))){
-                            //success login statement starts here
-                                showStatus("Success");
+                            setResult(RESULT_OK);
+                            finish();
                         }
                         else if(i == ds.size() - 1){
                             showStatus("Wrong Username or Password");
