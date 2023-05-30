@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BarInputFragment">
+    tools:context=".InputFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,12 +22,12 @@
             android:layout_margin="16dp">
 
             <Button
-                android:id="@+id/kelola_data_kategori_lakilaki_button"
+                android:id="@+id/visualisasi_pilih_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/down_arrow"
                 android:gravity="center"
-                android:text="Pilih Kategori"
+                android:text="Pilih"
                 android:textColor="@color/black"
                 android:textSize="10dp"
                 app:backgroundTint="@color/white"
@@ -35,17 +35,26 @@
                 app:strokeWidth="1dp"/>
 
             <LinearLayout
+                android:id="@+id/visualisasi_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/imageButton"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/add" />
+                android:background="@drawable/grid"
+                >
+                <ImageButton
+                    android:id="@+id/visualisasi_add_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/add"
+                    app:backgroundTint="@color/white" />
+            </RelativeLayout>
+
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

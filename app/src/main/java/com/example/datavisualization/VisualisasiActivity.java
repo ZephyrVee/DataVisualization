@@ -5,9 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
 
 import com.google.android.material.tabs.TabLayout;
@@ -28,9 +26,9 @@ public class VisualisasiActivity extends AppCompatActivity {
         String c = bundle.getString("Chart");
 
         fragment = new ArrayList<>();
+        fragment.add(new InputFragment(c));
         switch(c){
             case "Bar":
-                fragment.add(new BarInputFragment());
                 fragment.add(new BarChartFragment());
                 break;
             default:

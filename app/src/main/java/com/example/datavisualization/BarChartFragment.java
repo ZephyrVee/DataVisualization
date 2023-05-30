@@ -35,7 +35,6 @@ public class BarChartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        System.out.println(getArguments().getString("key"));
 
         return inflater.inflate(R.layout.fragment_bar_chart, container, false);
     }
@@ -43,6 +42,7 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //System.out.println(getArguments().getString("key"));
         setData();
         visualize();
     }
