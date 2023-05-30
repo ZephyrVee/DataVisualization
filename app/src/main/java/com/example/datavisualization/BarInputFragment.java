@@ -24,8 +24,19 @@ public class BarInputFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_bar_input, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+    }
+
+    @Override
+    public void onDestroyView() { // Tab changed
+        super.onDestroyView();
+        System.out.println("Tab Changed");
     }
 
     public LinearLayout addDataset(){
@@ -37,5 +48,11 @@ public class BarInputFragment extends Fragment {
 
 
         return ll;
+    }
+
+    private void setBundle(){
+        Bundle bundle = new Bundle();
+        bundle.putString("key", "Hello");
+        setArguments(bundle);
     }
 }
