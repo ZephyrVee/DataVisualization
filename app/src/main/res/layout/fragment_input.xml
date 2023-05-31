@@ -11,50 +11,55 @@
         android:layout_height="match_parent"
         >
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_margin="16dp">
-
-            <Button
-                android:id="@+id/visualisasi_pilih_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/down_arrow"
-                android:gravity="center"
-                android:text="Pilih"
-                android:textColor="@color/black"
-                android:textSize="10dp"
-                app:backgroundTint="@color/white"
-                app:strokeColor="@color/black"
-                app:strokeWidth="1dp"/>
-
+            android:layout_margin="16dp"
+            >
             <LinearLayout
-                android:id="@+id/visualisasi_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/grid"
-                >
-                <ImageButton
-                    android:id="@+id/visualisasi_add_button"
+                <Button
+                    android:id="@+id/visualisasi_pilih_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/add"
-                    app:backgroundTint="@color/white" />
-            </RelativeLayout>
+                    android:drawableRight="@drawable/down_arrow"
+                    android:gravity="center"
+                    android:text="Pilih"
+                    android:textColor="@color/black"
+                    android:textSize="10dp"
+                    app:backgroundTint="@color/white"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="1dp"/>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/visualisasi_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <ImageButton
+                        android:id="@+id/visualisasi_add_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/add"
+                        android:background="@drawable/image_button_border" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -1,10 +1,21 @@
 package com.example.datavisualization;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,8 +38,9 @@ public class InputFragment extends Fragment {
     ImageButton addButton;
     LinearLayout fields;
     int kategori;
-    ArrayList<Integer> tahun;
-    ArrayList<String> color;
+    ArrayList<Integer> tahun, color;
+    ArrayList<Integer> colorList;
+    String[] colorName;
 
     public InputFragment(String c) {
         // Required empty public constructor
@@ -37,6 +49,17 @@ public class InputFragment extends Fragment {
         data = MainActivity.database.data;
         tahun = new ArrayList<>();
         color = new ArrayList<>();
+        colorList = new ArrayList<>();
+        colorList.add(Color.BLUE);
+        colorList.add(Color.BLACK);
+        colorList.add(Color.CYAN);
+        colorList.add(Color.DKGRAY);
+        colorList.add(Color.GRAY);
+        colorList.add(Color.GREEN);
+        colorList.add(Color.MAGENTA);
+        colorList.add(Color.RED);
+        colorList.add(Color.YELLOW);
+        colorName = new String[]{"Biru", "Hitam", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
     }
 
     @Override
@@ -111,7 +134,7 @@ public class InputFragment extends Fragment {
 
     public void addBar(int idx){
         tahun.add(-1);
-        color.add("");
+        color.add(-1);
 
         LinearLayout ll = new LinearLayout(getContext());
         LinearLayout.LayoutParams llpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -120,6 +143,7 @@ public class InputFragment extends Fragment {
         ll.setGravity(Gravity.START);
 
         LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        bpr.gravity = Gravity.CENTER;
         Button b = new Button(getContext());
         int m = intToDp(8);
         bpr.setMargins(0, m, 0, m);
@@ -153,26 +177,38 @@ public class InputFragment extends Fragment {
         LinearLayout.LayoutParams tvpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         tvpr.setMargins(m, 0, m, 0);
         tv.setLayoutParams(tvpr);
-        tv.setTextSize(10);
+        tv.setTextSize(12);
+        tv.setGravity(Gravity.CENTER);
         tv.setText("Warna:");
 
 
-        Button c = new Button(getContext());
+        ImageButton c = new ImageButton(getContext());
         c.setLayoutParams(bpr);
         c.setBackgroundResource(R.drawable.grid);
-        c.setText("Pilih Tahun");
-        c.setTextSize(10);
         c.setPadding(0, 0, 0, 0);
+        c.setBackgroundResource(R.drawable.warna);
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu menu = new PopupMenu(getContext(), view);
-
+                for(int i = 0; i < colorList.size(); i++){
+                    menu.getMenu().add(0, i, i, menuIconWithText(getResources().getDrawable(R.drawable.warna), i, colorName[i]));
+                }
+                menu.show();
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        color.set(idx, colorList.get(item.getItemId()));
+                        c.getBackground().setColorFilter(new PorterDuffColorFilter(colorList.get(item.getItemId()), PorterDuff.Mode.MULTIPLY));
+                        return true;
+                    }
+                });
             }
         });
 
         ll.addView(b);
         ll.addView(tv);
+        ll.addView(c);
         fields.addView(ll);
     }
 
@@ -184,5 +220,15 @@ public class InputFragment extends Fragment {
 
     private int intToDp(int d) {
         return (int) (d * this.getResources().getDisplayMetrics().density + 0.5f);
+    }
+    private CharSequence menuIconWithText(Drawable r, int color, String title) {
+        r.setColorFilter(colorList.get(color), PorterDuff.Mode.MULTIPLY);
+
+        r.setBounds(0, 0, r.getIntrinsicWidth(), r.getIntrinsicHeight());
+        SpannableString sb = new SpannableString("    " + title);
+        ImageSpan imageSpan = new ImageSpan(r, ImageSpan.ALIGN_BOTTOM);
+        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        return sb;
     }
 }
