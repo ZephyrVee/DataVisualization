@@ -1,6 +1,6 @@
 package com.example.datavisualization;
 
-import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class InputFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bar_input, container, false);
+        return inflater.inflate(R.layout.fragment_input, container, false);
     }
 
     @Override
@@ -118,15 +119,14 @@ public class InputFragment extends Fragment {
         ll.setOrientation(LinearLayout.HORIZONTAL);
         ll.setGravity(Gravity.START);
 
-        Button b = new Button(getContext());
         LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        Button b = new Button(getContext());
         int m = intToDp(8);
         bpr.setMargins(0, m, 0, m);
         b.setLayoutParams(bpr);
         b.setBackgroundResource(R.drawable.grid);
         b.setText("Pilih Tahun");
         b.setTextSize(10);
-        int p = intToDp(6);
         b.setPadding(0, 0, 0, 0);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,7 +148,31 @@ public class InputFragment extends Fragment {
                 menu.show();
             }
         });
+
+        TextView tv = new TextView(getContext());
+        LinearLayout.LayoutParams tvpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        tvpr.setMargins(m, 0, m, 0);
+        tv.setLayoutParams(tvpr);
+        tv.setTextSize(10);
+        tv.setText("Warna:");
+
+
+        Button c = new Button(getContext());
+        c.setLayoutParams(bpr);
+        c.setBackgroundResource(R.drawable.grid);
+        c.setText("Pilih Tahun");
+        c.setTextSize(10);
+        c.setPadding(0, 0, 0, 0);
+        c.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu menu = new PopupMenu(getContext(), view);
+
+            }
+        });
+
         ll.addView(b);
+        ll.addView(tv);
         fields.addView(ll);
     }
 
