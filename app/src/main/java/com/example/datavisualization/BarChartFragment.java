@@ -18,12 +18,17 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 
 public class BarChartFragment extends Fragment {
+    DatasetKetenagakerjaanKabupaten data;
 
     BarDataSet barDataSet;
     BarData barData;
     BarChart barChart;
 
     ArrayList<BarEntry> visitors;
+
+    public BarChartFragment(){
+        data = MainActivity.database.data;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,14 +47,21 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //System.out.println(getArguments().getString("key"));
+        if(getArguments() != null){
+            Bundle b = getArguments();
+            int k = b.getInt("kategori");
+            ArrayList<Integer> t = b.getIntegerArrayList("tahun");
+            ArrayList<Integer> w = b.getIntegerArrayList("warna");
+            for(int i = 0; i < t.size(); i++){
+
+            }
+        }
         setData();
         visualize();
     }
 
     private void setData(){
         visitors = new ArrayList<>();
-
         visitors.add(new BarEntry(2014, 420));
         visitors.add(new BarEntry(2015, 475));
         visitors.add(new BarEntry(2016, 508));
