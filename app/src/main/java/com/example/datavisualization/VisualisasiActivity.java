@@ -59,6 +59,12 @@ public class VisualisasiActivity extends AppCompatActivity {
         switchFragment(0);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
     private void switchFragment(int position){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

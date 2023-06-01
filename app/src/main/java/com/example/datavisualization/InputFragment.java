@@ -100,7 +100,6 @@ public class InputFragment extends Fragment {
         super.onDestroyView();
         pilihButton = null;
         addButton = null;
-        setBundle();
     }
 
     private void barInit(){

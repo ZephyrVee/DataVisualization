@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
@@ -171,6 +172,7 @@ public class KelolaDataActivity extends AppCompatActivity {
     private void addGrid(int kategori, int jk){
         GridLayout grid = new GridLayout(this);
 
+        grid.setBackground(getResources().getDrawable(R.drawable.grid));
         //Add Header
         grid.setColumnCount(DatasetKetenagakerjaanKabupaten.getSize(kategori));
         if(kategori == DatasetKetenagakerjaanKabupaten.JENIS_KEGIATAN){
@@ -227,6 +229,7 @@ public class KelolaDataActivity extends AppCompatActivity {
         int pd = dpToInt(8);
         tv.setPadding(pd, pd, pd, pd);
         tv.setBackground(ContextCompat.getDrawable(this, R.drawable.cell));
+        tv.setTextColor(Color.BLACK);
 
         tv.setText(str);
         return tv;

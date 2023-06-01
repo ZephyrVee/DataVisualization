@@ -93,6 +93,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for(Object o : thread.keySet().toArray()){
+            String s = o.toString();
+            thread.get(s).interrupt();
+        }
+    }
+
+    @Override
     public boolean onCreatePanelMenu(int featureId, Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
