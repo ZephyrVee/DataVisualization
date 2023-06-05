@@ -54,7 +54,7 @@ public class BarChartFragment extends Fragment {
             ArrayList<Integer> t = b.getIntegerArrayList("tahun");
             ArrayList<Integer> jk = b.getIntegerArrayList("jenis_kelamin");
             ArrayList<Integer> w = b.getIntegerArrayList("warna");
-            ArrayList<IBarDataSet> barDataSets = new ArrayList<>();+
+            ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
             for(int i = 0; i < t.size(); i++){
                 ArrayList<Integer> al = MainActivity.database.data.get(t.get(i), jk.get(i), k);
                 ArrayList<BarEntry> entries = new ArrayList<>();
