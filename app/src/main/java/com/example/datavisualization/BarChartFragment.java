@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -24,6 +26,8 @@ public class BarChartFragment extends Fragment {
     BarDataSet barDataSet;
     BarData barData;
     BarChart barChart;
+
+    ArrayList<IBarDataSet> barDataSets;
 
     ArrayList<BarEntry> visitors;
 
@@ -47,13 +51,13 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        barDataSets = new ArrayList<>();
         if(getArguments() != null){
             Bundle b = getArguments();
             int k = b.getInt("kategori");
             ArrayList<Integer> t = b.getIntegerArrayList("tahun");
             ArrayList<Integer> jk = b.getIntegerArrayList("jenis_kelamin");
             ArrayList<Integer> w = b.getIntegerArrayList("warna");
-            ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
             for(int i = 0; i < t.size(); i++){
                 ArrayList<Integer> al = data.get(t.get(i), jk.get(i), k);
                 ArrayList<BarEntry> entries = new ArrayList<>();
@@ -94,9 +98,24 @@ public class BarChartFragment extends Fragment {
 
     private void visualize(){
         barChart = getView().findViewById(R.id.barChart);
-        barChart.setFitBars(true);
+
+        barChart.getAxisRight().setEnabled(false);
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setAxisMinimum(0f);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        barChart.setFitBars(false);
         barChart.setData(barData);
         barChart.getDescription().setText("Bar Chart");
+        if(!barDataSets.isEmpty()){
+            if(barDataSets.size() > 1){
+                barChart.groupBars(0, 0.5f, 0.03f);
+            }
+        }
+
+        barChart.invalidate();
         barChart.animateY(1000);
     }
 }
