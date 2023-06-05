@@ -258,22 +258,29 @@ public class DatasetKetenagakerjaanKabupaten {
     }
     public static String[] getTableList(int kategori){
         switch (kategori){
-            case UMUR:
-            case PENDIDIKAN:
-            case JENIS_KEGIATAN:
-            case PENGANGGURAN:
-                return getList(kategori);
             case LAPANGAN_PEKERJAAN_UTAMA:
                 return new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M-N", "O", "P", "Q", "R-U"};
             case STATUS_PEKERJAAN_UTAMA:
                 return new String[]{"1", "2", "3", "4", "5", "6", "7"};
             case JENIS_PEKERJAAN_UTAMA:
                 return new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+            default:
+                return getList(kategori);
         }
-        return null;
     }
     public static int getSize(int kategori){
         return getList(kategori).length;
+    }
+
+    public boolean isComplete(int t){
+        for(ArrayList<Integer> al : getAll(t)){
+            for(Integer i : al){
+                if(i < 0){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public synchronized void setAll(ArrayList<ArrayList<Integer>> dataL, ArrayList<ArrayList<Integer>> dataP, int t){

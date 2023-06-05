@@ -100,6 +100,9 @@ public class InputFragment extends Fragment {
         super.onDestroyView();
         pilihButton = null;
         addButton = null;
+        tahun.clear();
+        color.clear();
+        jenisKelamin.clear();
     }
 
     private void barInit(){
@@ -165,7 +168,9 @@ public class InputFragment extends Fragment {
                 PopupMenu menu = new PopupMenu(getContext(), view);
                 if(data.tahun.size() > 0){
                     for(int i = 0; i < data.tahun.size(); i++){
-                        menu.getMenu().add(Integer.toString(data.tahun.get(i).value));
+                        if(data.isComplete(data.tahun.get(i).value)) {
+                            menu.getMenu().add(Integer.toString(data.tahun.get(i).value));
+                        }
                     }
                 }
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

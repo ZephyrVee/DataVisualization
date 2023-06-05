@@ -194,7 +194,7 @@ public class KelolaDataActivity extends AppCompatActivity {
             }
         }
         else {
-            for(String s : DatasetKetenagakerjaanKabupaten.getList(kategori)){
+            for(String s : DatasetKetenagakerjaanKabupaten.getTableList(kategori)){
                 grid.addView(addTextViewToGrid(s));
             }
         }

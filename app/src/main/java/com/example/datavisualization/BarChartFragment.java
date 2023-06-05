@@ -34,7 +34,6 @@ public class BarChartFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setData();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class BarChartFragment extends Fragment {
             ArrayList<Integer> w = b.getIntegerArrayList("warna");
             ArrayList<IBarDataSet> barDataSets = new ArrayList<>();
             for(int i = 0; i < t.size(); i++){
-                ArrayList<Integer> al = MainActivity.database.data.get(t.get(i), jk.get(i), k);
+                ArrayList<Integer> al = data.get(t.get(i), jk.get(i), k);
                 ArrayList<BarEntry> entries = new ArrayList<>();
                 for(int j = 0; j < al.size(); j++){
                     entries.add(new BarEntry(j, al.get(j)));
@@ -69,6 +68,11 @@ public class BarChartFragment extends Fragment {
         }
         //setData();
         visualize();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     private void setData(){
