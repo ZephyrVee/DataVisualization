@@ -13,6 +13,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -51,12 +52,22 @@ public class BarChartFragment extends Fragment {
             Bundle b = getArguments();
             int k = b.getInt("kategori");
             ArrayList<Integer> t = b.getIntegerArrayList("tahun");
+            ArrayList<Integer> jk = b.getIntegerArrayList("jenis_kelamin");
             ArrayList<Integer> w = b.getIntegerArrayList("warna");
+            ArrayList<IBarDataSet> barDataSets = new ArrayList<>();+
             for(int i = 0; i < t.size(); i++){
-
+                ArrayList<Integer> al = MainActivity.database.data.get(t.get(i), jk.get(i), k);
+                ArrayList<BarEntry> entries = new ArrayList<>();
+                for(int j = 0; j < al.size(); j++){
+                    entries.add(new BarEntry(j, al.get(j)));
+                }
+                BarDataSet bds = new BarDataSet(entries, t.get(i).toString());
+                bds.setColor(w.get(i));
+                barDataSets.add(bds);
             }
+            barData = new BarData(barDataSets);
         }
-        setData();
+        //setData();
         visualize();
     }
 
