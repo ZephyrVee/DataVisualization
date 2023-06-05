@@ -15,6 +15,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
@@ -30,6 +32,11 @@ public class BarChartFragment extends Fragment {
     ArrayList<IBarDataSet> barDataSets;
 
     ArrayList<BarEntry> visitors;
+
+    float groupSpace = 0.4f;
+    float barSpace = 0.1f;
+    float barWidth = 0.5f;
+    int datasetCount = 0;
 
     public BarChartFragment(){
         data = MainActivity.database.data;
@@ -52,12 +59,14 @@ public class BarChartFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         barDataSets = new ArrayList<>();
+        int k = 0;
         if(getArguments() != null){
             Bundle b = getArguments();
-            int k = b.getInt("kategori");
+            k = b.getInt("kategori");
             ArrayList<Integer> t = b.getIntegerArrayList("tahun");
             ArrayList<Integer> jk = b.getIntegerArrayList("jenis_kelamin");
             ArrayList<Integer> w = b.getIntegerArrayList("warna");
+            datasetCount = t.size();
             for(int i = 0; i < t.size(); i++){
                 ArrayList<Integer> al = data.get(t.get(i), jk.get(i), k);
                 ArrayList<BarEntry> entries = new ArrayList<>();
@@ -69,9 +78,10 @@ public class BarChartFragment extends Fragment {
                 barDataSets.add(bds);
             }
             barData = new BarData(barDataSets);
+            barData.setBarWidth(barWidth / datasetCount);
         }
         //setData();
-        visualize();
+        visualize(k);
     }
 
     @Override
@@ -96,8 +106,9 @@ public class BarChartFragment extends Fragment {
         barData = new BarData(barDataSet);
     }
 
-    private void visualize(){
+    private void visualize(int k){
         barChart = getView().findViewById(R.id.barChart);
+        barChart.setData(barData);
 
         barChart.getAxisRight().setEnabled(false);
         YAxis leftAxis = barChart.getAxisLeft();
@@ -105,16 +116,19 @@ public class BarChartFragment extends Fragment {
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(DatasetKetenagakerjaanKabupaten.getTableList(k)));
+        xAxis.setAxisMaximum(DatasetKetenagakerjaanKabupaten.getSize(k));
+        xAxis.setGranularityEnabled(true);
 
-        barChart.setFitBars(false);
-        barChart.setData(barData);
+        barChart.setFitBars(true);
         barChart.getDescription().setText("Bar Chart");
+        barChart.setDrawGridBackground(false);
         if(!barDataSets.isEmpty()){
             if(barDataSets.size() > 1){
-                barChart.groupBars(0, 0.5f, 0.03f);
+                xAxis.setCenterAxisLabels(true);
+                barChart.groupBars(0, groupSpace, barSpace / datasetCount);
             }
         }
-
         barChart.invalidate();
         barChart.animateY(1000);
     }
