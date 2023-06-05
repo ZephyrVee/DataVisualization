@@ -269,6 +269,7 @@ public class InputFragment extends Fragment {
     private void setBundle(){
         Bundle bundle = new Bundle();
         if(chart.equals("Bar")){
+            bundle.putString("tipe", "Multiple");
             bundle.putInt("kategori", kategori);
             bundle.putIntegerArrayList("tahun", tahun);
             bundle.putIntegerArrayList("jenis_kelamin", jenisKelamin);

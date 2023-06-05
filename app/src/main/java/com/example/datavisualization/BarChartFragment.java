@@ -36,7 +36,6 @@ public class BarChartFragment extends Fragment {
     float groupSpace = 0.4f;
     float barSpace = 0.1f;
     float barWidth = 0.5f;
-    int datasetCount = 0;
 
     public BarChartFragment(){
         data = MainActivity.database.data;
@@ -59,29 +58,61 @@ public class BarChartFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         barDataSets = new ArrayList<>();
-        int k = 0;
-        if(getArguments() != null){
+        if(getArguments() != null && getArguments().containsKey("tahun")){
             Bundle b = getArguments();
-            k = b.getInt("kategori");
+            String type = b.getString("tipe");
+            int k = b.getInt("kategori");
             ArrayList<Integer> t = b.getIntegerArrayList("tahun");
             ArrayList<Integer> jk = b.getIntegerArrayList("jenis_kelamin");
             ArrayList<Integer> w = b.getIntegerArrayList("warna");
-            datasetCount = t.size();
-            for(int i = 0; i < t.size(); i++){
-                ArrayList<Integer> al = data.get(t.get(i), jk.get(i), k);
-                ArrayList<BarEntry> entries = new ArrayList<>();
-                for(int j = 0; j < al.size(); j++){
-                    entries.add(new BarEntry(j, al.get(j)));
+            if(type.equals("Multiple")){
+                ArrayList<IBarDataSet> iBarDataSet = new ArrayList<>();
+                for(int i = 0; i < t.size(); i++){
+                    ArrayList<BarEntry> barEntry = new ArrayList<>();
+                    ArrayList<Integer> dataSet;
+                    if(jk.get(i) < 2){
+                        dataSet = data.get(t.get(i), jk.get(i), k);
+                    }
+                    else {
+                        dataSet = data.get(t.get(i), k);
+                    }
+                    for(int j = 0; j < dataSet.size(); j++){
+                        barEntry.add(new BarEntry(j, dataSet.get(j)));
+                    }
+                    BarDataSet bds = new BarDataSet(barEntry, t.get(i).toString());
+                    bds.setColor(w.get(i));
+                    iBarDataSet.add(bds);
                 }
-                BarDataSet bds = new BarDataSet(entries, t.get(i).toString());
-                bds.setColor(w.get(i));
-                barDataSets.add(bds);
+                multiple(iBarDataSet, k);
             }
-            barData = new BarData(barDataSets);
-            barData.setBarWidth(barWidth / datasetCount);
+            else if(type.equals("Stacked")){
+                ArrayList<IBarDataSet> iBarDataSet = new ArrayList<>();
+                ArrayList<BarEntry> barEntry = new ArrayList<>();
+                ArrayList<ArrayList<Integer>> stackedBarDataSet = new ArrayList<>();
+                for(int i = 0; i < t.size(); i++){
+                    stackedBarDataSet.add(data.get(t.get(i), jk.get(i), k));
+                }
+                for(int i = 0; i < DatasetKetenagakerjaanKabupaten.getSize(k); i++){
+                    float[] stackedEntry = new float[stackedBarDataSet.size()];
+                    for(int j = 0; j < stackedBarDataSet.size(); j++){
+                        stackedEntry[j] = stackedBarDataSet.get(j).get(i);
+                    }
+                    barEntry.add(new BarEntry(i, stackedEntry));
+                }
+                int[] colors = new int[w.size()];
+                for(int i = 0; i < w.size(); i++){
+                    colors[i] = w.get(i);
+                }
+                BarDataSet barDataSet = new BarDataSet(barEntry, "Stacked Bar Chart");
+                barDataSet.setColors(colors);
+                barDataSet.setStackLabels(DatasetKetenagakerjaanKabupaten.getTableList(k));
+
+                iBarDataSet.add(barDataSet);
+                stacked(iBarDataSet, k);
+            }
         }
         //setData();
-        visualize(k);
+        //visualize(k);
     }
 
     @Override
@@ -106,8 +137,14 @@ public class BarChartFragment extends Fragment {
         barData = new BarData(barDataSet);
     }
 
-    private void visualize(int k){
-        barChart = getView().findViewById(R.id.barChart);
+    private void multiple(ArrayList<IBarDataSet> iBarDataSet, int k){
+        int dataSetCount = iBarDataSet.size();
+        BarData barData = new BarData(iBarDataSet);
+        if(iBarDataSet.size() > 1) {
+            barData.setBarWidth(barWidth / dataSetCount);
+        }
+
+        BarChart barChart = getView().findViewById(R.id.barChart);
         barChart.setData(barData);
 
         barChart.getAxisRight().setEnabled(false);
@@ -123,13 +160,35 @@ public class BarChartFragment extends Fragment {
         barChart.setFitBars(true);
         barChart.getDescription().setText("Bar Chart");
         barChart.setDrawGridBackground(false);
-        if(!barDataSets.isEmpty()){
-            if(barDataSets.size() > 1){
-                xAxis.setCenterAxisLabels(true);
-                barChart.groupBars(0, groupSpace, barSpace / datasetCount);
-            }
+        if(iBarDataSet.size() > 1){
+            xAxis.setCenterAxisLabels(true);
+            barChart.groupBars(0, groupSpace, barSpace / dataSetCount);
         }
         barChart.invalidate();
+        barChart.animateY(1000);
+    }
+    private void stacked(ArrayList<IBarDataSet> iBarDataSet, int k){
+        BarData barData = new BarData(iBarDataSet);
+        barData.setValueTextColor(Color.WHITE);
+
+        BarChart barChart = getView().findViewById(R.id.barChart);
+        barChart.setData(barData);
+        barChart.setDrawValueAboveBar(false);
+        barChart.getAxisRight().setEnabled(false);
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setAxisMinimum(0f);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(DatasetKetenagakerjaanKabupaten.getTableList(k)));
+        xAxis.setAxisMaximum(DatasetKetenagakerjaanKabupaten.getSize(k));
+        xAxis.setGranularityEnabled(true);
+
+        barChart.setFitBars(false);
+        barChart.setData(barData);
+        barChart.getDescription().setText("Bar Chart");
+        barChart.setDrawGridBackground(false);
+
         barChart.animateY(1000);
     }
 }
