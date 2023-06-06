@@ -24,22 +24,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/visualisasi_pilih_button"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/input_category"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/down_arrow"
-                    android:gravity="center"
-                    android:text="Pilih"
-                    android:textColor="@color/black"
-                    android:textSize="10dp"
-                    app:backgroundTint="@color/white"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="1dp"/>
+                    android:orientation="horizontal"
+                    >
+
+                </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/visualisasi_linear_layout"
+                    android:id="@+id/input_fields"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -55,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/add"
-                        android:background="@drawable/image_button_border" />
+                        android:background="@drawable/image_button_selector" />
                 </RelativeLayout>
 
             </LinearLayout>
