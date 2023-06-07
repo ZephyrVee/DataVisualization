@@ -26,9 +26,9 @@ public class VisualisasiActivity extends AppCompatActivity {
         String c = bundle.getString("Chart");
 
         fragment = new ArrayList<>();
-        fragment.add(new InputFragment(c));
         switch(c){
             case "Bar":
+                fragment.add(new BarInputFragment());
                 fragment.add(new BarChartFragment());
                 break;
             default:
