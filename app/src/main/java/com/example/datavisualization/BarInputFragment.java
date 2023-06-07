@@ -28,9 +28,10 @@ public class BarInputFragment extends Fragment {
 
     DatasetKetenagakerjaanKabupaten data;
 
-    LinearLayout category, fields;
-    ImageButton addButton;
+    LinearLayout category, fields, type;
+    ImageButton addButton, multiple, stacked;
     int kategori;
+    String tipe;
     ArrayList<Integer> tahun, color, colorList, jenisKelamin;
     String[] colorName, jkName;
 
@@ -71,6 +72,8 @@ public class BarInputFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        tipe = "Multiple";
         barInit();
         Bundle bundle = getArguments();
         if(bundle.containsKey("tahun")){
@@ -99,6 +102,10 @@ public class BarInputFragment extends Fragment {
     private void barInit(){
         fields = getView().findViewById(R.id.input_fields);
         category = getView().findViewById(R.id.input_category);
+        type = getView().findViewById(R.id.input_bar_type);
+        type.setVisibility(View.INVISIBLE);
+        multiple = getView().findViewById(R.id.input_bar_multiple);
+        stacked = getView().findViewById(R.id.input_bar_stacked);
         addButton = getView().findViewById(R.id.visualisasi_add_button);
         addButton.setVisibility(View.INVISIBLE);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -108,6 +115,29 @@ public class BarInputFragment extends Fragment {
                 addBar(fields.getChildCount());
             }
         });
+        multiple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipe = "Multiple";
+                LinearLayout.LayoutParams mpr = new LinearLayout.LayoutParams(intToDp(48), intToDp(48));
+                mpr.rightMargin = intToDp(16);
+                multiple.setLayoutParams(mpr);
+                stacked.setLayoutParams(new LinearLayout.LayoutParams(intToDp(32), intToDp(32)));
+                setBundle();
+            }
+        });
+        stacked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tipe = "Stacked";
+                LinearLayout.LayoutParams mpr = new LinearLayout.LayoutParams(intToDp(32), intToDp(32));
+                mpr.rightMargin = intToDp(16);
+                multiple.setLayoutParams(mpr);
+                stacked.setLayoutParams(new LinearLayout.LayoutParams(intToDp(48), intToDp(48)));
+                setBundle();
+            }
+        });
+
         //category
         Button b = new Button(getContext());
         LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -169,6 +199,9 @@ public class BarInputFragment extends Fragment {
         ll.addView(addPilihWarnaBar(idx, c));
         ll.addView(addDeleteBar(idx));
         fields.addView(ll);
+        if(fields.getChildCount() > 1){
+            type.setVisibility(View.VISIBLE);
+        }
     }
     private Button addPilihTahunBar(int idx, String text){
         LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -311,6 +344,9 @@ public class BarInputFragment extends Fragment {
                 color.remove(idx);
                 setBundle();
                 fields.removeViewAt(idx);
+                if(fields.getChildCount() < 2){
+                    type.setVisibility(View.INVISIBLE);
+                }
             }
         });
         return b;
@@ -318,7 +354,7 @@ public class BarInputFragment extends Fragment {
 
     private void setBundle(){
         Bundle bundle = new Bundle();
-        bundle.putString("tipe", "Multiple");
+        bundle.putString("tipe", tipe);
         bundle.putInt("kategori", kategori);
 
         ArrayList<Integer> t = (ArrayList<Integer>) tahun.clone();
