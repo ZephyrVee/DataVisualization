@@ -36,6 +36,7 @@ public class BarInputFragment extends Fragment {
 
     public BarInputFragment() {
         // Required empty public constructor
+        setArguments(new Bundle());
         kategori = -1;
         data = MainActivity.database.data;
         tahun = new ArrayList<>();
@@ -71,16 +72,28 @@ public class BarInputFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         barInit();
-        if(!tahun.isEmpty()){
+        Bundle bundle = getArguments();
+        if(bundle.containsKey("tahun")){
+            ((Button)category.getChildAt(0)).setText(DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
+            tahun = (ArrayList<Integer>)bundle.getIntegerArrayList("tahun").clone();
+            jenisKelamin = (ArrayList<Integer>)bundle.getIntegerArrayList("jenis_kelamin").clone();
+            color = (ArrayList<Integer>)bundle.getIntegerArrayList("warna").clone();
+            fields.removeAllViews();
             for(int i = 0; i < tahun.size(); i++){
-                addBar(i, tahun.get(i).toString(), jkName[i], color.get(i));
+                addBar(i, tahun.get(i).toString(), jkName[jenisKelamin.get(i)], color.get(i));
+                ((LinearLayout)fields.getChildAt(i)).getChildAt(4).setVisibility(View.VISIBLE);
             }
+            addButton.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override
     public void onDestroyView() { // Tab changed
         super.onDestroyView();
+        tahun.clear();
+        jenisKelamin.clear();
+        color.clear();
     }
 
     private void barInit(){
@@ -136,14 +149,14 @@ public class BarInputFragment extends Fragment {
         //category
     }
     public void addBar(int idx){
-        addBar(idx, "Pilih Tahun", "Jenis Kelamin", Color.BLACK);
-        ((LinearLayout)fields.getChildAt(idx)).getChildAt(2).setVisibility(View.INVISIBLE);
-    }
-    public void addBar(int idx, String t, String jk, Integer c){
         tahun.add(-1);
         jenisKelamin.add(-1);
         color.add(-1);
 
+        addBar(idx, "Pilih Tahun", "Jenis Kelamin", Color.BLACK);
+        ((LinearLayout)fields.getChildAt(idx)).getChildAt(2).setVisibility(View.INVISIBLE);
+    }
+    public void addBar(int idx, String t, String jk, Integer c){
         LinearLayout ll = new LinearLayout(getContext());
         LinearLayout.LayoutParams llpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         ll.setLayoutParams(llpr);
@@ -185,6 +198,9 @@ public class BarInputFragment extends Fragment {
                         tahun.set(idx, Integer.parseInt(menuItem.getTitle().toString()));
                         b.setText(menuItem.getTitle().toString());
                         ((LinearLayout)b.getParent()).getChildAt(1).setVisibility(View.VISIBLE);
+                        if(color.get(idx) != -1){
+                            setBundle();
+                        }
                         return true;
                     }
                 });
@@ -221,6 +237,9 @@ public class BarInputFragment extends Fragment {
                         b.setText(menuItem.getTitle().toString());
                         ((LinearLayout)b.getParent()).getChildAt(2).setVisibility(View.VISIBLE);
                         ((LinearLayout)b.getParent()).getChildAt(3).setVisibility(View.VISIBLE);
+                        if(color.get(idx) != -1){
+                            setBundle();
+                        }
                         return true;
                     }
                 });
@@ -301,9 +320,13 @@ public class BarInputFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putString("tipe", "Multiple");
         bundle.putInt("kategori", kategori);
-        bundle.putIntegerArrayList("tahun", tahun);
-        bundle.putIntegerArrayList("jenis_kelamin", jenisKelamin);
-        bundle.putIntegerArrayList("warna", color);
+
+        ArrayList<Integer> t = (ArrayList<Integer>) tahun.clone();
+        ArrayList<Integer> jk = (ArrayList<Integer>) jenisKelamin.clone();
+        ArrayList<Integer> c = (ArrayList<Integer>) color.clone();
+        bundle.putIntegerArrayList("tahun", t);
+        bundle.putIntegerArrayList("jenis_kelamin", jk);
+        bundle.putIntegerArrayList("warna", c);
         setArguments(bundle);
     }
 
