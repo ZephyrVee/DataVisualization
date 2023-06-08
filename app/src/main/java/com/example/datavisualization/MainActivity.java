@@ -4,8 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.view.Gravity;
 import android.view.Menu;
@@ -13,8 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -35,6 +39,8 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity {
     public static Map<String, Thread> thread;
     public static DatabaseKabupaten database;
+
+    Handler handler;
 
     Intent kelolaDataActivity, loginActivity, visualisasiActivity;
     ArrayList<String> content = null;
@@ -67,10 +73,65 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         thread = new HashMap<>();
-        database = new DatabaseKabupaten();
         kelolaDataActivity = new Intent(getApplicationContext(), KelolaDataActivity.class);
         loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
         visualisasiActivity = new Intent(getApplicationContext(), VisualisasiActivity.class);
+
+
+        handler = new Handler();
+        /*
+        thread.put("thread_checker", new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Object[] threads = thread.keySet().toArray();
+                for(Object t : threads){
+                    String s = t.toString();
+                    if(!thread.get(s).isAlive()){
+                        thread.remove(s);
+                    }
+                }
+                handler.postDelayed(this, 3000);
+            }
+        }));
+
+         */
+        thread.put("main_loading_database", new Thread(new Runnable() {
+            @Override
+            public void run() {
+                database = new DatabaseKabupaten();
+                thread.put("main_loading_screen", new Thread(new Runnable() {
+                    @Override
+                    public synchronized void run() {
+                        if(database.noConnection){
+                            TextView tv = findViewById(R.id.main_loading);
+                            tv.setText("Tidak ada jaringan internet");
+                            tv.setTextColor(Color.RED);
+                            database.init();
+                        }
+                        else{
+                            TextView tv = findViewById(R.id.main_loading);
+                            tv.setText("Sedang Memperoleh Data. Mohon tunggu ...");
+                            tv.setTextColor(Color.BLACK);
+                        }
+
+                        if(database.retrieved){
+                            ((LinearLayout)findViewById(R.id.main_loading).getParent()).removeViewAt(0);
+                        }
+                        else {
+                            handler.postDelayed(this, 1000);
+                        }
+                    }
+                }));
+                try {
+                    thread.get("main_loading_screen").start();
+                }
+                catch(IllegalThreadStateException e){
+                    thread.get("main_loading_screen").run();
+                }
+            }
+        }));
+
+        runAllThread();
 
         findViewById(R.id.main_bar_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +176,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         showMenu();
         return true;
+    }
+
+    private void runAllThread(){
+        for(Object o : thread.keySet().toArray()){
+            String s = o.toString();
+            try {
+                thread.get(s).start();
+            }
+            catch(IllegalThreadStateException e){
+                thread.get(s).run();
+            }
+        }
     }
 
     private void showMenu(){

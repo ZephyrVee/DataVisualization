@@ -5,10 +5,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,6 +37,32 @@ public class VisualisasiActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         String c = bundle.getString("Chart");
+
+        Handler handler = new Handler();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public synchronized void run() {
+                if(MainActivity.database.noConnection){
+                    TextView tv = findViewById(R.id.visualisasi_loading);
+                    tv.setText("Tidak ada jaringan internet");
+                    tv.setTextColor(Color.RED);
+                }
+                else{
+                    TextView tv = findViewById(R.id.visualisasi_loading);
+                    tv.setText("Sedang Memperoleh Data. Mohon tunggu ...");
+                    tv.setTextColor(Color.BLACK);
+                }
+
+                if(MainActivity.database.retrieved){
+                    ((LinearLayout)findViewById(R.id.visualisasi_loading).getParent()).removeViewAt(0);
+                }
+                else {
+                    handler.postDelayed(this, 1000);
+                }
+            }
+        });
+        MainActivity.thread.put("visualisasi_loading", thread);
+        MainActivity.thread.get("visualisasi_loading").start();
 
         fragment = new ArrayList<>();
         switch(c){
@@ -74,6 +104,13 @@ public class VisualisasiActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MainActivity.thread.get("visualisasi_loading").interrupt();
+        MainActivity.thread.remove("visualisasi_loading");
     }
 
     private void switchFragment(int position){

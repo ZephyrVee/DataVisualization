@@ -7,15 +7,21 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
+    private static final String USERNAME = Enkripsi.encrypt("nama_administrator");
+    private static final String PASSWORD = Enkripsi.encrypt("password");
+
     EditText username, password;
 
     TextView status;
@@ -56,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(){
+        showStatus("No Connection");
         CollectionReference tabelAkun = MainActivity.database.akun;
         tabelAkun.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
@@ -66,8 +73,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     List<DocumentSnapshot> ds = queryDocumentSnapshots.getDocuments();
                     for(int i = 0; i < ds.size(); i++){
-                        String userName = ds.get(i).getString(Key.USERNAME.key());
-                        String userPass = ds.get(i).getString(Key.PASSWORD.key());
+                        String userName = ds.get(i).getString(USERNAME);
+                        String userPass = ds.get(i).getString(PASSWORD);
                         if((name.equals(userName)) && (pass.equals(userPass))){
                             setResult(RESULT_OK);
                             finish();

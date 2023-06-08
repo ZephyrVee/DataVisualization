@@ -158,8 +158,8 @@ public class KelolaDataActivity extends AppCompatActivity {
                 }
             }
         });
-        page.getChildAt(0).setVisibility(View.INVISIBLE);
         page.getChildAt(1).setVisibility(View.VISIBLE);
+        page.removeViewAt(0);
     }
     private void increment(){
         handler.post(() -> progressBar.incrementProgressBy(1));
@@ -364,7 +364,7 @@ public class KelolaDataActivity extends AppCompatActivity {
         changeTable(kategoriL, DatasetKetenagakerjaanKabupaten.LAKI_LAKI);
         changeTable(kategoriP, DatasetKetenagakerjaanKabupaten.PEREMPUAN);
 
-        for(int i = 2; i < page.getChildCount(); i++){
+        for(int i = 0; i < page.getChildCount(); i++){
             page.getChildAt(i).setVisibility(View.VISIBLE);
         }
     }

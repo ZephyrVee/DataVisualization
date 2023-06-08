@@ -1,10 +1,17 @@
 package com.example.datavisualization;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
@@ -25,8 +32,20 @@ public class DatabaseKabupaten {
     private static final String databaseName = Enkripsi.encrypt("Ketenagakerjaan");
     private static final String tahunDocument = Enkripsi.encrypt("Tahun");
 
+    boolean retrieved = false;
+    boolean noConnection = false;
+    int tahunLength = 0;
+    int tahunLoaded = 0;
+
     public DatabaseKabupaten(){
+        init();
+    }
+
+    public synchronized void init(){
         ff = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder(ff.getFirestoreSettings()).setPersistenceEnabled(false).build();
+        ff.setFirestoreSettings(settings);
+
         db = ff.collection(collectionName).document(documentName);
         akun = db.collection(akunCollection);
         data = new DatasetKetenagakerjaanKabupaten();
@@ -52,18 +71,31 @@ public class DatabaseKabupaten {
         }
     }
     public synchronized void load(){
+        noConnection = false;
         db.collection(databaseName).document(tahunDocument).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists()){
                     Object[] object = documentSnapshot.getData().keySet().toArray();
+                    tahunLength = object.length;
                     for(Object o : object){
                         String s = o.toString();
                         int t = Integer.parseInt(Enkripsi.decrypt(s));
                         data.newTahun(t);
                         load(t);
+                        if(noConnection){
+                            break;
+                        }
+                    }
+                    if(tahunLoaded == tahunLength){
+                        retrieved = true;
                     }
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                noConnection = true;
             }
         });
     }
@@ -87,8 +119,21 @@ public class DatabaseKabupaten {
                                 }
                                 data.set(al, t, fj, fk);
                             }
+                            noConnection = false;
+                            tahunLoaded++;
+                            if(tahunLoaded == tahunLength){
+                                retrieved = true;
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(Exception e) {
+                            noConnection = true;
                         }
                     });
+                    if(noConnection){
+                        return;
+                    }
                 }
             }
         }

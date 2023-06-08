@@ -17,7 +17,6 @@
         android:textSize="36dp"
         android:textStyle="bold"
         app:fontFamily="@font/nunito_sans_black"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,184 +25,193 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/kelola_data_linear_layout_background"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/kelola_data_title">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <LinearLayout
-                android:id="@+id/kelola_data_page"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="32dp">
-
+                >
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    />
                 <LinearLayout
-                    android:id="@+id/kelola_data_loading_view"
+                    android:id="@+id/kelola_data_page"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Initializing Tables. Please wait" />
-
-                    <ProgressBar
-                        android:id="@+id/kelola_data_progress_bar"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/kelola_data_tahun_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:drawableRight="@drawable/down_arrow"
-                    android:gravity="center"
-                    android:text="Pilih Tahun"
-                    android:textColor="@color/black"
-                    app:backgroundTint="@color/white"
-                    app:strokeColor="@color/black"
-                    app:strokeWidth="1dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/kelola_data_linear_layout_lakilaki_background"
                     android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:text="Laki-laki"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        app:fontFamily="@font/nunito_sans_black" />
+                    android:padding="32dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/kelola_data_linear_layout_background"
+                    >
 
                     <LinearLayout
+                        android:id="@+id/kelola_data_loading_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginBottom="16dp"
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/kelola_data_kategori_lakilaki_button"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/down_arrow"
                             android:gravity="center"
-                            android:text="Pilih Kategori"
-                            android:textColor="@color/black"
-                            android:textSize="10dp"
-                            app:backgroundTint="@color/white"
-                            app:strokeColor="@color/black"
-                            app:strokeWidth="1dp" />
+                            android:text="Initializing Tables. Please wait" />
+
+                        <ProgressBar
+                            android:id="@+id/kelola_data_progress_bar"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
-
-                    <HorizontalScrollView
-                        android:id="@+id/kelola_data_lakilaki_scroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/kelola_data_linear_layout_perempuan_background"
-                    android:orientation="vertical"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:gravity="center"
-                        android:text="Perempuan"
-                        android:textColor="@color/black"
-                        android:textSize="20dp"
-                        android:textStyle="bold"
-                        app:fontFamily="@font/nunito_sans_black" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/kelola_data_kategori_perempuan_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableRight="@drawable/down_arrow"
-                            android:gravity="center"
-                            android:text="Pilih Kategori"
-                            android:textColor="@color/black"
-                            android:textSize="10dp"
-                            app:backgroundTint="@color/white"
-                            app:strokeColor="@color/black"
-                            app:strokeWidth="1dp" />
-                    </LinearLayout>
-
-                    <HorizontalScrollView
-                        android:id="@+id/kelola_data_perempuan_scroll"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
 
                     <Button
-                        android:id="@+id/kelola_data_simpan_button"
+                        android:id="@+id/kelola_data_tahun_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:drawableRight="@drawable/down_arrow"
                         android:gravity="center"
-                        android:text="Simpan"
+                        android:text="Pilih Tahun"
                         android:textColor="@color/black"
-                        android:textSize="11dp"
                         app:backgroundTint="@color/white"
                         app:strokeColor="@color/black"
                         app:strokeWidth="1dp" />
 
-                    <Space
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/kelola_data_linear_layout_lakilaki_background"
+                        android:orientation="vertical"
+                        android:padding="8dp">
 
-                    <Button
-                        android:id="@+id/kelola_data_hapus_button"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:text="Laki-laki"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            app:fontFamily="@font/nunito_sans_black" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/kelola_data_kategori_lakilaki_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@drawable/down_arrow"
+                                android:gravity="center"
+                                android:text="Pilih Kategori"
+                                android:textColor="@color/black"
+                                android:textSize="10dp"
+                                app:backgroundTint="@color/white"
+                                app:strokeColor="@color/black"
+                                app:strokeWidth="1dp" />
+                        </LinearLayout>
+
+                        <HorizontalScrollView
+                            android:id="@+id/kelola_data_lakilaki_scroll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Hapus"
-                        android:textColor="@color/black"
-                        android:textSize="11dp"
-                        app:backgroundTint="@color/white"
-                        app:strokeColor="@color/black"
-                        app:strokeWidth="1dp" />
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/kelola_data_linear_layout_perempuan_background"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:gravity="center"
+                            android:text="Perempuan"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            app:fontFamily="@font/nunito_sans_black" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/kelola_data_kategori_perempuan_button"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableRight="@drawable/down_arrow"
+                                android:gravity="center"
+                                android:text="Pilih Kategori"
+                                android:textColor="@color/black"
+                                android:textSize="10dp"
+                                app:backgroundTint="@color/white"
+                                app:strokeColor="@color/black"
+                                app:strokeWidth="1dp" />
+                        </LinearLayout>
+
+                        <HorizontalScrollView
+                            android:id="@+id/kelola_data_perempuan_scroll"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <Button
+                            android:id="@+id/kelola_data_simpan_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Simpan"
+                            android:textColor="@color/black"
+                            android:textSize="11dp"
+                            app:backgroundTint="@color/white"
+                            app:strokeColor="@color/black"
+                            app:strokeWidth="1dp" />
+
+                        <Space
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/kelola_data_hapus_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="Hapus"
+                            android:textColor="@color/black"
+                            android:textSize="11dp"
+                            app:backgroundTint="@color/white"
+                            app:strokeColor="@color/black"
+                            app:strokeWidth="1dp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
         </ScrollView>
     </RelativeLayout>
 
