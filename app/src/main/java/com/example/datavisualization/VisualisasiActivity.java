@@ -41,6 +41,8 @@ public class VisualisasiActivity extends AppCompatActivity {
                 fragment.add(new BarChartFragment());
                 break;
             default:
+                fragment.add(new LineInputFragment());
+                fragment.add(new LineChartFragment());
                 break;
         }
 
