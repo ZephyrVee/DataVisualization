@@ -27,7 +27,6 @@ public class BarChartFragment extends Fragment {
 
     BarDataSet barDataSet;
     BarData barData;
-    BarChart barChart;
 
     ArrayList<IBarDataSet> barDataSets;
 
@@ -36,6 +35,17 @@ public class BarChartFragment extends Fragment {
     float groupSpace = 0.4f;
     float barSpace = 0.1f;
     float barWidth = 0.5f;
+
+    Integer[] colorList = new Integer[]{
+        Color.BLUE,
+                Color.CYAN,
+                Color.DKGRAY,
+                Color.GRAY,
+                Color.GREEN,
+                Color.MAGENTA,
+                Color.RED,
+                Color.YELLOW
+    };
 
     public BarChartFragment(){
         data = MainActivity.database.data;
@@ -79,8 +89,8 @@ public class BarChartFragment extends Fragment {
                     for(int j = 0; j < dataSet.size(); j++){
                         barEntry.add(new BarEntry(j, dataSet.get(j)));
                     }
-                    BarDataSet bds = new BarDataSet(barEntry, t.get(i).toString());
-                    bds.setColor(w.get(i));
+                    BarDataSet bds = new BarDataSet(barEntry, t.get(i) + " " + DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN[jk.get(i)]);
+                    bds.setColor(colorList[w.get(i)]);
                     iBarDataSet.add(bds);
                 }
                 multiple(iBarDataSet, k);
@@ -89,8 +99,10 @@ public class BarChartFragment extends Fragment {
                 ArrayList<IBarDataSet> iBarDataSet = new ArrayList<>();
                 ArrayList<BarEntry> barEntry = new ArrayList<>();
                 ArrayList<ArrayList<Integer>> stackedBarDataSet = new ArrayList<>();
+                String[] labels = new String[t.size()];
                 for(int i = 0; i < t.size(); i++){
                     stackedBarDataSet.add(data.get(t.get(i), jk.get(i), k));
+                    labels[i] = t.get(i) + " " + DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN[jk.get(i)];
                 }
                 for(int i = 0; i < DatasetKetenagakerjaanKabupaten.getSize(k); i++){
                     float[] stackedEntry = new float[stackedBarDataSet.size()];
@@ -101,11 +113,11 @@ public class BarChartFragment extends Fragment {
                 }
                 int[] colors = new int[w.size()];
                 for(int i = 0; i < w.size(); i++){
-                    colors[i] = w.get(i);
+                    colors[i] = colorList[w.get(i)];
                 }
-                BarDataSet barDataSet = new BarDataSet(barEntry, "Stacked Bar Chart");
+                BarDataSet barDataSet = new BarDataSet(barEntry, "");
                 barDataSet.setColors(colors);
-                barDataSet.setStackLabels(DatasetKetenagakerjaanKabupaten.getTableList(k));
+                barDataSet.setStackLabels(labels);
 
                 iBarDataSet.add(barDataSet);
                 stacked(iBarDataSet, k);

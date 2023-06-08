@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -29,11 +30,16 @@ public class BarInputFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     LinearLayout category, fields, type;
-    ImageButton addButton, multiple, stacked;
+    ImageButton multiple, stacked;
     int kategori;
     String tipe;
-    ArrayList<Integer> tahun, color, colorList, jenisKelamin;
+    ArrayList<Integer> tahun, color, jenisKelamin;
+    Integer[] colorList;
     String[] colorName, jkName;
+
+    final Integer DEFAULT_TAHUN = 2021;
+    final Integer DEFAULT_JENIS_KELAMIN = 0;
+    final Integer DEFAULT_WARNA = 0;
 
     public BarInputFragment() {
         // Required empty public constructor
@@ -43,16 +49,18 @@ public class BarInputFragment extends Fragment {
         tahun = new ArrayList<>();
         jenisKelamin = new ArrayList<>();
         color = new ArrayList<>();
+        tipe = "Multiple";
 
-        colorList = new ArrayList<>();
-        colorList.add(Color.BLUE);
-        colorList.add(Color.CYAN);
-        colorList.add(Color.DKGRAY);
-        colorList.add(Color.GRAY);
-        colorList.add(Color.GREEN);
-        colorList.add(Color.MAGENTA);
-        colorList.add(Color.RED);
-        colorList.add(Color.YELLOW);
+        colorList = new Integer[]{
+            Color.BLUE,
+            Color.CYAN,
+            Color.DKGRAY,
+            Color.GRAY,
+            Color.GREEN,
+            Color.MAGENTA,
+            Color.RED,
+            Color.YELLOW
+        };
         colorName = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
 
         jkName = new String[]{"Laki-laki", "Perempuan", "Laki-laki + Perempuan"};
@@ -72,23 +80,7 @@ public class BarInputFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        tipe = "Multiple";
         barInit();
-        Bundle bundle = getArguments();
-        if(bundle.containsKey("tahun")){
-            ((Button)category.getChildAt(0)).setText(DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
-            tahun = (ArrayList<Integer>)bundle.getIntegerArrayList("tahun").clone();
-            jenisKelamin = (ArrayList<Integer>)bundle.getIntegerArrayList("jenis_kelamin").clone();
-            color = (ArrayList<Integer>)bundle.getIntegerArrayList("warna").clone();
-            fields.removeAllViews();
-            for(int i = 0; i < tahun.size(); i++){
-                addBar(i, tahun.get(i).toString(), jkName[jenisKelamin.get(i)], color.get(i));
-                ((LinearLayout)fields.getChildAt(i)).getChildAt(4).setVisibility(View.VISIBLE);
-            }
-            addButton.setVisibility(View.VISIBLE);
-        }
-
     }
 
     @Override
@@ -100,21 +92,12 @@ public class BarInputFragment extends Fragment {
     }
 
     private void barInit(){
-        fields = getView().findViewById(R.id.input_fields);
-        category = getView().findViewById(R.id.input_category);
+        category = getView().findViewById(R.id.input_bar_category);
+        fields = getView().findViewById(R.id.input_bar_fields);
+
         type = getView().findViewById(R.id.input_bar_type);
         type.setVisibility(View.INVISIBLE);
         multiple = getView().findViewById(R.id.input_bar_multiple);
-        stacked = getView().findViewById(R.id.input_bar_stacked);
-        addButton = getView().findViewById(R.id.visualisasi_add_button);
-        addButton.setVisibility(View.INVISIBLE);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addButton.setVisibility(View.INVISIBLE);
-                addBar(fields.getChildCount());
-            }
-        });
         multiple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +109,7 @@ public class BarInputFragment extends Fragment {
                 setBundle();
             }
         });
+        stacked = getView().findViewById(R.id.input_bar_stacked);
         stacked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +122,11 @@ public class BarInputFragment extends Fragment {
             }
         });
 
+        getBundle();
+        if(kategori != -1){
+            reloadField();
+        }
+
         //category
         Button b = new Button(getContext());
         LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -147,7 +136,12 @@ public class BarInputFragment extends Fragment {
         b.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.down_arrow), null);
         b.setPadding(intToDp(16), intToDp(0), intToDp(16), intToDp(0));
         b.setTextColor(getResources().getColor(R.color.black));
-        b.setText("Pilih Kategori");
+        if(kategori == -1){
+            b.setText("Pilih Kategori");
+        }
+        else {
+            b.setText(DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
+        }
         b.setTextSize(10);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +158,9 @@ public class BarInputFragment extends Fragment {
                             if(selected.equals(DatasetKetenagakerjaanKabupaten.KATEGORI[i])){
                                 kategori = i;
                                 b.setText(selected);
-                                addButton.setVisibility(View.VISIBLE);
+                                if(fields.getChildCount() == 0){
+                                    addNewField(fields.getChildCount());
+                                }
                                 break;
                             }
                         }
@@ -175,45 +171,113 @@ public class BarInputFragment extends Fragment {
             }
         });
         category.addView(b);
-
         //category
     }
-    public void addBar(int idx){
-        tahun.add(-1);
-        jenisKelamin.add(-1);
-        color.add(-1);
-
-        addBar(idx, "Pilih Tahun", "Jenis Kelamin", Color.BLACK);
-        ((LinearLayout)fields.getChildAt(idx)).getChildAt(2).setVisibility(View.INVISIBLE);
+    private void reloadField(){
+        fields.removeAllViews();
+        for(int i = 0; i < tahun.size(); i++){
+            LinearLayout ll = addEmptyField();
+            ll.addView(addDeleteBar(i));
+            ll.addView(addPilihTahunBar(i));
+            ll.addView(addPilihJKBar(i));
+            ll.addView(addPilihWarnaBar(i));
+            fields.addView(ll);
+        }
+        addNewField(fields.getChildCount());
     }
-    public void addBar(int idx, String t, String jk, Integer c){
+    private void addNewField(int idx){
+        LinearLayout ll = addEmptyField();
+        ll.addView(addAddBar(idx));
+        fields.addView(ll);
+        if(fields.getChildCount() > 2){
+            type.setVisibility(View.VISIBLE);
+        }
+        else{
+            type.setVisibility(View.INVISIBLE);
+        }
+    }
+    private LinearLayout addEmptyField(){
         LinearLayout ll = new LinearLayout(getContext());
         LinearLayout.LayoutParams llpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         ll.setLayoutParams(llpr);
-        ll.setOrientation(LinearLayout.HORIZONTAL);
+        ll.setOrientation(LinearLayout.VERTICAL);
         ll.setGravity(Gravity.START);
 
-        ll.addView(addPilihTahunBar(idx, t));
-        ll.addView(addPilihJKBar(idx, jk));
-        ll.addView(addWarnaBar());
-        ll.addView(addPilihWarnaBar(idx, c));
-        ll.addView(addDeleteBar(idx));
-        fields.addView(ll);
-        if(fields.getChildCount() > 1){
-            type.setVisibility(View.VISIBLE);
-        }
+        ll.setBackground(getResources().getDrawable(R.drawable.cell));
+        return ll;
     }
-    private Button addPilihTahunBar(int idx, String text){
+
+    private ImageButton addAddBar(int idx){
+        int marginAndPadding = intToDp(8);
+
+        //Button layout params
         LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         bpr.gravity = Gravity.CENTER;
-        int m = intToDp(8);
-        bpr.setMargins(0, m, m, m);
+        bpr.setMargins(marginAndPadding, marginAndPadding, marginAndPadding, marginAndPadding);
+        //Button layout params
+
+        ImageButton b = new ImageButton(getContext());
+        b.setLayoutParams(bpr);
+        b.setImageDrawable(getResources().getDrawable(R.drawable.add));
+        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tahun.add(DEFAULT_TAHUN);
+                jenisKelamin.add(DEFAULT_JENIS_KELAMIN);
+                color.add(DEFAULT_WARNA);
+                setBundle();
+                ((LinearLayout)b.getParent()).addView(addDeleteBar(idx));
+                ((LinearLayout)b.getParent()).addView(addPilihTahunBar(idx));
+                ((LinearLayout)b.getParent()).addView(addPilihJKBar(idx));
+                ((LinearLayout)b.getParent()).addView(addPilihWarnaBar(idx));
+
+                addNewField(idx + 1);
+                ((LinearLayout)b.getParent()).removeViewAt(0);
+            }
+        });
+        return b;
+    }
+    private ImageButton addDeleteBar(int idx){
+        int marginAndPadding = intToDp(8);
+
+        //Button layout params
+        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        bpr.gravity = Gravity.CENTER;
+        bpr.setMargins(marginAndPadding, marginAndPadding, marginAndPadding, marginAndPadding);
+        //Button layout params
+
+        ImageButton b = new ImageButton(getContext());
+        b.setLayoutParams(bpr);
+        b.setImageDrawable(getResources().getDrawable(R.drawable.remove));
+        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tahun.remove(idx);
+                jenisKelamin.remove(idx);
+                color.remove(idx);
+                setBundle();
+                reloadField();
+            }
+        });
+        return b;
+    }
+    private Button addPilihTahunBar(int idx){
+        int marginAndPadding = intToDp(8);
+
+        //Button layout params
+        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        bpr.gravity = Gravity.CENTER;
+        bpr.setMargins(marginAndPadding, marginAndPadding, marginAndPadding, marginAndPadding);
+        //Button layout params
+
         Button b = new Button(getContext());
         b.setLayoutParams(bpr);
+        b.setPadding(marginAndPadding, 0, marginAndPadding, 0);
         b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
-        b.setText(text);
+        b.setText("Tahun: " + tahun.get(idx));
         b.setTextSize(10);
-        b.setPadding(0, 0, 0, 0);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -229,11 +293,8 @@ public class BarInputFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         tahun.set(idx, Integer.parseInt(menuItem.getTitle().toString()));
-                        b.setText(menuItem.getTitle().toString());
-                        ((LinearLayout)b.getParent()).getChildAt(1).setVisibility(View.VISIBLE);
-                        if(color.get(idx) != -1){
-                            setBundle();
-                        }
+                        b.setText("Tahun: " + tahun.get(idx));
+                        setBundle();
                         return true;
                     }
                 });
@@ -242,20 +303,21 @@ public class BarInputFragment extends Fragment {
         });
         return b;
     }
-    private Button addPilihJKBar(int idx, String text){
-        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    private Button addPilihJKBar(int idx){
+        int marginAndPadding = intToDp(8);
+
+        //Button layout params
+        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         bpr.gravity = Gravity.CENTER;
-        int m = intToDp(8);
-        bpr.setMargins(m, m, m, m);
+        bpr.setMargins(marginAndPadding, marginAndPadding, marginAndPadding, marginAndPadding);
+        //Button layout params
+
         Button b = new Button(getContext());
         b.setLayoutParams(bpr);
+        b.setPadding(marginAndPadding, marginAndPadding, marginAndPadding, marginAndPadding);
         b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
-        b.setText(text);
+        b.setText(" Jenis Kelamin: " + DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN[jenisKelamin.get(idx)] + " ");
         b.setTextSize(10);
-        b.setPadding(0, 0, 0, 0);
-        if(text.equals("Jenis Kelamin")){
-            b.setVisibility(View.INVISIBLE);
-        }
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -267,12 +329,8 @@ public class BarInputFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         jenisKelamin.set(idx, menuItem.getItemId());
-                        b.setText(menuItem.getTitle().toString());
-                        ((LinearLayout)b.getParent()).getChildAt(2).setVisibility(View.VISIBLE);
-                        ((LinearLayout)b.getParent()).getChildAt(3).setVisibility(View.VISIBLE);
-                        if(color.get(idx) != -1){
-                            setBundle();
-                        }
+                        b.setText(" Jenis Kelamin: " + DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN[jenisKelamin.get(idx)] + " ");
+                        setBundle();
                         return true;
                     }
                 });
@@ -281,32 +339,34 @@ public class BarInputFragment extends Fragment {
         });
         return b;
     }
-    private TextView addWarnaBar(){
-        TextView tv = new TextView(getContext());
-        LinearLayout.LayoutParams tvpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        tvpr.setMargins(intToDp(16), 0, intToDp(8), 0);
-        tv.setLayoutParams(tvpr);
-        tv.setTextColor(getResources().getColor(R.color.black));
-        tv.setTextSize(12);
-        tv.setGravity(Gravity.CENTER);
-        tv.setText("Warna:");
-        return tv;
-    }
-    private ImageButton addPilihWarnaBar(int idx, Integer cl){
-        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    private Button addPilihWarnaBar(int idx){
+        int marginAndPadding = intToDp(8);
+
+        //Button layout params
+        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         bpr.gravity = Gravity.CENTER;
-        ImageButton c = new ImageButton(getContext());
-        c.setLayoutParams(bpr);
-        c.setPadding(intToDp(16), intToDp(16), intToDp(16), intToDp(16));
-        c.setBackgroundColor(cl);
-        if(cl == Color.BLACK){
-            c.setVisibility(View.INVISIBLE);
-        }
-        c.setOnClickListener(new View.OnClickListener() {
+        bpr.setMargins(marginAndPadding, marginAndPadding, marginAndPadding, marginAndPadding);
+        //Button layout params
+
+        Button b = new Button(getContext());
+        b.setLayoutParams(bpr);
+        b.setPadding(marginAndPadding, 0, marginAndPadding, 0);
+
+        //design
+        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
+        b.setText("Warna: " + colorName[color.get(idx)]);
+        b.setTextSize(10);
+        Drawable r = getResources().getDrawable(R.drawable.warna);
+        r.mutate();
+        r.setColorFilter(new PorterDuffColorFilter(colorList[color.get(idx)], PorterDuff.Mode.SRC_IN));
+        b.setCompoundDrawablesWithIntrinsicBounds(null, null, r, null);
+        //design
+
+        b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu menu = new PopupMenu(getContext(), view);
-                for(int i = 0; i < colorList.size(); i++){
+                for(int i = 0; i < colorList.length; i++){
                     Drawable r = getResources().getDrawable(R.drawable.warna);
                     r.mutate();
                     menu.getMenu().add(0, i, i, menuIconWithText(r, i, colorName[i]));
@@ -314,39 +374,17 @@ public class BarInputFragment extends Fragment {
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        color.set(idx, colorList.get(item.getItemId()));
-                        c.setBackgroundColor(colorList.get(item.getItemId()));
+                        color.set(idx, item.getItemId());
+                        b.setText("Warna: " + colorName[item.getItemId()]);
+                        Drawable r = getResources().getDrawable(R.drawable.warna);
+                        r.mutate();
+                        r.setColorFilter(new PorterDuffColorFilter(colorList[item.getItemId()], PorterDuff.Mode.SRC_IN));
+                        b.setCompoundDrawablesWithIntrinsicBounds(null, null, r, null);
                         setBundle();
-                        addButton.setVisibility(View.VISIBLE);
-                        ((LinearLayout)c.getParent()).getChildAt(4).setVisibility(View.VISIBLE);
                         return true;
                     }
                 });
                 menu.show();
-            }
-        });
-        return c;
-    }
-    private ImageButton addDeleteBar(int idx){
-        LinearLayout.LayoutParams bpr = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        bpr.setMargins(intToDp(16), 0, intToDp(16), 0);
-        bpr.gravity = Gravity.CENTER;
-        ImageButton b = new ImageButton(getContext());
-        b.setLayoutParams(bpr);
-        b.setImageDrawable(getResources().getDrawable(R.drawable.remove));
-        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
-        b.setVisibility(View.INVISIBLE);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tahun.remove(idx);
-                jenisKelamin.remove(idx);
-                color.remove(idx);
-                setBundle();
-                fields.removeViewAt(idx);
-                if(fields.getChildCount() < 2){
-                    type.setVisibility(View.INVISIBLE);
-                }
             }
         });
         return b;
@@ -357,20 +395,35 @@ public class BarInputFragment extends Fragment {
         bundle.putString("tipe", tipe);
         bundle.putInt("kategori", kategori);
 
-        ArrayList<Integer> t = (ArrayList<Integer>) tahun.clone();
-        ArrayList<Integer> jk = (ArrayList<Integer>) jenisKelamin.clone();
-        ArrayList<Integer> c = (ArrayList<Integer>) color.clone();
-        bundle.putIntegerArrayList("tahun", t);
-        bundle.putIntegerArrayList("jenis_kelamin", jk);
-        bundle.putIntegerArrayList("warna", c);
+        bundle.putIntegerArrayList("tahun", (ArrayList<Integer>)tahun.clone());
+        bundle.putIntegerArrayList("jenis_kelamin", (ArrayList<Integer>)jenisKelamin.clone());
+        bundle.putIntegerArrayList("warna", (ArrayList<Integer>)color.clone());
         setArguments(bundle);
+    }
+    private void getBundle(){
+        Bundle bundle = getArguments();
+        if(bundle.containsKey("tipe")){
+            tipe = bundle.getString("tipe");
+            if(tipe.equals("Stacked")){
+                LinearLayout.LayoutParams mpr = new LinearLayout.LayoutParams(intToDp(32), intToDp(32));
+                mpr.rightMargin = intToDp(16);
+                multiple.setLayoutParams(mpr);
+                stacked.setLayoutParams(new LinearLayout.LayoutParams(intToDp(48), intToDp(48)));
+            }
+        }
+        if(bundle.containsKey("kategori")){
+            kategori = bundle.getInt("kategori");
+        }
+        if(bundle.containsKey("tahun")){tahun = (ArrayList<Integer>)bundle.getIntegerArrayList("tahun").clone();}
+        if(bundle.containsKey("jenis_kelamin")){jenisKelamin = (ArrayList<Integer>)bundle.getIntegerArrayList("jenis_kelamin").clone();}
+        if(bundle.containsKey("warna")){color = (ArrayList<Integer>)bundle.getIntegerArrayList("warna").clone();}
     }
 
     private int intToDp(int d) {
         return (int) (d * this.getResources().getDisplayMetrics().density + 0.5f);
     }
     private CharSequence menuIconWithText(Drawable r, int color, String title) {
-        r.setColorFilter(new PorterDuffColorFilter(colorList.get(color), PorterDuff.Mode.MULTIPLY));
+        r.setColorFilter(new PorterDuffColorFilter(colorList[color], PorterDuff.Mode.SRC_IN));
         r.setBounds(0, 0, r.getIntrinsicWidth(), r.getIntrinsicHeight());
         SpannableString sb = new SpannableString("    " + title);
         ImageSpan imageSpan = new ImageSpan(r, ImageSpan.ALIGN_CENTER);

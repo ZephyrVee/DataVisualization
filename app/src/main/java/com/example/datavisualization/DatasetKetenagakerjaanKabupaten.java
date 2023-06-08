@@ -19,6 +19,7 @@ public class DatasetKetenagakerjaanKabupaten {
     public static final int JAKARTA_UTARA = 0;
 
     public static final String[] KATEGORI = new String[]{"Golongan Umur", "Pendidikan Tertinggi Yang Ditamatkan", "Jenis Kegiatan Selama Seminggu Lalu", "Jumlah Jam Kerja", "Lapangan Pekerjaan Utama", "Status Pekerjaan Utama", "Jenis Pekerjaan Utama", "Pengangguran"};
+    public static final String[] JENIS_KELAMIN = new String[]{"Laki-laki", "Perempuan", "Laki-laki + Perempuan"};
 
     class Tahun{
         final Integer value;

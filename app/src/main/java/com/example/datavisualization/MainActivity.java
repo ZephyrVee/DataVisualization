@@ -34,12 +34,9 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static Map<String, Thread> thread;
-    public static Database database1;
     public static DatabaseKabupaten database;
 
-    Intent barChart;
-    Intent pieChart;
-    Intent lineChart, kelolaDataActivity, loginActivity, visualisasiActivity;
+    Intent kelolaDataActivity, loginActivity, visualisasiActivity;
     ArrayList<String> content = null;
     ActivityResultLauncher<Intent> login = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -71,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
         thread = new HashMap<>();
         database = new DatabaseKabupaten();
-        barChart = new Intent(getApplicationContext(), BarChartActivity.class);
-        pieChart = new Intent(getApplicationContext(), PieChartActivity.class);
-        lineChart = new Intent(getApplicationContext(), LineChartActivity.class);
         kelolaDataActivity = new Intent(getApplicationContext(), KelolaDataActivity.class);
         loginActivity = new Intent(getApplicationContext(), LoginActivity.class);
         visualisasiActivity = new Intent(getApplicationContext(), VisualisasiActivity.class);
@@ -82,6 +76,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 visualisasiActivity.putExtra("Chart", "Bar");
+                startActivity(visualisasiActivity);
+            }
+        });
+
+        findViewById((R.id.main_line_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                visualisasiActivity.putExtra("Chart", "Line");
                 startActivity(visualisasiActivity);
             }
         });
