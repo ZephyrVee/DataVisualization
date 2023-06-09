@@ -66,12 +66,12 @@ public class VisualisasiActivity extends AppCompatActivity {
 
         fragment = new ArrayList<>();
         switch(c){
-            case "Bar":
+            default:
                 fragment.add(new BarInputFragment());
                 fragment.add(new BarChartFragment());
                 break;
-            default:
-                fragment.add(new LineInputFragment());
+            case "Line":
+                fragment.add(new InputFragment());
                 fragment.add(new LineChartFragment());
                 break;
         }
