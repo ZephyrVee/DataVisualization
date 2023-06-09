@@ -8,11 +8,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LineInputFragment extends Fragment {
-    DatasetKetenagakerjaanKabupaten data = MainActivity.database.data;
+    DatasetKetenagakerjaanKabupaten data;
+
+    final int DEFAULT_KATEGORI = 0;
+    Map<String, Integer> tahun, kategori;
+    int k;
 
     public LineInputFragment() {
         // Required empty public constructor
+        data = MainActivity.database.data;
+        tahun = new HashMap<>();
+        k = DEFAULT_KATEGORI;
     }
 
     @Override
@@ -30,6 +40,20 @@ public class LineInputFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        lineInit();
+    }
+
+    private void lineInit(){
+        if(data.tahun.size() > 0){
+            for(int i = 0; i < data.tahun.size(); i++){
+                if(data.isComplete(i)){
+                    //add checkbox
+                }
+            }
+        }
+    }
+
+    private void addTahun(){
 
     }
 }
