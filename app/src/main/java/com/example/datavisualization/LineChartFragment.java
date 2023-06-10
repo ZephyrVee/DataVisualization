@@ -29,8 +29,8 @@ public class LineChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     int kategori = 0;
-    String[] tahunList, kategoriList, jenisKelaminList;
-    Map<String, Integer> tahunMap, kategoriMap, jenisKelaminMap;
+    String[] kategoriList, jenisKelaminList;
+    Map<String, Integer> kategoriMap, jenisKelaminMap;
 
     ArrayList<Integer> tahunArrayList;
     ArrayList<ILineDataSet> lineDataSetArrayList;
@@ -87,7 +87,6 @@ public class LineChartFragment extends Fragment {
 
         }
     }
-
     private CheckBox addCheckBox(String text, int field){
         GridLayout.LayoutParams cbpr = new GridLayout.LayoutParams();
         cbpr.setMargins(8,8,8,8);
@@ -127,6 +126,42 @@ public class LineChartFragment extends Fragment {
             }
         });
         return cb;
+    }
+
+    private void set(){
+        ArrayList<ArrayList<Integer>> dataArray = new ArrayList<>();
+        ArrayList<String> labelArray = new ArrayList<>();
+        for(Integer t : tahunArrayList){
+            for(int i = 0; i < jenisKelaminList.length; i++){
+                String jk = jenisKelaminList[i];
+                if(jenisKelaminMap.get(jk) == 1){
+                    if(i == 2){
+
+                    }
+                    else {
+
+                    }
+
+                    for(int j = 0; j < kategoriList.length; j++){
+                        String k = kategoriList[j];
+                        if(kategoriMap.get(k) == 1) {
+                            if (i == 2) {
+                                dataArray.add(data.get(t, j));
+                            } else {
+                                dataArray.add(data.get(t, i, j));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < kategoriList.length; i++){
+            ArrayList<Entry> entry = new ArrayList<>();
+            for(int j = 0; j < dataArray.size(); j++){
+                entry.add(new Entry(j, dataArray.get(j).get(i)));
+            }
+            LineDataSet lineDataSet = new LineDataSet(entry, "");
+        }
     }
 
     private void setData(){
