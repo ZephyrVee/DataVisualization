@@ -29,7 +29,8 @@ public class LineChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     int kategori = 0;
-    String[] kategoriList, jenisKelaminList;
+    String[] kategoriList, jenisKelaminList, warnaList;
+    Integer[] warnaArrayList;
     Map<String, Integer> kategoriMap, jenisKelaminMap;
 
     ArrayList<Integer> tahunArrayList;
@@ -40,6 +41,9 @@ public class LineChartFragment extends Fragment {
     LineDataSet lineDataSet;
 
     ArrayList<Entry> entry;
+
+    public LineChartFragment(){
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +60,14 @@ public class LineChartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setData();
-        visualize();
+        lineChart = getView().findViewById(R.id.lineChart);
 
         getBundle();
         initVar();
         initMap();
+
+        set();
+        visualize();
     }
 
     private void getBundle(){
@@ -70,9 +76,21 @@ public class LineChartFragment extends Fragment {
         tahunArrayList = getArguments().getIntegerArrayList("tahun");
     }
     private void initVar(){
+        data = MainActivity.database.data;
         lineDataSetArrayList = new ArrayList<>();
         kategoriList = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
         jenisKelaminList = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
+        warnaList = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
+        warnaArrayList = new Integer[]{
+                Color.BLUE,
+                Color.CYAN,
+                Color.DKGRAY,
+                Color.GRAY,
+                Color.GREEN,
+                Color.MAGENTA,
+                Color.RED,
+                Color.YELLOW
+        };
     }
     private void initMap(){
         kategoriMap = new HashMap<>();
@@ -82,7 +100,12 @@ public class LineChartFragment extends Fragment {
         }
         jenisKelaminMap = new HashMap<>();
         for(int i = 0; i < jenisKelaminList.length; i++){
-            jenisKelaminMap.put(jenisKelaminList[i], 1);
+            if(i == 2) {
+                jenisKelaminMap.put(jenisKelaminList[i], 1);
+            }
+            else {
+                jenisKelaminMap.put(jenisKelaminList[i], 0);
+            }
             ((GridLayout)getView().findViewById(R.id.chart_line_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminList[i], 0));
 
         }
@@ -99,7 +122,16 @@ public class LineChartFragment extends Fragment {
         cb.setText(text);
         cb.setTextSize(10);
         cb.setTextColor(Color.BLACK);
-        cb.setChecked(true);
+        if(field == 0){
+            if(jenisKelaminMap.get(text) == 1){
+                cb.setChecked(true);
+            }
+        }
+        else if(field == 1){
+            if(kategoriMap.get(text) == 1){
+                cb.setChecked(true);
+            }
+        }
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -129,38 +161,27 @@ public class LineChartFragment extends Fragment {
     }
 
     private void set(){
-        ArrayList<ArrayList<Integer>> dataArray = new ArrayList<>();
-        ArrayList<String> labelArray = new ArrayList<>();
-        for(Integer t : tahunArrayList){
-            for(int i = 0; i < jenisKelaminList.length; i++){
-                String jk = jenisKelaminList[i];
-                if(jenisKelaminMap.get(jk) == 1){
-                    if(i == 2){
-
-                    }
-                    else {
-
-                    }
-
-                    for(int j = 0; j < kategoriList.length; j++){
-                        String k = kategoriList[j];
-                        if(kategoriMap.get(k) == 1) {
-                            if (i == 2) {
-                                dataArray.add(data.get(t, j));
-                            } else {
-                                dataArray.add(data.get(t, i, j));
+        for(int i = 0; i < jenisKelaminList.length; i++){
+            if(jenisKelaminMap.get(jenisKelaminList[i]) == 1){
+                for(int k = 0; k < kategoriList.length; k++){
+                    if(kategoriMap.get(kategoriList[k]) == 1){
+                        ArrayList<Entry> entry = new ArrayList<>();
+                        for(Integer t: tahunArrayList){
+                            if(i == 2) {
+                                entry.add(new Entry(t, data.get(t, kategori).get(k)));
+                            }
+                            else {
+                                entry.add(new Entry(t, data.get(t, i, kategori).get(k)));
                             }
                         }
+                        LineDataSet lineDataSet = new LineDataSet(entry, jenisKelaminList[i] + " " + kategoriList[k]);
+                        int c = (i + k) % warnaList.length;
+                        lineDataSet.setColor(warnaArrayList[c]);
+                        lineDataSet.setCircleColor(Color.BLACK);
+                        lineDataSetArrayList.add(lineDataSet);
                     }
                 }
             }
-        }
-        for(int i = 0; i < kategoriList.length; i++){
-            ArrayList<Entry> entry = new ArrayList<>();
-            for(int j = 0; j < dataArray.size(); j++){
-                entry.add(new Entry(j, dataArray.get(j).get(i)));
-            }
-            LineDataSet lineDataSet = new LineDataSet(entry, "");
         }
     }
 
@@ -178,12 +199,13 @@ public class LineChartFragment extends Fragment {
         lineDataSet.setValueTextColor(Color.YELLOW);
         lineDataSet.setValueTextSize(16f);
 
-        lineData = new LineData(lineDataSet);
     }
 
     private void visualize(){
-        lineChart = getView().findViewById(R.id.lineChart);
+        LineData lineData = new LineData(lineDataSetArrayList);
         lineChart.setData(lineData);
-        lineChart.animate();
+        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getAxisLeft().setAxisMinimum(0f);
+        lineChart.invalidate();
     }
 }

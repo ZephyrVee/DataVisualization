@@ -88,11 +88,11 @@ public class InputFragment extends Fragment {
                 String s = data.tahun.get(i).value.toString();
                 int t = data.tahun.get(i).value;
 
-                //dont forget
-                if(!tahun.containsKey(s)){
-                    tahun.put(s, 1);
+                if(data.isComplete(t)) {
+                    if (!tahun.containsKey(s)) {
+                        tahun.put(s, 1);
+                    }
                 }
-                // if is complete
             }
         }
         setBundle();
