@@ -29,10 +29,7 @@ public class InputFragment extends Fragment {
 
     public InputFragment() {
         // Required empty public constructor
-        setArguments(new Bundle());
-
-        data = MainActivity.database.data;
-        kategori = DEFAULT_KATEGORI;
+        init();
     }
 
     @Override
@@ -51,14 +48,9 @@ public class InputFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if(getArguments().containsKey("tahun")){
-            getBundle();
-        }
+        getBundle();
 
         kategoriButton = getView().findViewById(R.id.input_kategori);
-        initTahun();
-        initCheckBox();
-        initKategoriButton();
         kategoriButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,26 +76,13 @@ public class InputFragment extends Fragment {
                 menu.show();
             }
         });
+        initView();
     }
 
-    private ArrayList<Integer> getTahunList(){
-        ArrayList<Integer> al = new ArrayList<>();
-        Object[] object = tahun.keySet().toArray();
-        for(Object o : object){
-            String s = o.toString();
-            if(tahun.get(s) == 1){
-                Integer i = Integer.parseInt(s);
-                al.add(i);
-            }
-        }
-        return al;
-    }
-    private void setTahunList(ArrayList<Integer> t){
-        for(Integer i : t){
-            tahun.put(i.toString(), 1);
-        }
-    }
-    private void initTahun(){
+
+    private void init(){
+        data = MainActivity.database.data;
+        kategori = DEFAULT_KATEGORI;
         if(data.tahun.size() > 0){
             for(int i = 0; i < data.tahun.size(); i++){
                 String s = data.tahun.get(i).value.toString();
@@ -111,16 +90,14 @@ public class InputFragment extends Fragment {
 
                 //dont forget
                 if(!tahun.containsKey(s)){
-                    tahun.put(s, 0);
+                    tahun.put(s, 1);
                 }
                 // if is complete
             }
         }
+        setBundle();
     }
-    private void initKategoriButton(){
-        kategoriButton.setText("Kategori: " + DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
-    }
-    private void initCheckBox(){
+    private void initView(){
         LinearLayout ll = getView().findViewById(R.id.input_tahun);
         ll.removeAllViews();
 
@@ -129,6 +106,8 @@ public class InputFragment extends Fragment {
             String s = o.toString();
             ll.addView(addCheckBox(s));
         }
+
+        kategoriButton.setText("Kategori: " + DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
     }
     private CheckBox addCheckBox(String s){
         CheckBox cb = new CheckBox(getContext());
@@ -162,5 +141,27 @@ public class InputFragment extends Fragment {
         Bundle bundle = getArguments();
         setTahunList(bundle.getIntegerArrayList("tahun"));
         kategori = bundle.getInt("kategori");
+    }
+    private ArrayList<Integer> getTahunList(){
+        ArrayList<Integer> al = new ArrayList<>();
+        Object[] object = tahun.keySet().toArray();
+        for(Object o : object){
+            String s = o.toString();
+            if(tahun.get(s) == 1){
+                Integer i = Integer.parseInt(s);
+                al.add(i);
+            }
+        }
+        return al;
+    }
+    private void setTahunList(ArrayList<Integer> t){
+        for(Integer i : t){
+            tahun.put(i.toString(), 2);
+        }
+        String [] key = new String[tahun.size()];
+        for(String k : tahun.keySet().toArray(key)){
+            int i = tahun.get(k) - 1;
+            tahun.put(k, i);
+        }
     }
 }

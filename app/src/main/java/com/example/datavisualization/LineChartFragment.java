@@ -1,22 +1,39 @@
 package com.example.datavisualization;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LineChartFragment extends Fragment {
+    DatasetKetenagakerjaanKabupaten data;
+
+    int kategori = 0;
+    String[] tahunList, kategoriList, jenisKelaminList;
+    Map<String, Integer> tahunMap, kategoriMap, jenisKelaminMap;
+
+    ArrayList<Integer> tahunArrayList;
+    ArrayList<ILineDataSet> lineDataSetArrayList;
 
     LineChart lineChart;
     LineData lineData;
@@ -41,6 +58,75 @@ public class LineChartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setData();
         visualize();
+
+        getBundle();
+        initVar();
+        initMap();
+    }
+
+    private void getBundle(){
+        kategori = getArguments().getInt("kategori");
+        tahunArrayList = new ArrayList<>();
+        tahunArrayList = getArguments().getIntegerArrayList("tahun");
+    }
+    private void initVar(){
+        lineDataSetArrayList = new ArrayList<>();
+        kategoriList = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
+        jenisKelaminList = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
+    }
+    private void initMap(){
+        kategoriMap = new HashMap<>();
+        for(int i = 0; i < kategoriList.length; i++){
+            kategoriMap.put(kategoriList[i], 1);
+            ((GridLayout)getView().findViewById(R.id.chart_line_kategori_field)).addView(addCheckBox(kategoriList[i], 1));
+        }
+        jenisKelaminMap = new HashMap<>();
+        for(int i = 0; i < jenisKelaminList.length; i++){
+            jenisKelaminMap.put(jenisKelaminList[i], 1);
+            ((GridLayout)getView().findViewById(R.id.chart_line_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminList[i], 0));
+
+        }
+    }
+
+    private CheckBox addCheckBox(String text, int field){
+        GridLayout.LayoutParams cbpr = new GridLayout.LayoutParams();
+        cbpr.setMargins(8,8,8,8);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            cbpr.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+        }
+
+        CheckBox cb = new CheckBox(getContext());
+        cb.setLayoutParams(cbpr);
+        cb.setText(text);
+        cb.setTextSize(10);
+        cb.setTextColor(Color.BLACK);
+        cb.setChecked(true);
+        cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    switch(field){
+                        case 0:
+                            jenisKelaminMap.put(text, 1);
+                            break;
+                        case 1:
+                            kategoriMap.put(text, 1);
+                            break;
+                    }
+                }
+                else{
+                    switch(field){
+                        case 0:
+                            jenisKelaminMap.put(text, 0);
+                            break;
+                        case 1:
+                            kategoriMap.put(text, 0);
+                            break;
+                    }
+                }
+            }
+        });
+        return cb;
     }
 
     private void setData(){
