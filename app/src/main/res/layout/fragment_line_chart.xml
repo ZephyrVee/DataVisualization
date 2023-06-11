@@ -28,6 +28,7 @@
                 android:orientation="vertical"
                 >
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chart_line_warna_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pilih Warna"
@@ -35,11 +36,12 @@
                     android:gravity="center"
                     android:padding="8dp"
                     />
-                <LinearLayout
+                <GridLayout
                     android:id="@+id/chart_line_warna_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:rowCount="2"
                     />
             </LinearLayout>
             <LinearLayout

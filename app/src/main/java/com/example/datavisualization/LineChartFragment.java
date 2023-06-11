@@ -1,25 +1,33 @@
 package com.example.datavisualization;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,12 +45,12 @@ public class LineChartFragment extends Fragment {
     ArrayList<ILineDataSet> lineDataSetArrayList;
 
     LineChart lineChart;
-    LineData lineData;
-    LineDataSet lineDataSet;
 
-    ArrayList<Entry> entry;
+    TextView ubahWarnaTitle;
+    GridLayout ubahWarnaField;
 
     public LineChartFragment(){
+
     }
 
     @Override
@@ -61,13 +69,16 @@ public class LineChartFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         lineChart = getView().findViewById(R.id.lineChart);
+        ubahWarnaTitle = getView().findViewById(R.id.chart_line_warna_title);
+        ubahWarnaField = getView().findViewById(R.id.chart_line_warna_field);
 
         getBundle();
         initVar();
         initMap();
 
         set();
-        visualize();
+        initChart();
+        refreshData();
     }
 
     private void getBundle(){
@@ -109,6 +120,10 @@ public class LineChartFragment extends Fragment {
             ((GridLayout)getView().findViewById(R.id.chart_line_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminList[i], 0));
 
         }
+        for(int i = 0; i < warnaList.length; i++){
+            ubahWarnaField.addView(addWarnaButton(i));
+        }
+        hideUbahWarna();
     }
     private CheckBox addCheckBox(String text, int field){
         GridLayout.LayoutParams cbpr = new GridLayout.LayoutParams();
@@ -155,18 +170,40 @@ public class LineChartFragment extends Fragment {
                             break;
                     }
                 }
+                set();
+                refreshData();
             }
         });
         return cb;
     }
+    private Button addWarnaButton(int index){
+        GridLayout.LayoutParams bpr = new GridLayout.LayoutParams();
+        bpr.setMargins(8,8,8,8);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            bpr.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+        }
+
+        Button b = new Button(getContext());
+        b.setLayoutParams(bpr);
+        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
+        b.setTextSize(12);
+        b.setTextColor(Color.BLACK);
+        b.setText(warnaList[index]);
+        Drawable d = getResources().getDrawable(R.drawable.warna);
+        d.mutate();
+        d.setColorFilter(new PorterDuffColorFilter(warnaArrayList[index], PorterDuff.Mode.SRC_IN));
+        b.setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
+        return b;
+    }
 
     private void set(){
+        lineDataSetArrayList.clear();
         for(int i = 0; i < jenisKelaminList.length; i++){
             if(jenisKelaminMap.get(jenisKelaminList[i]) == 1){
                 for(int k = 0; k < kategoriList.length; k++){
                     if(kategoriMap.get(kategoriList[k]) == 1){
                         ArrayList<Entry> entry = new ArrayList<>();
-                        for(Integer t: tahunArrayList){
+                        for(Integer t : tahunArrayList){
                             if(i == 2) {
                                 entry.add(new Entry(t, data.get(t, kategori).get(k)));
                             }
@@ -174,10 +211,15 @@ public class LineChartFragment extends Fragment {
                                 entry.add(new Entry(t, data.get(t, i, kategori).get(k)));
                             }
                         }
+                        System.out.println(entry);
                         LineDataSet lineDataSet = new LineDataSet(entry, jenisKelaminList[i] + " " + kategoriList[k]);
-                        int c = (i + k) % warnaList.length;
-                        lineDataSet.setColor(warnaArrayList[c]);
+                        lineDataSet.setColor(warnaArrayList[(i + k) % 8]);
                         lineDataSet.setCircleColor(Color.BLACK);
+                        lineDataSet.setValueTextColor(Color.BLACK);
+                        lineDataSet.setValueTextSize(10f);
+                        lineDataSet.setLineWidth(4f);
+                        lineDataSet.setCircleRadius(2f);
+                        lineDataSet.setCircleHoleRadius(2f);
                         lineDataSetArrayList.add(lineDataSet);
                     }
                 }
@@ -185,27 +227,74 @@ public class LineChartFragment extends Fragment {
         }
     }
 
-    private void setData(){
-        entry = new ArrayList<>();
+    private void initChart(){
+        Legend l = lineChart.getLegend();
+        l.setWordWrapEnabled(true);
+        l.setDrawInside(false);
 
-        entry.add(new Entry(2020,2));
-        entry.add(new Entry(2021,3));
-        entry.add(new Entry(2022,1));
-        entry.add(new Entry(2023,1));
-
-        lineDataSet = new LineDataSet(entry, "entry");
-        lineDataSet.setColor(Color.BLUE);
-        lineDataSet.setCircleColor(Color.BLACK);
-        lineDataSet.setValueTextColor(Color.YELLOW);
-        lineDataSet.setValueTextSize(16f);
-
-    }
-
-    private void visualize(){
-        LineData lineData = new LineData(lineDataSetArrayList);
-        lineChart.setData(lineData);
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getAxisLeft().setAxisMinimum(0f);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setAxisMinimum(getTahunMinimum() - 0.2f);
+        lineChart.getXAxis().setAxisMaximum(getTahunMaximum() + 0.2f);
+        lineChart.getXAxis().setGranularityEnabled(true);
+        lineChart.setExtraBottomOffset(10f);
+        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                showUbahWarna(h.getDataSetIndex());
+            }
+
+            @Override
+            public void onNothingSelected() {
+                hideUbahWarna();
+            }
+        });
+    }
+    private void refreshData(){
+        LineData lineData = new LineData(lineDataSetArrayList);
+        lineChart.setData(lineData);
         lineChart.invalidate();
+    }
+
+    private Integer getTahunMaximum(){
+        Integer t = tahunArrayList.get(0);
+        for(Integer i : tahunArrayList){
+            if(i > t){
+                t = i;
+            }
+        }
+        return t;
+    }
+    private Integer getTahunMinimum(){
+        Integer t = tahunArrayList.get(0);
+        for(Integer i : tahunArrayList){
+            if(i < t){
+                t = i;
+            }
+        }
+        return t;
+    }
+
+    private void hideUbahWarna(){
+        ((LinearLayout)getView().findViewById(R.id.chart_line_warna)).removeAllViews();
+    }
+    private void showUbahWarna(int dataSetIndex){
+        LinearLayout ll = (LinearLayout)getView().findViewById(R.id.chart_line_warna);
+        if(ll.getChildCount() == 0) {
+            ll.addView(ubahWarnaTitle);
+            ll.addView(ubahWarnaField);
+        }
+        for(int i = 0; i < ubahWarnaField.getChildCount(); i++){
+            final int index = i;
+            ubahWarnaField.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((LineDataSet)lineDataSetArrayList.get(dataSetIndex)).setColor(warnaArrayList[index]);
+                    refreshData();
+                    hideUbahWarna();
+                }
+            });
+        }
     }
 }
