@@ -50,7 +50,7 @@ public class BarChartFragment extends Fragment {
 
     //Bundle variables
     int kategori;
-    ArrayList<Integer> tahunArrayList;
+    ArrayList<Integer> tahunArrayList, stackedColor;
     //Bundle variables
 
     String type = "Multiple";
@@ -234,7 +234,7 @@ public class BarChartFragment extends Fragment {
         stackedBarDataSetArrayList = new ArrayList<>();
         ArrayList<ArrayList<Integer>> stackedBarDataSet = new ArrayList<>();
         ArrayList<BarEntry> barEntry = new ArrayList<>();
-        ArrayList<Integer> warna = new ArrayList<>();
+        stackedColor = new ArrayList<>();
         String[] labels = new String[kategoriList.length];
         int stackedIndex = 0;
         for(Integer t : tahunArrayList){
@@ -247,7 +247,7 @@ public class BarChartFragment extends Fragment {
                         stackedBarDataSet.add(data.get(t, i, kategori));
                     }
                     labels[stackedIndex] = jenisKelaminList[i] + " " + t;
-                    warna.add(warnaArrayList[stackedIndex % 8]);
+                    stackedColor.add(warnaArrayList[stackedIndex % 8]);
                     stackedIndex++;
                 }
             }
@@ -261,7 +261,7 @@ public class BarChartFragment extends Fragment {
         }
         BarDataSet barDataSetStacked = new BarDataSet(barEntry, "");
         barDataSetStacked.setStackLabels(labels);
-        barDataSetStacked.setColors(warna);
+        barDataSetStacked.setColors(stackedColor);
         stackedBarDataSetArrayList.add(barDataSetStacked);
     }
 
@@ -329,7 +329,7 @@ public class BarChartFragment extends Fragment {
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                int dataSetIndex = h.getDataSetIndex();
+                int dataSetIndex = h.getStackIndex();
                 showUbahWarna(dataSetIndex, type);
             }
 
@@ -353,7 +353,7 @@ public class BarChartFragment extends Fragment {
             multiple();
         }
         else {
-            BarData barData = new BarData(multipleBarDataSetArrayList);
+            BarData barData = new BarData(stackedBarDataSetArrayList);
             barChart.setData(barData);
             stacked();
         }
@@ -377,7 +377,8 @@ public class BarChartFragment extends Fragment {
                         ((BarDataSet)multipleBarDataSetArrayList.get(dataSetIndex)).setColor(warnaArrayList[index]);
                     }
                     else{
-                        ((BarDataSet)stackedBarDataSetArrayList.get(dataSetIndex)).setColor(warnaArrayList[index]);
+                        stackedColor.set(dataSetIndex, warnaArrayList[index]);
+                        ((BarDataSet)stackedBarDataSetArrayList.get(0)).setColors(stackedColor);
                     }
                     refreshData(type);
                     hideUbahWarna();
