@@ -238,6 +238,7 @@ public class LineChartFragment extends Fragment {
         lineChart.getXAxis().setAxisMinimum(getTahunMinimum() - 0.2f);
         lineChart.getXAxis().setAxisMaximum(getTahunMaximum() + 0.2f);
         lineChart.getXAxis().setGranularityEnabled(true);
+        lineChart.getXAxis().setLabelRotationAngle(45f);
         lineChart.setExtraBottomOffset(10f);
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override

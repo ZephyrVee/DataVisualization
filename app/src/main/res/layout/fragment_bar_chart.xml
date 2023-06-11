@@ -6,11 +6,92 @@
     tools:context=".BarChartFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 />
+            <LinearLayout
+                android:id="@+id/chart_bar_warna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chart_bar_warna_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Warna"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    />
+                <GridLayout
+                    android:id="@+id/chart_bar_warna_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:rowCount="2"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/chart_bar_jenis_kelamin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jenis Kelamin"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    />
+                <GridLayout
+                    android:id="@+id/chart_bar_jenis_kelamin_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:rowCount="2"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center|start"
+                >
+                <ImageButton
+                    android:id="@+id/chart_bar_multiple"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/image_button_selector"
+                    android:src="@mipmap/mulltiple"
+                    android:scaleType="fitCenter"
+                    android:layout_marginRight="16dp"
+                    />
+                <ImageButton
+                    android:id="@+id/chart_bar_stacked"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/image_button_selector"
+                    android:src="@mipmap/stacked"
+                    android:scaleType="fitCenter"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 
 </FrameLayout>
