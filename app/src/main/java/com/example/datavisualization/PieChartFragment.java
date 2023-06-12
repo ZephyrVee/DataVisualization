@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
@@ -128,9 +129,10 @@ public class PieChartFragment extends Fragment {
         l.setDrawInside(false);
 
         pieChart.getDescription().setEnabled(false);
-        pieChart.setCenterText(DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
+        pieChart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(40);
+        pieChart.setCenterTextSize(16);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -185,19 +187,29 @@ public class PieChartFragment extends Fragment {
         else {
             dataEntry = data.get(tahun, jenisKelamin, kategori);
         }
+        int jumlah = 0;
+        for(int i = 0; i < dataEntry.size(); i++){
+            jumlah += dataEntry.get(i);
+        }
         for(int i = 0; i < dataEntry.size(); i++){
             pieEntry.add(new PieEntry(dataEntry.get(i), kategoriArray[i]));
             warnaList.add(warnaArray[i % 8]);
         }
-        pieDataSet = new PieDataSet(pieEntry, kategoriArray[kategori] + " " + tahun);
+        pieChart.setCenterText("Jumlah Penduduk: " + jumlah);
+
+        pieDataSet = new PieDataSet(pieEntry, "");
         pieDataSet.setColors(warnaList);
         pieDataSet.setValueTextColor(Color.BLACK);
         pieDataSet.setValueTextSize(16f);
         pieDataSet.setSliceSpace(2f);
+        pieDataSet.setSelectionShift(5f);
+        pieDataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
     }
     private void refreshData(){
         PieData pieData = new PieData(pieDataSet);
+        pieData.setValueFormatter(new PercentFormatter(pieChart));
         pieChart.setData(pieData);
+        pieChart.setUsePercentValues(true);
         pieChart.invalidate();
     }
 
@@ -205,7 +217,7 @@ public class PieChartFragment extends Fragment {
         ((LinearLayout)getView().findViewById(R.id.chart_pie_warna)).removeAllViews();
     }
     private void showUbahWarna(int dataIndex){
-        LinearLayout ll = (LinearLayout)getView().findViewById(R.id.chart_pie_warna);
+        LinearLayout ll = getView().findViewById(R.id.chart_pie_warna);
         if(ll.getChildCount() == 0) {
             ll.addView(ubahWarnaTitle);
             ll.addView(ubahWarnaField);
