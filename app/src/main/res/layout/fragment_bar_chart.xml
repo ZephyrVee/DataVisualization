@@ -18,7 +18,7 @@
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/barChart"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="450dp"
                 />
             <LinearLayout
                 android:id="@+id/chart_bar_warna"
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:rowCount="2"
+                    android:rowCount="4"
                     />
             </LinearLayout>
             <LinearLayout

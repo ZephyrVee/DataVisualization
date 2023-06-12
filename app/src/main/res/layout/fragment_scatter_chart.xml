@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LineChartFragment">
+    tools:context=".ScatterChartFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             >
-            <com.github.mikephil.charting.charts.LineChart
+            <com.github.mikephil.charting.charts.ScatterChart
                 android:id="@+id/scatterChart"
                 android:layout_width="match_parent"
                 android:layout_height="450dp"

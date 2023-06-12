@@ -161,9 +161,6 @@ public class BarChartFragment extends Fragment {
     private CheckBox addCheckBox(String text){
         GridLayout.LayoutParams cbpr = new GridLayout.LayoutParams();
         cbpr.setMargins(8,8,8,8);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cbpr.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        }
 
         CheckBox cb = new CheckBox(getContext());
         cb.setLayoutParams(cbpr);

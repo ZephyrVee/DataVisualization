@@ -81,6 +81,10 @@ public class VisualisasiActivity extends AppCompatActivity {
                 fragment.add(new SatuTahunInputFragment());
                 fragment.add(new PieChartFragment());
                 break;
+            case "Scatter":
+                fragment.add(new InputFragment());
+                fragment.add(new ScatterChartFragment());
+                break;
         }
 
         frameLayout = findViewById(R.id.visualisasi_frame_layout);
