@@ -65,13 +65,21 @@ public class VisualisasiActivity extends AppCompatActivity {
         MainActivity.thread.get("visualisasi_loading").start();
 
         fragment = new ArrayList<>();
-        fragment.add(new InputFragment());
         switch(c){
             default:
+                finish();
+                break;
+            case "Bar":
+                fragment.add(new InputFragment());
                 fragment.add(new BarChartFragment());
                 break;
             case "Line":
+                fragment.add(new InputFragment());
                 fragment.add(new LineChartFragment());
+                break;
+            case "Pie":
+                fragment.add(new SatuTahunInputFragment());
+                fragment.add(new PieChartFragment());
                 break;
         }
 
