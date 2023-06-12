@@ -21,7 +21,51 @@
                 android:layout_height="500dp"
                 android:layout_marginBottom="16dp"
                 />
-
+            <LinearLayout
+                android:id="@+id/chart_pie_warna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chart_pie_warna_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pilih Warna"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    />
+                <GridLayout
+                    android:id="@+id/chart_pie_warna_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:rowCount="2"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/chart_pie_jenis_kelamin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jenis Kelamin"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    />
+                <RadioGroup
+                    android:id="@+id/chart_pie_jenis_kelamin_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </FrameLayout>
