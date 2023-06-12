@@ -137,6 +137,12 @@ public class RadarChartFragment extends Fragment {
         radarChart.setWebColorInner(Color.LTGRAY);
         radarChart.setWebAlpha(100);
 
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+        MarkerView mv = new RadarMarkerView(getContext(), R.layout.radar_markerview);
+        mv.setChartView(radarChart); // For bounds control
+        radarChart.setMarker(mv); // Set the marker to the chart
+
         radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad);
 
         XAxis xAxis = radarChart.getXAxis();
@@ -150,7 +156,6 @@ public class RadarChartFragment extends Fragment {
         yAxis.setLabelCount(5, false);
         yAxis.setTextSize(9f);
         yAxis.setAxisMinimum(0f);
-        yAxis.setAxisMaximum(80f);
         yAxis.setDrawLabels(false);
 
         Legend l = radarChart.getLegend();
@@ -230,11 +235,21 @@ public class RadarChartFragment extends Fragment {
                     else {
                         dataEntry = data.get(t, i, kategori);
                     }
+                    int jumlah = 0;
                     for(int k = 0; k < dataEntry.size(); k++){
-                        radarEntry.add(new RadarEntry(dataEntry.get(k)));
+                        jumlah += dataEntry.get(k);
+                    }
+                    for(int k = 0; k < dataEntry.size(); k++){
+                        radarEntry.add(new RadarEntry((float)dataEntry.get(k) / (float)jumlah * 100));
                     }
                     RadarDataSet radarDataSet = new RadarDataSet(radarEntry, jenisKelaminArray[i] + " " + t);
                     radarDataSet.setColor(warnaArray[(i + t) % 8]);
+                    radarDataSet.setDrawFilled(true);
+                    radarDataSet.setFillColor(warnaArray[(i + t) % 8]);
+                    radarDataSet.setFillAlpha(100);
+                    radarDataSet.setLineWidth(4f);
+                    radarDataSet.setDrawHighlightCircleEnabled(true);
+                    radarDataSet.setDrawHighlightIndicators(false);
                     radarDataSetList.add(radarDataSet);
                 }
             }
@@ -263,6 +278,7 @@ public class RadarChartFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     ((RadarDataSet)radarDataSetList.get(dataSetIndex)).setColor(warnaArray[index]);
+                    ((RadarDataSet)radarDataSetList.get(dataSetIndex)).setFillColor(warnaArray[index]);
                     refreshData();
                     hideUbahWarna();
                 }
