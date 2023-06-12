@@ -85,6 +85,10 @@ public class VisualisasiActivity extends AppCompatActivity {
                 fragment.add(new InputFragment());
                 fragment.add(new ScatterChartFragment());
                 break;
+            case "Radar":
+                fragment.add(new InputFragment());
+                fragment.add(new RadarChartFragment());
+                break;
         }
 
         frameLayout = findViewById(R.id.visualisasi_frame_layout);

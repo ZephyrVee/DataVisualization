@@ -188,9 +188,6 @@ public class BarChartFragment extends Fragment {
     private Button addWarnaButton(int index){
         GridLayout.LayoutParams bpr = new GridLayout.LayoutParams();
         bpr.setMargins(8,8,8,8);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            bpr.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
-        }
 
         Button b = new Button(getContext());
         b.setLayoutParams(bpr);
