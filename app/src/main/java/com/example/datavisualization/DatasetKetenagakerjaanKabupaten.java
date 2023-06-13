@@ -7,18 +7,16 @@ public class DatasetKetenagakerjaanKabupaten {
     public static final int UMUR = 0;
     public static final int PENDIDIKAN = 1;
     public static final int JENIS_KEGIATAN = 2;
-    public static final int JAM_KERJA = 3;
-    public static final int LAPANGAN_PEKERJAAN_UTAMA = 4;
-    public static final int STATUS_PEKERJAAN_UTAMA = 5;
-    public static final int JENIS_PEKERJAAN_UTAMA = 6;
-    public static final int PENGANGGURAN = 7;
+    public static final int LAPANGAN_PEKERJAAN_UTAMA = 3;
+    public static final int STATUS_PEKERJAAN_UTAMA = 4;
+    public static final int PENGANGGURAN = 5;
 
     public static final int LAKI_LAKI = 0;
     public static final int PEREMPUAN = 1;
 
     public static final int JAKARTA_UTARA = 0;
 
-    public static final String[] KATEGORI = new String[]{"Golongan Umur", "Pendidikan Tertinggi Yang Ditamatkan", "Jenis Kegiatan Selama Seminggu Lalu", "Jumlah Jam Kerja", "Lapangan Pekerjaan Utama", "Status Pekerjaan Utama", "Jenis Pekerjaan Utama", "Pengangguran"};
+    public static final String[] KATEGORI = new String[]{"Golongan Umur", "Pendidikan Tertinggi Yang Ditamatkan", "Jenis Kegiatan Selama Seminggu Lalu", "Lapangan Pekerjaan Utama", "Status Pekerjaan Utama", "Pengangguran Terbuka"};
     public static final String[] JENIS_KELAMIN = new String[]{"Laki-laki", "Perempuan", "Laki-laki + Perempuan"};
 
     class Tahun{
@@ -85,7 +83,7 @@ public class DatasetKetenagakerjaanKabupaten {
         }
         public ArrayList<ArrayList<Integer>> getAll(){
             ArrayList<ArrayList<Integer>> al = new ArrayList<>();
-            for(int i = 0; i < 8; i++){
+            for(int i = 0; i < DatasetKetenagakerjaanKabupaten.KATEGORI.length; i++){
                 al.add(get(i));
             }
             return al;
@@ -202,8 +200,6 @@ public class DatasetKetenagakerjaanKabupaten {
                 return new String[]{"Tidak/Belum Tamat SD", "SD", "SMP", "SMA", "SMK", "Diploma I/II/III", "Universitas"};
             case JENIS_KEGIATAN:
                 return new String[] {"Bekerja", "Pernah Bekerja", "Tidak Pernah Bekerja", "Sekolah", "Mengurus Rumah Tangga", "Lainnya"};
-            case JAM_KERJA:
-                return new String[] {"0*", "1 - 4", "5 - 9", "10 - 14", "15 - 19", "20 - 24", "25 - 34", "35 - 44", "45 - 54", "55 - 59", "60 - 74", "75+"};
             case LAPANGAN_PEKERJAAN_UTAMA:
                 return new String[]{
                         "Pertanian, Perkebunan, Kehutanan, Perburuan Dan Perikanan",
@@ -238,22 +234,8 @@ public class DatasetKetenagakerjaanKabupaten {
                         "Pekerja Bebas Di Non Pertanian",
                         "Pekerja Keluarga/Tak Dibayar"
                 };
-            case JENIS_PEKERJAAN_UTAMA:
-                return new String[]{
-                        "Tni Dan Polri",
-                        "Manajer",
-                        "Profesional",
-                        "Teknisi Dan Asisten Profesional",
-                        "Tenaga Tata Usaha",
-
-                        "Tenaga Usaha Jasa Dan Tenaga Penjualan",
-                        "Pekerja Terampil Pertanian, Kehutanan, Dan Perikanan",
-                        "Pekerja Pengolahan, Kerajinan, Dan YBDI",
-                        "Operator Dan Perakitan Mesin",
-                        "Pekerja Kasar"
-                };
             case PENGANGGURAN:
-                return new String[]{"Mencari Pekerjaan", "Mempersiapkan Usaha", "Merasa Tidak Mungkin Mendapatkan Pekerjaan", "Sudah Punya Pekerjaan Tapi Belum Mulai Bekerja", "Sukarela", "Terpaksa"};
+                return new String[]{"Mencari Pekerjaan", "Mempersiapkan Usaha", "Merasa Tidak Mungkin Mendapatkan Pekerjaan", "Sudah Punya Pekerjaan Tapi Belum Mulai Bekerja"};
         }
         return null;
     }
@@ -263,8 +245,8 @@ public class DatasetKetenagakerjaanKabupaten {
                 return new String[]{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M-N", "O", "P", "Q", "R-U"};
             case STATUS_PEKERJAAN_UTAMA:
                 return new String[]{"1", "2", "3", "4", "5", "6", "7"};
-            case JENIS_PEKERJAAN_UTAMA:
-                return new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+            case PENGANGGURAN :
+                return new String[]{"1", "2", "3", "4"};
             default:
                 return getList(kategori);
         }

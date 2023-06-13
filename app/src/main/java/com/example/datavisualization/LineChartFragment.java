@@ -30,6 +30,8 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -208,6 +210,18 @@ public class LineChartFragment extends Fragment {
                                 entry.add(new Entry(t, data.get(t, i, kategori).get(k)));
                             }
                         }
+                        Collections.sort(entry, new Comparator<Entry>() {
+                            @Override
+                            public int compare(Entry e1, Entry e2) {
+                                if(e1.getX() < e2.getX()){
+                                    return -1;
+                                }
+                                else{
+                                    return 0;
+                                }
+                            }
+                        });
+
                         System.out.println(entry);
                         LineDataSet lineDataSet = new LineDataSet(entry, jenisKelaminList[i] + " " + kategoriList[k]);
                         lineDataSet.setColor(warnaArrayList[(i + k) % 8]);
@@ -226,6 +240,9 @@ public class LineChartFragment extends Fragment {
 
     private void initChart(){
         Legend l = lineChart.getLegend();
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
 

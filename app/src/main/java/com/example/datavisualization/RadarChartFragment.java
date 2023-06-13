@@ -159,9 +159,9 @@ public class RadarChartFragment extends Fragment {
         yAxis.setDrawLabels(false);
 
         Legend l = radarChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);

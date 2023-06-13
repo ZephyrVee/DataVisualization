@@ -42,6 +42,8 @@ import com.github.mikephil.charting.utils.Utils;
 import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -124,6 +126,17 @@ public class BarChartFragment extends Fragment {
         kategori = getArguments().getInt("kategori");
         tahunArrayList = new ArrayList<>();
         tahunArrayList = getArguments().getIntegerArrayList("tahun");
+        Collections.sort(tahunArrayList, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer t1, Integer t2) {
+                if(t1 < t2){
+                    return -1;
+                }
+                else{
+                    return 0;
+                }
+            }
+        });
     }
     private void initVar(){
         data = MainActivity.database.data;
@@ -266,6 +279,9 @@ public class BarChartFragment extends Fragment {
 
         Legend l = barChart.getLegend();
         l.setWordWrapEnabled(true);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setDrawInside(false);
 
         XAxis xAxis = barChart.getXAxis();
@@ -303,6 +319,9 @@ public class BarChartFragment extends Fragment {
 
         Legend l = barChart.getLegend();
         l.setWordWrapEnabled(true);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setDrawInside(false);
 
         barChart.setDrawValueAboveBar(false);

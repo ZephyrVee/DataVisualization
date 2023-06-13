@@ -116,7 +116,7 @@ public class KelolaDataActivity extends AppCompatActivity {
         kategoriP = 0;
         tahun = -1;
 
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < DatasetKetenagakerjaanKabupaten.KATEGORI.length; i++){
             cellsL.add(getCells(i));
             increment();
             cellsP.add(getCells(i));
@@ -185,13 +185,6 @@ public class KelolaDataActivity extends AppCompatActivity {
             grid.addView(addTextViewToGrid("Lainnya", 2, 1));
             grid.addView(addTextViewToGrid("Pernah Bekerja", 1, 1));
             grid.addView(addTextViewToGrid("Tidak Pernah Bekerja", 1, 1));
-        }
-        else if(kategori == DatasetKetenagakerjaanKabupaten.PENGANGGURAN){
-            grid.addView(addTextViewToGrid("Pengangguran Terbuka", 1, 4));
-            grid.addView(addTextViewToGrid("Setengah Pengangguran", 1, 2));
-            for(String s : DatasetKetenagakerjaanKabupaten.getList(kategori)){
-                grid.addView(addTextViewToGrid(s));
-            }
         }
         else {
             for(String s : DatasetKetenagakerjaanKabupaten.getTableList(kategori)){

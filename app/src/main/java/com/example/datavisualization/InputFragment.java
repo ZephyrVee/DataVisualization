@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -102,10 +104,25 @@ public class InputFragment extends Fragment {
         ll.removeAllViews();
 
         Object[] object = tahun.keySet().toArray();
+        ArrayList<Integer> al = new ArrayList<>();
         for(Object o : object){
-            String s = o.toString();
-            ll.addView(addCheckBox(s));
+            al.add(Integer.parseInt(o.toString()));
         }
+        Collections.sort(al, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer t1, Integer t2) {
+                if(t1 < t2){
+                    return -1;
+                }
+                else{
+                    return 0;
+                }
+            }
+        });
+        for(Integer i : al){
+            ll.addView(addCheckBox(Integer.toString(i)));
+        }
+
 
         kategoriButton.setText("Kategori: " + DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
     }
