@@ -50,9 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
+                        RelativeLayout.LayoutParams pr = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        pr.setMarginStart(16);
+                        pr.setMarginEnd(16);
+
                         Button kelolaDataButton = new Button(MainActivity.this);
-                        kelolaDataButton.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-                        kelolaDataButton.setText("Kelola data");
+                        kelolaDataButton.setLayoutParams(pr);
+                        kelolaDataButton.setText("Masuk ke halaman kelola data ketenagakerjaan");
+                        kelolaDataButton.setBackground(getResources().getDrawable(R.drawable.chart_button_selector));
+                        kelolaDataButton.setTextColor(Color.WHITE);
                         kelolaDataButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

@@ -172,7 +172,7 @@ public class KelolaDataActivity extends AppCompatActivity {
     private void addGrid(int kategori, int jk){
         GridLayout grid = new GridLayout(this);
 
-        grid.setBackground(getResources().getDrawable(R.drawable.grid));
+        grid.setBackground(getResources().getDrawable(R.drawable.kelola_data_grid));
         //Add Header
         grid.setColumnCount(DatasetKetenagakerjaanKabupaten.getSize(kategori));
         if(kategori == DatasetKetenagakerjaanKabupaten.JENIS_KEGIATAN){
@@ -218,10 +218,11 @@ public class KelolaDataActivity extends AppCompatActivity {
 
         tv.setLayoutParams(pr);
         tv.setGravity(Gravity.CENTER);
+        tv.setTextColor(Color.WHITE);
 
         int pd = dpToInt(8);
         tv.setPadding(pd, pd, pd, pd);
-        tv.setBackground(ContextCompat.getDrawable(this, R.drawable.cell));
+        tv.setBackground(ContextCompat.getDrawable(this, R.drawable.kelola_data_cell));
         tv.setTextColor(Color.BLACK);
 
         tv.setText(str);
@@ -236,10 +237,11 @@ public class KelolaDataActivity extends AppCompatActivity {
 
         et.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_NORMAL);
         et.setGravity(Gravity.CENTER);
+        et.setTextColor(Color.WHITE);
 
         int pd = dpToInt(8);
         et.setPadding(pd, pd, pd, pd);
-        et.setBackground(ContextCompat.getDrawable(this, R.drawable.cell));
+        et.setBackground(ContextCompat.getDrawable(this, R.drawable.kelola_data_cell));
 
         return et;
     }

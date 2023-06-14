@@ -5,26 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="@string/login_page_background">
+    android:background="@color/page_background">
+    <ImageView
+        android:id="@+id/login_top_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/top_background"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/login_top_background"
+        app:layout_constraintEnd_toEndOf="@+id/login_top_background"
+        app:srcCompat="@drawable/women2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="Halaman Login"
+        android:textColor="@color/white"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/login_top_background"
+        app:layout_constraintStart_toStartOf="@+id/login_top_background"
+        app:layout_constraintTop_toTopOf="@+id/login_top_background" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/login_top_background">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:gravity="center"
-            android:text="Login"
-            android:textColor="@color/white"
-            android:textSize="36dp"
-            app:fontFamily="@font/nunito_sans_black"
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,7 +53,7 @@
             android:orientation="vertical"
             android:layout_margin="24dp"
             android:padding="16dp"
-            android:background="@string/login_panel_background"
+            android:background="@drawable/login_panel_background"
             >
             <EditText
                 android:id="@+id/usernameEditText"
@@ -50,11 +71,14 @@
                 android:inputType="textPassword"
                 android:hint="Password"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/loginButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login" />
+                android:background="@drawable/chart_button_selector"
+                android:text="Login"
+                android:textSize="18dp"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/statusTextView"
@@ -64,5 +88,9 @@
                 android:textColor="@color/red"
                 />
         </LinearLayout>
+
+
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
