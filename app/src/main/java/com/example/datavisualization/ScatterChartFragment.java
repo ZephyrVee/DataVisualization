@@ -241,8 +241,8 @@ public class ScatterChartFragment extends Fragment {
     private void initChart(){
         Legend l = scatterChart.getLegend();
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
 
@@ -255,7 +255,6 @@ public class ScatterChartFragment extends Fragment {
         scatterChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         scatterChart.getXAxis().setGranularityEnabled(true);
         scatterChart.setTouchEnabled(true);
-        scatterChart.setMaxHighlightDistance(2);
         scatterChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {

@@ -139,7 +139,7 @@ public class RadarChartFragment extends Fragment {
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        MarkerView mv = new RadarMarkerView(getContext(), R.layout.radar_markerview);
+        MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
         mv.setChartView(radarChart); // For bounds control
         radarChart.setMarker(mv); // Set the marker to the chart
 

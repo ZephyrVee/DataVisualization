@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 public class RadarMarkerView extends MarkerView {
 
     private final TextView tvContent;
-    private final DecimalFormat format = new DecimalFormat("##0");
+    private final DecimalFormat format = new DecimalFormat("##2");
 
     public RadarMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);

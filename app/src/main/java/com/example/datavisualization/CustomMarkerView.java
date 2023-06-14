@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 
@@ -14,6 +15,7 @@ import java.text.DecimalFormat;
 public class CustomMarkerView extends MarkerView {
 
     private final TextView tv;
+    private final DecimalFormat format = new DecimalFormat("##2");
 
     public CustomMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
@@ -27,6 +29,9 @@ public class CustomMarkerView extends MarkerView {
     public void refreshContent(Entry e, Highlight highlight) {
         if(e instanceof BarEntry){
             tv.setText(Integer.toString((int)e.getY()));
+        }
+        else if(e instanceof RadarEntry){
+            tv.setText(String.format("%s %%", format.format(e.getY())));
         }
         else {
             tv.setText(Integer.toString((int)e.getY()));
