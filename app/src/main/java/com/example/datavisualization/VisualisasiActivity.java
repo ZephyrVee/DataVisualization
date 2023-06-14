@@ -95,6 +95,8 @@ public class VisualisasiActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.visualisasi_tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Data"));
         tabLayout.addTab(tabLayout.newTab().setText("Chart"));
+        tabLayout.setTabTextColors(Color.LTGRAY, Color.WHITE);
+        tabLayout.setSelectedTabIndicatorColor(Color.WHITE);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
