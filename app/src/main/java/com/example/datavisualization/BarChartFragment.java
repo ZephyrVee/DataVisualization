@@ -1,11 +1,9 @@
 package com.example.datavisualization;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -28,18 +26,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.renderer.XAxisRenderer;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
-import com.github.mikephil.charting.utils.Transformer;
-import com.github.mikephil.charting.utils.Utils;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,7 +47,7 @@ public class BarChartFragment extends Fragment {
 
     String type = "Multiple";
 
-    String[] kategoriList, jenisKelaminList, warnaList;
+    String[] kategoriList, jenisKelaminArray, warnaList, jenisKelaminLegendArray;
     Integer[] warnaArrayList;
     Map<String, Integer> jenisKelaminMap;
 
@@ -141,7 +131,8 @@ public class BarChartFragment extends Fragment {
     private void initVar(){
         data = MainActivity.database.data;
         kategoriList = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
-        jenisKelaminList = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
+        jenisKelaminArray = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
+        jenisKelaminLegendArray = new String[]{"(L)", "(P)", "(L+P)"};
         warnaList = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
         warnaArrayList = new Integer[]{
                 Color.BLUE,
@@ -156,14 +147,14 @@ public class BarChartFragment extends Fragment {
     }
     private void initMap(){
         jenisKelaminMap = new HashMap<>();
-        for(int i = 0; i < jenisKelaminList.length; i++){
+        for(int i = 0; i < jenisKelaminArray.length; i++){
             if(i == 2) {
-                jenisKelaminMap.put(jenisKelaminList[i], 1);
+                jenisKelaminMap.put(jenisKelaminArray[i], 1);
             }
             else {
-                jenisKelaminMap.put(jenisKelaminList[i], 0);
+                jenisKelaminMap.put(jenisKelaminArray[i], 0);
             }
-            ((GridLayout)getView().findViewById(R.id.chart_bar_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminList[i]));
+            ((GridLayout)getView().findViewById(R.id.chart_bar_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminArray[i]));
 
         }
         for(int i = 0; i < warnaList.length; i++){
@@ -218,8 +209,8 @@ public class BarChartFragment extends Fragment {
     private void set(){
         multipleBarDataSetArrayList = new ArrayList<>();
         for(Integer t : tahunArrayList){
-            for(int i = 0; i < jenisKelaminList.length; i++){
-                if(jenisKelaminMap.get(jenisKelaminList[i]) == 1){
+            for(int i = 0; i < jenisKelaminArray.length; i++){
+                if(jenisKelaminMap.get(jenisKelaminArray[i]) == 1){
                     ArrayList<BarEntry> barEntry = new ArrayList<>();
                     ArrayList<Integer> dataEntry;
                     if(i == 2){
@@ -231,7 +222,7 @@ public class BarChartFragment extends Fragment {
                     for(int k = 0; k < dataEntry.size(); k++){
                         barEntry.add(new BarEntry(k, dataEntry.get(k)));
                     }
-                    BarDataSet barDataSet = new BarDataSet(barEntry, jenisKelaminList[i] + " " + t);
+                    BarDataSet barDataSet = new BarDataSet(barEntry, t + " " + jenisKelaminLegendArray[i]);
                     barDataSet.setColor(warnaArrayList[(i + t) % 8]);
                     multipleBarDataSetArrayList.add(barDataSet);
                 }
@@ -242,18 +233,18 @@ public class BarChartFragment extends Fragment {
         ArrayList<ArrayList<Integer>> stackedBarDataSet = new ArrayList<>();
         ArrayList<BarEntry> barEntry = new ArrayList<>();
         stackedColor = new ArrayList<>();
-        String[] labels = new String[kategoriList.length];
+        String[] labels = new String[tahunArrayList.size() * jenisKelaminArray.length];
         int stackedIndex = 0;
         for(Integer t : tahunArrayList){
-            for(int i = 0; i < jenisKelaminList.length; i++) {
-                if (jenisKelaminMap.get(jenisKelaminList[i]) == 1) {
+            for(int i = 0; i < jenisKelaminArray.length; i++) {
+                if (jenisKelaminMap.get(jenisKelaminArray[i]) == 1) {
                     if(i == 2){
                         stackedBarDataSet.add(data.get(t, kategori));
                     }
                     else {
                         stackedBarDataSet.add(data.get(t, i, kategori));
                     }
-                    labels[stackedIndex] = jenisKelaminList[i] + " " + t;
+                    labels[stackedIndex] = t + " " + jenisKelaminLegendArray[i];
                     stackedColor.add(warnaArrayList[stackedIndex % 8]);
                     stackedIndex++;
                 }
@@ -280,8 +271,8 @@ public class BarChartFragment extends Fragment {
         Legend l = barChart.getLegend();
         l.setWordWrapEnabled(true);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setDrawInside(false);
 
         XAxis xAxis = barChart.getXAxis();
@@ -320,8 +311,8 @@ public class BarChartFragment extends Fragment {
         Legend l = barChart.getLegend();
         l.setWordWrapEnabled(true);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setDrawInside(false);
 
         barChart.setDrawValueAboveBar(false);
