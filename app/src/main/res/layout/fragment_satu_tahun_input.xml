@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,25 +16,70 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="8dp"
             >
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/input_2_kategori"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/image_button_selector"
-                android:text="Pilih Kategori"
-                android:layout_margin="8dp"/>
+                >
 
-            <RadioGroup
-                android:id="@+id/input_2_tahun"
+                <ImageView
+                    android:id="@+id/visualisasi_top_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/top_background"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/visualisasi_top_background"
+                    app:layout_constraintEnd_toEndOf="@+id/visualisasi_top_background"
+                    app:srcCompat="@drawable/women2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:text="Visualisasi"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/visualisasi_top_background"
+                    app:layout_constraintStart_toStartOf="@+id/visualisasi_top_background"
+                    app:layout_constraintTop_toTopOf="@+id/visualisasi_top_background" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical"
-                android:layout_margin="8dp"
-                />
+                android:padding="8dp"
+                >
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/input_2_kategori"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/image_button_selector"
+                    android:text="Pilih Kategori"
+                    android:layout_margin="8dp"/>
+
+                <RadioGroup
+                    android:id="@+id/input_2_tahun"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_margin="8dp"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
