@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.ScatterChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -41,7 +42,7 @@ public class ScatterChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     int kategori = 0;
-    String[] kategoriArray, jenisKelaminList, warnaArray;
+    String[] kategoriArray, jenisKelaminList, warnaArray, jenisKelaminLegendArray;
     Integer[] warnaList;
     Map<String, Integer> kategoriMap, jenisKelaminMap;
 
@@ -55,6 +56,7 @@ public class ScatterChartFragment extends Fragment {
 
     public ScatterChartFragment() {
         // Required empty public constructor
+        jenisKelaminLegendArray = new String[]{"(L)", "(P)", "(L+P)"};
     }
 
     @Override
@@ -225,12 +227,10 @@ public class ScatterChartFragment extends Fragment {
                             }
                         });
 
-                        ScatterDataSet scatterDataSet = new ScatterDataSet(entry, jenisKelaminList[i] + " " + kategoriArray[k]);
+                        ScatterDataSet scatterDataSet = new ScatterDataSet(entry, kategoriArray[k] + " " + jenisKelaminLegendArray[i]);
                         scatterDataSet.setColor(warnaList[(i + k) % 8]);
-                        scatterDataSet.setScatterShapeSize(30f);
+                        scatterDataSet.setScatterShapeSize(40f);
                         scatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
-                        scatterDataSet.setValueTextColor(Color.BLACK);
-                        scatterDataSet.setValueTextSize(12f);
                         scatterDataSetArrayList.add(scatterDataSet);
                     }
                 }
@@ -246,12 +246,14 @@ public class ScatterChartFragment extends Fragment {
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
 
+        MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
+        mv.setChartView(scatterChart); // For bounds control
+        scatterChart.setMarker(mv);
+
         scatterChart.getAxisRight().setEnabled(false);
         scatterChart.getAxisLeft().setAxisMinimum(0f);
         scatterChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         scatterChart.getXAxis().setGranularityEnabled(true);
-        scatterChart.setExtraTopOffset(10f);
-        scatterChart.setExtraBottomOffset(10f);
         scatterChart.setTouchEnabled(true);
         scatterChart.setMaxHighlightDistance(2);
         scatterChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -268,6 +270,7 @@ public class ScatterChartFragment extends Fragment {
     }
     private void refreshData(){
         ScatterData scatterData = new ScatterData(scatterDataSetArrayList);
+        scatterData.setDrawValues(false);
         scatterChart.setData(scatterData);
         scatterChart.invalidate();
     }

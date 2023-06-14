@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -57,9 +58,9 @@ public class BarChartFragment extends Fragment {
     GridLayout ubahWarnaField;
     BarChart barChart;
 
-    float groupSpace = 0.4f;
+    float groupSpace = 0.25f;
     float barSpace = 0.1f;
-    float barWidth = 0.5f;
+    float barWidth = 0.65f;
 
 
     public BarChartFragment(){
@@ -103,6 +104,7 @@ public class BarChartFragment extends Fragment {
         getBundle();
         initVar();
         initMap();
+        initChart();
         set();
         refreshData(type);
     }
@@ -263,6 +265,15 @@ public class BarChartFragment extends Fragment {
         stackedBarDataSetArrayList.add(barDataSetStacked);
     }
 
+    private void initChart(){
+        barChart.getAxisRight().setEnabled(false);
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setAxisMinimum(0f);
+
+        MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
+        mv.setChartView(barChart); // For bounds control
+        barChart.setMarker(mv);
+    }
     private void multiple(){
         barChart.getAxisRight().setEnabled(false);
         YAxis leftAxis = barChart.getAxisLeft();
@@ -353,11 +364,13 @@ public class BarChartFragment extends Fragment {
             if(multipleBarDataSetArrayList.size() > 1) {
                 barData.setBarWidth(barWidth / multipleBarDataSetArrayList.size());
             }
+            barData.setDrawValues(false);
             barChart.setData(barData);
             multiple();
         }
         else {
             BarData barData = new BarData(stackedBarDataSetArrayList);
+            barData.setDrawValues(false);
             barChart.setData(barData);
             stacked();
         }

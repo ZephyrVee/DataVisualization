@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -39,7 +40,7 @@ public class LineChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     int kategori = 0;
-    String[] kategoriList, jenisKelaminList, warnaList;
+    String[] kategoriList, jenisKelaminList, warnaList, jenisKelaminLegendArray;
     Integer[] warnaArrayList;
     Map<String, Integer> kategoriMap, jenisKelaminMap;
 
@@ -52,7 +53,7 @@ public class LineChartFragment extends Fragment {
     GridLayout ubahWarnaField;
 
     public LineChartFragment(){
-
+        jenisKelaminLegendArray = new String[]{"(L)", "(P)", "(L+P)"};
     }
 
     @Override
@@ -223,14 +224,14 @@ public class LineChartFragment extends Fragment {
                         });
 
                         System.out.println(entry);
-                        LineDataSet lineDataSet = new LineDataSet(entry, jenisKelaminList[i] + " " + kategoriList[k]);
+                        LineDataSet lineDataSet = new LineDataSet(entry, kategoriList[k] + " " + jenisKelaminLegendArray[i]);
                         lineDataSet.setColor(warnaArrayList[(i + k) % 8]);
                         lineDataSet.setCircleColor(Color.BLACK);
                         lineDataSet.setValueTextColor(Color.BLACK);
                         lineDataSet.setValueTextSize(10f);
                         lineDataSet.setLineWidth(4f);
-                        lineDataSet.setCircleRadius(2f);
-                        lineDataSet.setCircleHoleRadius(2f);
+                        lineDataSet.setCircleRadius(6f);
+                        lineDataSet.setCircleHoleRadius(3f);
                         lineDataSetArrayList.add(lineDataSet);
                     }
                 }
@@ -241,10 +242,14 @@ public class LineChartFragment extends Fragment {
     private void initChart(){
         Legend l = lineChart.getLegend();
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
+
+        MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
+        mv.setChartView(lineChart); // For bounds control
+        lineChart.setMarker(mv);
 
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getAxisLeft().setAxisMinimum(0f);
@@ -268,6 +273,7 @@ public class LineChartFragment extends Fragment {
     }
     private void refreshData(){
         LineData lineData = new LineData(lineDataSetArrayList);
+        lineData.setDrawValues(false);
         lineChart.setData(lineData);
         lineChart.invalidate();
     }

@@ -126,8 +126,8 @@ public class PieChartFragment extends Fragment {
     private void initChart(){
         Legend l = pieChart.getLegend();
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
 
