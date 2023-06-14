@@ -16,4 +16,6 @@
     <color name="pink_1">#FFE11BD7</color>
     <color name="blue_1">#4000FFFF</color>
     <color name="pink_2">#40F786FF</color>
+    <color name="page_background">#CCAFFFFF</color>
+    <color name="chart_button_pressed_background">#96DCDC</color>
 </resources>

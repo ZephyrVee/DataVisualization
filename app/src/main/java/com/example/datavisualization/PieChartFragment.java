@@ -132,10 +132,10 @@ public class PieChartFragment extends Fragment {
         l.setDrawInside(false);
 
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(20.f, 0.f, 20.f, 0.f);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(40);
         pieChart.setCenterTextSize(16);
+        pieChart.setDrawEntryLabels(false);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -192,7 +192,7 @@ public class PieChartFragment extends Fragment {
             jumlah += dataEntry.get(i);
         }
         for(int i = 0; i < dataEntry.size(); i++){
-            pieEntry.add(new PieEntry(dataEntry.get(i), kategoriArray[i]));
+            pieEntry.add(new PieEntry(dataEntry.get(i), data.getList(kategori)[i]));
             warnaList.add(warnaArray[i % 8]);
         }
         pieChart.setCenterText("Jumlah Penduduk: " + jumlah);
