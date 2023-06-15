@@ -3,12 +3,94 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".CombinedChartFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/chart_pie_title"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="24dp"
+                android:textColor="@color/black"
+                />
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginBottom="16dp"
+                />
+            <LinearLayout
+                android:id="@+id/chart_pie_warna"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/chart_pie_warna_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+
+                    android:text="@string/chart_ubah_warna_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+
+                    android:padding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+
+                    android:background="@string/green_label"
+                    />
+                <GridLayout
+                    android:id="@+id/chart_pie_warna_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:rowCount="6"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/chart_pie_jenis_kelamin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+
+                    android:text="@string/chart_jenis_kelamin_filter_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+
+                    android:padding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+
+                    android:background="@string/green_label"
+                    />
+                <RadioGroup
+                    android:id="@+id/chart_pie_jenis_kelamin_field"
+                    android:layout_width="wrap_contentt"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </FrameLayout>

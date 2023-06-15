@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SatuTahunInputFragment">
+    tools:context=".CombinedInputFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
@@ -56,6 +56,14 @@
                     app:layout_constraintTop_toTopOf="@+id/visualisasi_top_background" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/input_3_kategori"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/image_button_selector"
+                android:text="Pilih Kategori"
+                android:layout_margin="8dp"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,13 +77,16 @@
                     android:padding="8dp"
                     >
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/input_3_bar_kategori"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/image_button_selector"
-                        android:text="Pilih Kategori"
-                        android:layout_margin="8dp"/>
+                        android:layout_margin="8dp"
+
+                        android:text="Pilih tahun untuk Bar Chart"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        />
 
                     <RadioGroup
                         android:id="@+id/input_3_bar_tahun"
@@ -94,13 +105,16 @@
                     android:padding="8dp"
                     >
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/input_3_line_kategori"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="@drawable/image_button_selector"
-                        android:text="Pilih Kategori"
-                        android:layout_margin="8dp"/>
+                        android:layout_margin="8dp"
+
+                        android:text="Pilih tahun untuk Line Chart"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        android:textStyle="bold"
+                        />
 
                     <RadioGroup
                         android:id="@+id/input_3_line_tahun"

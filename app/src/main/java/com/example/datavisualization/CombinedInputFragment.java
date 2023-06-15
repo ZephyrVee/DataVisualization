@@ -18,15 +18,14 @@ public class CombinedInputFragment extends Fragment {
     final int DEFAULT_TAHUN = 2022;
 
     DatasetKetenagakerjaanKabupaten data;
-    int kategoriBar, kategoriLine, tahunBar, tahunLine;
-    Button kategoriBarButton, kategoriLineButton;
+    int kategori, tahunBar, tahunLine;
+    Button kategoriButton;
     RadioGroup barRadioGroup, lineRadioGroup;
 
     public CombinedInputFragment() {
         // Required empty public constructor
         data = MainActivity.database.data;
-        kategoriBar = DEFAULT_KATEGORI;
-        kategoriLine = DEFAULT_KATEGORI;
+        kategori = DEFAULT_KATEGORI;
         tahunBar = DEFAULT_TAHUN;
         tahunLine = DEFAULT_TAHUN;
 
@@ -50,9 +49,9 @@ public class CombinedInputFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getBundle();
-        kategoriBarButton = getView().findViewById(R.id.input_3_bar_kategori);
-        kategoriBarButton.setText("Bar CHart: " + DatasetKetenagakerjaanKabupaten.KATEGORI[kategoriBar]);
-        kategoriBarButton.setOnClickListener(new View.OnClickListener() {
+        kategoriButton = getView().findViewById(R.id.input_3_kategori);
+        kategoriButton.setText("Kategori: " + DatasetKetenagakerjaanKabupaten.KATEGORI[kategori]);
+        kategoriButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu menu = new PopupMenu(getContext(), view);
@@ -65,8 +64,8 @@ public class CombinedInputFragment extends Fragment {
                         String selected = menuItem.getTitle().toString();
                         for(int i = 0; i < DatasetKetenagakerjaanKabupaten.KATEGORI.length ; i++){
                             if(selected.equals(DatasetKetenagakerjaanKabupaten.KATEGORI[i])){
-                                kategoriBar = i;
-                                kategoriBarButton.setText("Bar Chart: " + selected);
+                                kategori = i;
+                                kategoriButton.setText("Kategori: " + selected);
                                 setBundle();
                                 break;
                             }
@@ -77,33 +76,7 @@ public class CombinedInputFragment extends Fragment {
                 menu.show();
             }
         });
-        kategoriLineButton = getView().findViewById(R.id.input_3_line_kategori);
-        kategoriLineButton.setText("Line Chart: " + DatasetKetenagakerjaanKabupaten.KATEGORI[kategoriLine]);
-        kategoriLineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu menu = new PopupMenu(getContext(), view);
-                for(int i = 0; i < DatasetKetenagakerjaanKabupaten.KATEGORI.length ; i++){
-                    menu.getMenu().add(DatasetKetenagakerjaanKabupaten.KATEGORI[i]);
-                }
-                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        String selected = menuItem.getTitle().toString();
-                        for(int i = 0; i < DatasetKetenagakerjaanKabupaten.KATEGORI.length ; i++){
-                            if(selected.equals(DatasetKetenagakerjaanKabupaten.KATEGORI[i])){
-                                kategoriLine = i;
-                                kategoriLineButton.setText("Line Chart: " + selected);
-                                setBundle();
-                                break;
-                            }
-                        }
-                        return true;
-                    }
-                });
-                menu.show();
-            }
-        });
+
         barRadioGroup = getView().findViewById(R.id.input_3_bar_tahun);
         lineRadioGroup = getView().findViewById(R.id.input_3_line_tahun);
         if(data.tahun.size() > 0){
@@ -161,15 +134,13 @@ public class CombinedInputFragment extends Fragment {
 
     private void setBundle(){
         Bundle bundle = new Bundle();
-        bundle.putInt("kategori_bar", kategoriBar);
-        bundle.putInt("kategori_line", kategoriLine);
+        bundle.putInt("kategori", kategori);
         bundle.putInt("tahun_bar", tahunBar);
         bundle.putInt("tahun_line", tahunLine);
         setArguments(bundle);
     }
     private void getBundle(){
-        kategoriBar = getArguments().getInt("kategori_bar");
-        kategoriLine = getArguments().getInt("kategori_line");
+        kategori = getArguments().getInt("kategori");
         tahunBar = getArguments().getInt("tahun_bar");
         tahunLine = getArguments().getInt("tahun_line");
     }
