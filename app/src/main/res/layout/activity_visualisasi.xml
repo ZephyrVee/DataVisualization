@@ -7,6 +7,7 @@
     tools:context=".VisualisasiActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -19,10 +20,10 @@
             android:id="@+id/visualisasi_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sedang Memperoleh Data. Mohon tunggu ..."
-            android:padding="8dp"
+            android:background="@color/white"
             android:gravity="center"
-            android:background="@color/white"/>
+            android:padding="8dp"
+            android:text="Sedang Memperoleh Data. Mohon tunggu ..." />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/visualisasi_tab_layout"
@@ -30,17 +31,29 @@
             android:layout_height="wrap_content"
             android:background="@color/chart_button_background"
             app:tabGravity="fill"
-            app:tabMode="fixed"/>
+            app:tabMode="fixed" />
 
         <FrameLayout
             android:id="@+id/visualisasi_frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
 
 
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/visualisasi_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+
+        android:backgroundTint="@color/chart_button_background"
+        android:src="@drawable/save"
+        app:tint="@color/white"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

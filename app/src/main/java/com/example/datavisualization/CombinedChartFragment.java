@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
@@ -264,6 +265,14 @@ public class CombinedChartFragment extends Fragment {
                     hideUbahWarna();
                 }
             });
+        }
+    }
+    public void save(){
+        if(combinedChart.saveToGallery("combined_chart_" + System.currentTimeMillis(), 70)){
+            Toast.makeText(getContext(), "Saved at DCIM folder", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Failed to save Chart", Toast.LENGTH_SHORT).show();
         }
     }
 }

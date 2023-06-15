@@ -8,12 +8,14 @@ import androidx.fragment.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class VisualisasiActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     TabLayout tabLayout;
     ArrayList<Fragment> fragment;
+    FloatingActionButton saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,31 +74,75 @@ public class VisualisasiActivity extends AppCompatActivity {
                 break;
             case "Bar":
                 fragment.add(new InputFragment());
-                fragment.add(new BarChartFragment());
+                BarChartFragment bar = new BarChartFragment();
+                fragment.add(bar);
+                findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bar.save();
+                    }
+                });
                 break;
             case "Line":
                 fragment.add(new InputFragment());
-                fragment.add(new LineChartFragment());
+                LineChartFragment line = new LineChartFragment();
+                fragment.add(line);
+                findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        line.save();
+                    }
+                });
                 break;
             case "Pie":
                 fragment.add(new SatuTahunInputFragment());
-                fragment.add(new PieChartFragment());
+                PieChartFragment pie = new PieChartFragment();
+                fragment.add(pie);
+                findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pie.save();
+                    }
+                });
                 break;
             case "Scatter":
                 fragment.add(new InputFragment());
-                fragment.add(new ScatterChartFragment());
+                ScatterChartFragment scatter = new ScatterChartFragment();
+                fragment.add(scatter);
+                findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        scatter.save();
+                    }
+                });
                 break;
             case "Radar":
                 fragment.add(new InputFragment());
-                fragment.add(new RadarChartFragment());
+                RadarChartFragment radar = new RadarChartFragment();
+                fragment.add(radar);
+                findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        radar.save();
+                    }
+                });
                 break;
             case "Combined":
                 fragment.add(new CombinedInputFragment());
-                fragment.add(new CombinedChartFragment());
+                CombinedChartFragment combined = new CombinedChartFragment();
+                fragment.add(combined);
+                findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        combined.save();
+                    }
+                });
                 break;
         }
 
         frameLayout = findViewById(R.id.visualisasi_frame_layout);
+        saveButton = findViewById(R.id.visualisasi_save);
+        saveButton.setVisibility(View.INVISIBLE);
         tabLayout = findViewById(R.id.visualisasi_tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Data"));
         tabLayout.addTab(tabLayout.newTab().setText("Chart"));
@@ -139,6 +186,10 @@ public class VisualisasiActivity extends AppCompatActivity {
         FragmentTransaction ft = fm.beginTransaction();
         if(position == 1){
             fragment.get(position).setArguments(fragment.get(0).getArguments());
+            saveButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            saveButton.setVisibility(View.INVISIBLE);
         }
         ft.replace(R.id.visualisasi_frame_layout, fragment.get(position));
         ft.commit();

@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -39,7 +40,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BarChartFragment extends Fragment {
+public class BarChartFragment extends Fragment{
     DatasetKetenagakerjaanKabupaten data;
 
     //Bundle variables
@@ -287,6 +288,7 @@ public class BarChartFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.setDrawGridBackground(false);
         barChart.setExtraRightOffset(10);
+
     }
     private void multiple(){
         if(multipleBarDataSetArrayList.size() > 1){
@@ -373,5 +375,12 @@ public class BarChartFragment extends Fragment {
             });
         }
     }
-
+    public void save(){
+        if(barChart.saveToGallery("barchart_" + System.currentTimeMillis(), 70)){
+            Toast.makeText(getContext(), "Saved at DCIM folder", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Failed to save Chart", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

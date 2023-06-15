@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -280,6 +281,14 @@ public class RadarChartFragment extends Fragment {
                     hideUbahWarna();
                 }
             });
+        }
+    }
+    public void save(){
+        if(radarChart.saveToGallery("radar_chart_" + System.currentTimeMillis(), 70)){
+            Toast.makeText(getContext(), "Saved at DCIM folder", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getContext(), "Failed to save Chart", Toast.LENGTH_SHORT).show();
         }
     }
 }
