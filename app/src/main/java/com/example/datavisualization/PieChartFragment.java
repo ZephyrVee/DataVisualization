@@ -89,6 +89,8 @@ public class PieChartFragment extends Fragment {
         initChart();
         set();
         refreshData();
+
+        ((TextView)getView().findViewById(R.id.chart_pie_title)).setText(getContext().getResources().getStringArray(R.array.chart_title)[kategori]);
     }
 
     private void getBundle(){

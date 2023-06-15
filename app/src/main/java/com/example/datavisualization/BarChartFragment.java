@@ -108,6 +108,8 @@ public class BarChartFragment extends Fragment {
         initChart();
         set();
         refreshData(type);
+
+        ((TextView)getView().findViewById(R.id.chart_bar_title)).setText(getContext().getResources().getStringArray(R.array.chart_title)[kategori]);
     }
 
     @Override

@@ -249,6 +249,8 @@ public class DatasetKetenagakerjaanKabupaten {
                 return new String[]{"1", "2", "3", "4"};
             case PENDIDIKAN:
                 return new String[]{"Blm Tamat SD", "SD", "SMP", "SMA", "SMK", "D1 - D3", "Universitas"};
+            case JENIS_KEGIATAN:
+                return new String[]{"1", "2", "3", "4", "5", "6"};
             default:
                 return getList(kategori);
         }

@@ -97,6 +97,8 @@ public class RadarChartFragment extends Fragment {
         init();
         set();
         refreshData();
+
+        ((TextView)getView().findViewById(R.id.chart_radar_title)).setText(getContext().getResources().getStringArray(R.array.chart_title)[kategori]);
     }
 
     private void getBundle(){

@@ -82,6 +82,8 @@ public class LineChartFragment extends Fragment {
         set();
         initChart();
         refreshData();
+
+        ((TextView)getView().findViewById(R.id.chart_line_title)).setText(getContext().getResources().getStringArray(R.array.chart_title)[kategori]);
     }
 
     private void getBundle(){

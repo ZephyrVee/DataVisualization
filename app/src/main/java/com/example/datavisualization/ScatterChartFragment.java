@@ -73,6 +73,7 @@ public class ScatterChartFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         scatterChart = getView().findViewById(R.id.scatterChart);
         ubahWarnaTitle = getView().findViewById(R.id.chart_scatter_warna_title);
         ubahWarnaField = getView().findViewById(R.id.chart_scatter_warna_field);
@@ -84,6 +85,8 @@ public class ScatterChartFragment extends Fragment {
         set();
         initChart();
         refreshData();
+
+        ((TextView)getView().findViewById(R.id.chart_scatter_title)).setText(getContext().getResources().getStringArray(R.array.chart_title)[kategori]);
     }
 
     private void getBundle(){
