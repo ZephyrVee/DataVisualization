@@ -188,7 +188,7 @@ public class PieChartFragment extends Fragment {
             jumlah += dataEntry.get(i);
         }
         for(int i = 0; i < dataEntry.size(); i++){
-            pieEntry.add(new PieEntry(dataEntry.get(i), data.getTableList(kategori)[i]));
+            pieEntry.add(new PieEntry(dataEntry.get(i), kategoriArray[i]));
             warnaList.add(warnaArray[i % warnaNameArray.length]);
         }
         pieChart.setCenterText("Jumlah Penduduk: " + jumlah);

@@ -278,7 +278,7 @@ public class BarChartFragment extends Fragment {
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(DatasetKetenagakerjaanKabupaten.getTableList(kategori)));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(kategoriList));
         xAxis.setAxisMaximum(DatasetKetenagakerjaanKabupaten.getSize(kategori));
         xAxis.setGranularityEnabled(true);
         xAxis.setLabelRotationAngle(330f);
