@@ -20,16 +20,16 @@
     <color name="chart_button_background">#059C41</color>
     <color name="chart_button_pressed_background">#BF059C41</color>
 
-    <color name="chart_pink">#FBA0A0</color>
+    <color name="chart_pink">#FF87A0</color>
     <color name="chart_red">#FF647D</color>
-    <color name="chart_orange">#FF9664</color>
+    <color name="chart_orange">#FFA57D</color>
     <color name="chart_yellow">#FFE682</color>
     <color name="chart_light_green">#B4FF78</color>
     <color name="chart_green">#50B450</color>
     <color name="chart_blue">#64A0FF</color>
     <color name="chart_light_blue">#63FFFA</color>
-    <color name="chart_magenta">#EB78FF</color>
-    <color name="chart_purple">#B964BE</color>
+    <color name="chart_purple">#E67DEB</color>
+    <color name="chart_brown">#D59476</color>
 
     <array name="chart_warna_array">
         <item>@color/chart_pink</item>
@@ -40,7 +40,19 @@
         <item>@color/chart_green</item>
         <item>@color/chart_blue</item>
         <item>@color/chart_light_blue</item>
-        <item>@color/chart_magenta</item>
         <item>@color/chart_purple</item>
+        <item>@color/chart_brown</item>
     </array>
+    <string-array name="chart_warna_nama_array">
+        <item>Pink</item>
+        <item>Red</item>
+        <item>Orange</item>
+        <item>Yellow</item>
+        <item>Lime</item>
+        <item>Green</item>
+        <item>Blue</item>
+        <item>Cyan</item>
+        <item>Purple</item>
+        <item>Brown</item>
+    </string-array>
 </resources>

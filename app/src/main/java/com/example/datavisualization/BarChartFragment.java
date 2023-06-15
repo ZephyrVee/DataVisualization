@@ -49,8 +49,8 @@ public class BarChartFragment extends Fragment {
 
     String type = "Multiple";
 
-    String[] kategoriList, jenisKelaminArray, warnaList, jenisKelaminLegendArray;
-    Integer[] warnaArrayList;
+    String[] kategoriList, jenisKelaminArray, warnaNamaArray, jenisKelaminLegendArray;
+    int[] warnaArray;
     Map<String, Integer> jenisKelaminMap;
 
     ArrayList<IBarDataSet> multipleBarDataSetArrayList, stackedBarDataSetArrayList;
@@ -136,17 +136,8 @@ public class BarChartFragment extends Fragment {
         kategoriList = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
         jenisKelaminArray = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
         jenisKelaminLegendArray = new String[]{"(L)", "(P)", "(L+P)"};
-        warnaList = new String[]{"Biru", "Cyan", "Dark Gray", "Gray", "Hijau", "Magenta", "Merah", "Kuning"};
-        warnaArrayList = new Integer[]{
-                Color.BLUE,
-                Color.CYAN,
-                Color.DKGRAY,
-                Color.GRAY,
-                Color.GREEN,
-                Color.MAGENTA,
-                Color.RED,
-                Color.YELLOW
-        };
+        warnaNamaArray = getContext().getResources().getStringArray(R.array.chart_warna_nama_array);
+        warnaArray = getContext().getResources().getIntArray(R.array.chart_warna_array);
     }
     private void initMap(){
         jenisKelaminMap = new HashMap<>();
@@ -160,7 +151,7 @@ public class BarChartFragment extends Fragment {
             ((GridLayout)getView().findViewById(R.id.chart_bar_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminArray[i]));
 
         }
-        for(int i = 0; i < warnaList.length; i++){
+        for(int i = 0; i < warnaNamaArray.length; i++){
             ubahWarnaField.addView(addWarnaButton(i));
         }
         hideUbahWarna();
@@ -202,10 +193,10 @@ public class BarChartFragment extends Fragment {
         b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
         b.setTextSize(12);
         b.setTextColor(Color.BLACK);
-        b.setText(warnaList[index]);
+        b.setText(warnaNamaArray[index]);
         Drawable d = getResources().getDrawable(R.drawable.warna);
         d.mutate();
-        d.setColorFilter(new PorterDuffColorFilter(warnaArrayList[index], PorterDuff.Mode.SRC_IN));
+        d.setColorFilter(new PorterDuffColorFilter(warnaArray[index], PorterDuff.Mode.SRC_IN));
         b.setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
         return b;
     }
@@ -227,7 +218,7 @@ public class BarChartFragment extends Fragment {
                         barEntry.add(new BarEntry(k, dataEntry.get(k)));
                     }
                     BarDataSet barDataSet = new BarDataSet(barEntry, t + " " + jenisKelaminLegendArray[i]);
-                    barDataSet.setColor(warnaArrayList[(i + t) % 8]);
+                    barDataSet.setColor(warnaArray[(i + t) % warnaNamaArray.length]);
                     multipleBarDataSetArrayList.add(barDataSet);
                 }
             }
@@ -249,7 +240,7 @@ public class BarChartFragment extends Fragment {
                         stackedBarDataSet.add(data.get(t, i, kategori));
                     }
                     labels[stackedIndex] = t + " " + jenisKelaminLegendArray[i];
-                    stackedColor.add(warnaArrayList[stackedIndex % 8]);
+                    stackedColor.add(warnaArray[stackedIndex % warnaNamaArray.length]);
                     stackedIndex++;
                 }
             }
@@ -275,16 +266,11 @@ public class BarChartFragment extends Fragment {
         MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
         mv.setChartView(barChart); // For bounds control
         barChart.setMarker(mv);
-    }
-    private void multiple(){
-        barChart.getAxisRight().setEnabled(false);
-        YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0f);
 
         Legend l = barChart.getLegend();
         l.setWordWrapEnabled(true);
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setDrawInside(false);
 
@@ -296,10 +282,13 @@ public class BarChartFragment extends Fragment {
         xAxis.setLabelRotationAngle(330f);
 
         barChart.setFitBars(true);
-        barChart.getDescription().setText("Bar Chart");
+        barChart.getDescription().setEnabled(false);
         barChart.setDrawGridBackground(false);
+        barChart.setExtraRightOffset(10);
+    }
+    private void multiple(){
         if(multipleBarDataSetArrayList.size() > 1){
-            xAxis.setCenterAxisLabels(true);
+            barChart.getXAxis().setCenterAxisLabels(true);
             barChart.groupBars(0, groupSpace, barSpace / multipleBarDataSetArrayList.size());
         }
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -319,30 +308,7 @@ public class BarChartFragment extends Fragment {
         barChart.animateY(1000);
     }
     private void stacked(){
-        barChart.getBarData().setValueTextColor(Color.WHITE);
-
-        Legend l = barChart.getLegend();
-        l.setWordWrapEnabled(true);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setDrawInside(false);
-
-        barChart.setDrawValueAboveBar(false);
-        barChart.getAxisRight().setEnabled(false);
-        YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0f);
-
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(DatasetKetenagakerjaanKabupaten.getTableList(kategori)));
-        xAxis.setAxisMaximum(DatasetKetenagakerjaanKabupaten.getSize(kategori));
-        xAxis.setGranularityEnabled(true);
-        xAxis.setLabelRotationAngle(45f);
-
-        barChart.setFitBars(false);
-        barChart.getDescription().setText("Bar Chart");
-        barChart.setDrawGridBackground(false);
+        barChart.getXAxis().setCenterAxisLabels(false);
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -393,10 +359,10 @@ public class BarChartFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     if(type.equals("Multiple")){
-                        ((BarDataSet)multipleBarDataSetArrayList.get(dataSetIndex)).setColor(warnaArrayList[index]);
+                        ((BarDataSet)multipleBarDataSetArrayList.get(dataSetIndex)).setColor(warnaArray[index]);
                     }
                     else{
-                        stackedColor.set(dataSetIndex, warnaArrayList[index]);
+                        stackedColor.set(dataSetIndex, warnaArray[index]);
                         ((BarDataSet)stackedBarDataSetArrayList.get(0)).setColors(stackedColor);
                     }
                     refreshData(type);

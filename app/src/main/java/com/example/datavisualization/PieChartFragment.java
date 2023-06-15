@@ -46,8 +46,8 @@ public class PieChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
     int kategori, tahun, jenisKelamin;
 
-    String[] kategoriArray, warnaNameArray, jenisKelaminArray;
-    Integer[] warnaArray;
+    String[] kategoriArray, jenisKelaminArray, warnaNameArray;
+    int[] warnaArray;
 
     ArrayList<Integer> warnaList;
 
@@ -58,17 +58,6 @@ public class PieChartFragment extends Fragment {
         kategori = DEFAULT_KATEGORI;
         jenisKelamin = DEFAULT_JENIS_KELAMIN;
         jenisKelaminArray = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
-        warnaNameArray = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
-        warnaArray = new Integer[]{
-                Color.BLUE,
-                Color.CYAN,
-                Color.DKGRAY,
-                Color.GRAY,
-                Color.GREEN,
-                Color.MAGENTA,
-                Color.RED,
-                Color.YELLOW
-        };
     }
 
     @Override
@@ -90,6 +79,9 @@ public class PieChartFragment extends Fragment {
         ubahWarnaField = getView().findViewById(R.id.chart_pie_warna_field);
         ubahWarnaTitle = getView().findViewById(R.id.chart_pie_warna_title);
         jenisKelaminField = getView().findViewById(R.id.chart_pie_jenis_kelamin_field);
+
+        warnaNameArray = getContext().getResources().getStringArray(R.array.chart_warna_nama_array);
+        warnaArray = getContext().getResources().getIntArray(R.array.chart_warna_array);
 
         getBundle();
         init();
@@ -126,18 +118,18 @@ public class PieChartFragment extends Fragment {
     private void initChart(){
         Legend l = pieChart.getLegend();
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
-        l.setYOffset(30);
+        l.setYOffset(15);
 
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(45);
         pieChart.setCenterTextSize(14);
         pieChart.setDrawEntryLabels(false);
-        pieChart.setExtraOffsets(20,0,50,0);
+        pieChart.setExtraOffsets(25,0,25,0);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -194,8 +186,8 @@ public class PieChartFragment extends Fragment {
             jumlah += dataEntry.get(i);
         }
         for(int i = 0; i < dataEntry.size(); i++){
-            pieEntry.add(new PieEntry(dataEntry.get(i), data.getList(kategori)[i]));
-            warnaList.add(warnaArray[i % 8]);
+            pieEntry.add(new PieEntry(dataEntry.get(i), data.getTableList(kategori)[i]));
+            warnaList.add(warnaArray[i % warnaNameArray.length]);
         }
         pieChart.setCenterText("Jumlah Penduduk: " + jumlah);
 
