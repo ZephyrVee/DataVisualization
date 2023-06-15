@@ -136,6 +136,7 @@ public class PieChartFragment extends Fragment {
         pieChart.setHoleRadius(40);
         pieChart.setCenterTextSize(16);
         pieChart.setDrawEntryLabels(false);
+        pieChart.setExtraOffsets(20,0,20,0);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {

@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +136,7 @@ public class BarChartFragment extends Fragment {
         kategoriList = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
         jenisKelaminArray = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
         jenisKelaminLegendArray = new String[]{"(L)", "(P)", "(L+P)"};
-        warnaList = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
+        warnaList = new String[]{"Biru", "Cyan", "Dark Gray", "Gray", "Hijau", "Magenta", "Merah", "Kuning"};
         warnaArrayList = new Integer[]{
                 Color.BLUE,
                 Color.CYAN,
@@ -194,6 +195,7 @@ public class BarChartFragment extends Fragment {
     private Button addWarnaButton(int index){
         GridLayout.LayoutParams bpr = new GridLayout.LayoutParams();
         bpr.setMargins(8,8,8,8);
+        bpr.setGravity(Gravity.FILL_HORIZONTAL);
 
         Button b = new Button(getContext());
         b.setLayoutParams(bpr);
