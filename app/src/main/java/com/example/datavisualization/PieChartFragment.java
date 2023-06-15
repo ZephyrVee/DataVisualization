@@ -122,14 +122,14 @@ public class PieChartFragment extends Fragment {
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
-        l.setYOffset(15);
+        //l.setXOffset(10f);
 
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(45);
         pieChart.setCenterTextSize(14);
         pieChart.setDrawEntryLabels(false);
-        pieChart.setExtraOffsets(25,0,25,0);
+        pieChart.setExtraOffsets(25f,0,25f,0);
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {

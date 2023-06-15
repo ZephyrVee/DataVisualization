@@ -24,7 +24,6 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.ScatterData;
 import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -42,8 +41,8 @@ public class ScatterChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     int kategori = 0;
-    String[] kategoriArray, jenisKelaminList, warnaArray, jenisKelaminLegendArray;
-    Integer[] warnaList;
+    String[] kategoriArray, jenisKelaminList, warnaNamaArray, jenisKelaminLegendArray;
+    int[] warnaArray;
     Map<String, Integer> kategoriMap, jenisKelaminMap;
 
     ArrayList<Integer> tahunArrayList;
@@ -97,17 +96,8 @@ public class ScatterChartFragment extends Fragment {
         scatterDataSetArrayList = new ArrayList<>();
         kategoriArray = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
         jenisKelaminList = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
-        warnaArray = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
-        warnaList = new Integer[]{
-                Color.BLUE,
-                Color.CYAN,
-                Color.DKGRAY,
-                Color.GRAY,
-                Color.GREEN,
-                Color.MAGENTA,
-                Color.RED,
-                Color.YELLOW
-        };
+        warnaNamaArray = getContext().getResources().getStringArray(R.array.chart_warna_nama_array);
+        warnaArray = getContext().getResources().getIntArray(R.array.chart_warna_array);
     }
     private void initMap(){
         kategoriMap = new HashMap<>();
@@ -126,7 +116,7 @@ public class ScatterChartFragment extends Fragment {
             ((GridLayout)getView().findViewById(R.id.chart_scatter_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminList[i], 0));
 
         }
-        for(int i = 0; i < warnaArray.length; i++){
+        for(int i = 0; i < warnaNamaArray.length; i++){
             ubahWarnaField.addView(addWarnaButton(i));
         }
         hideUbahWarna();
@@ -191,10 +181,10 @@ public class ScatterChartFragment extends Fragment {
         b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
         b.setTextSize(12);
         b.setTextColor(Color.BLACK);
-        b.setText(warnaArray[index]);
+        b.setText(warnaNamaArray[index]);
         Drawable d = getResources().getDrawable(R.drawable.warna);
         d.mutate();
-        d.setColorFilter(new PorterDuffColorFilter(warnaList[index], PorterDuff.Mode.SRC_IN));
+        d.setColorFilter(new PorterDuffColorFilter(warnaArray[index], PorterDuff.Mode.SRC_IN));
         b.setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
         return b;
     }
@@ -227,8 +217,8 @@ public class ScatterChartFragment extends Fragment {
                             }
                         });
 
-                        ScatterDataSet scatterDataSet = new ScatterDataSet(entry, kategoriArray[k] + " " + jenisKelaminLegendArray[i]);
-                        scatterDataSet.setColor(warnaList[(i + k) % 8]);
+                        ScatterDataSet scatterDataSet = new ScatterDataSet(entry, kategoriArray[k] + "" + jenisKelaminLegendArray[i]);
+                        scatterDataSet.setColor(warnaArray[(i + k) % warnaNamaArray.length]);
                         scatterDataSet.setScatterShapeSize(40f);
                         scatterDataSet.setScatterShape(ScatterChart.ScatterShape.CIRCLE);
                         scatterDataSetArrayList.add(scatterDataSet);
@@ -241,7 +231,7 @@ public class ScatterChartFragment extends Fragment {
     private void initChart(){
         Legend l = scatterChart.getLegend();
         l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.CENTER);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
         l.setWordWrapEnabled(true);
         l.setDrawInside(false);
@@ -249,6 +239,8 @@ public class ScatterChartFragment extends Fragment {
         MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
         mv.setChartView(scatterChart); // For bounds control
         scatterChart.setMarker(mv);
+        scatterChart.setExtraRightOffset(15);
+        scatterChart.getDescription().setEnabled(false);
 
         scatterChart.getAxisRight().setEnabled(false);
         scatterChart.getAxisLeft().setAxisMinimum(0f);
@@ -288,7 +280,7 @@ public class ScatterChartFragment extends Fragment {
             ubahWarnaField.getChildAt(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((ScatterDataSet)scatterDataSetArrayList.get(dataSetIndex)).setColor(warnaList[index]);
+                    ((ScatterDataSet)scatterDataSetArrayList.get(dataSetIndex)).setColor(warnaArray[index]);
                     refreshData();
                     hideUbahWarna();
                 }

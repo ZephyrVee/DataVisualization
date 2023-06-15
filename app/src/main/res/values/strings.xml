@@ -5,10 +5,10 @@
     <string name="p">Hello \n blank fragment</string>
     <string name="cell_padding">4dp</string>
 
-    <string name="vkl">Filter klasifikasi</string>
-    <string name="vjkl">Filter Jenis Kelamin</string>
-    <string name="vwl">Ubah Warna</string>
-    <string name="chart_bar_type">Klik untuk mengubah jenis diagram</string>
+    <string name="chart_klasifikasi_filter_label">Filter klasifikasi</string>
+    <string name="chart_jenis_kelamin_filter_label">Filter Jenis Kelamin</string>
+    <string name="chart_ubah_warna_label">Ubah Warna</string>
+    <string name="chart_bar_type_label">Klik untuk mengubah jenis diagram</string>
 
     <string name="wl">
 

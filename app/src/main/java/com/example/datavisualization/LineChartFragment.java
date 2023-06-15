@@ -40,8 +40,8 @@ public class LineChartFragment extends Fragment {
     DatasetKetenagakerjaanKabupaten data;
 
     int kategori = 0;
-    String[] kategoriList, jenisKelaminList, warnaList, jenisKelaminLegendArray;
-    Integer[] warnaArrayList;
+    String[] kategoriList, jenisKelaminList, warnaNamaArray, jenisKelaminLegendArray;
+    int[] warnaArray;
     Map<String, Integer> kategoriMap, jenisKelaminMap;
 
     ArrayList<Integer> tahunArrayList;
@@ -94,17 +94,8 @@ public class LineChartFragment extends Fragment {
         lineDataSetArrayList = new ArrayList<>();
         kategoriList = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
         jenisKelaminList = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
-        warnaList = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
-        warnaArrayList = new Integer[]{
-                Color.BLUE,
-                Color.CYAN,
-                Color.DKGRAY,
-                Color.GRAY,
-                Color.GREEN,
-                Color.MAGENTA,
-                Color.RED,
-                Color.YELLOW
-        };
+        warnaNamaArray = getContext().getResources().getStringArray(R.array.chart_warna_nama_array);
+        warnaArray = getContext().getResources().getIntArray(R.array.chart_warna_array);
     }
     private void initMap(){
         kategoriMap = new HashMap<>();
@@ -123,7 +114,7 @@ public class LineChartFragment extends Fragment {
             ((GridLayout)getView().findViewById(R.id.chart_scatter_jenis_kelamin_field)).addView(addCheckBox(jenisKelaminList[i], 0));
 
         }
-        for(int i = 0; i < warnaList.length; i++){
+        for(int i = 0; i < warnaNamaArray.length; i++){
             ubahWarnaField.addView(addWarnaButton(i));
         }
         hideUbahWarna();
@@ -188,10 +179,10 @@ public class LineChartFragment extends Fragment {
         b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
         b.setTextSize(12);
         b.setTextColor(Color.BLACK);
-        b.setText(warnaList[index]);
+        b.setText(warnaNamaArray[index]);
         Drawable d = getResources().getDrawable(R.drawable.warna);
         d.mutate();
-        d.setColorFilter(new PorterDuffColorFilter(warnaArrayList[index], PorterDuff.Mode.SRC_IN));
+        d.setColorFilter(new PorterDuffColorFilter(warnaArray[index], PorterDuff.Mode.SRC_IN));
         b.setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
         return b;
     }
@@ -224,8 +215,8 @@ public class LineChartFragment extends Fragment {
                         });
 
                         System.out.println(entry);
-                        LineDataSet lineDataSet = new LineDataSet(entry, kategoriList[k] + " " + jenisKelaminLegendArray[i]);
-                        lineDataSet.setColor(warnaArrayList[(i + k) % 8]);
+                        LineDataSet lineDataSet = new LineDataSet(entry, kategoriList[k] + "" + jenisKelaminLegendArray[i]);
+                        lineDataSet.setColor(warnaArray[(i + k) % warnaNamaArray.length]);
                         lineDataSet.setCircleColor(Color.BLACK);
                         lineDataSet.setValueTextColor(Color.BLACK);
                         lineDataSet.setValueTextSize(10f);
@@ -253,12 +244,13 @@ public class LineChartFragment extends Fragment {
 
         lineChart.getAxisRight().setEnabled(false);
         lineChart.getAxisLeft().setAxisMinimum(0f);
+        lineChart.getDescription().setEnabled(false);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getXAxis().setAxisMinimum(getTahunMinimum() - 0.2f);
         lineChart.getXAxis().setAxisMaximum(getTahunMaximum() + 0.2f);
         lineChart.getXAxis().setGranularityEnabled(true);
         lineChart.getXAxis().setLabelRotationAngle(45f);
-        lineChart.setExtraBottomOffset(10f);
+        lineChart.setExtraRightOffset(15f);
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -311,7 +303,7 @@ public class LineChartFragment extends Fragment {
             ubahWarnaField.getChildAt(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((LineDataSet)lineDataSetArrayList.get(dataSetIndex)).setColor(warnaArrayList[index]);
+                    ((LineDataSet)lineDataSetArrayList.get(dataSetIndex)).setColor(warnaArray[index]);
                     refreshData();
                     hideUbahWarna();
                 }

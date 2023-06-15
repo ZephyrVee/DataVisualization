@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LineChartFragment">
+    android:padding="16dp"
+    tools:context=".LineChartFragment"
+    >
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
@@ -18,7 +20,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/scatterChart"
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
+                android:layout_height="400dp"
                 android:layout_marginBottom="16dp"
                 />
             <LinearLayout
@@ -29,19 +31,26 @@
                 >
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/chart_scatter_warna_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pilih Warna"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:padding="8dp"
+                    android:layout_marginVertical="8dp"
+
+                    android:text="@string/chart_ubah_warna_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+
+                    android:padding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+
+                    android:background="@drawable/kelola_data_linear_layout_background"
                     />
                 <GridLayout
                     android:id="@+id/chart_scatter_warna_field"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:rowCount="4"
+                    android:rowCount="6"
                     />
             </LinearLayout>
             <LinearLayout
@@ -49,15 +58,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
                 >
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Jenis Kelamin"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:padding="8dp"
+                    android:layout_marginVertical="8dp"
+
+                    android:text="@string/chart_jenis_kelamin_filter_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+
+                    android:padding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+
+                    android:background="@drawable/kelola_data_linear_layout_background"
                     />
                 <GridLayout
                     android:id="@+id/chart_scatter_jenis_kelamin_field"
@@ -72,15 +87,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
                 >
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pilih Kategori"
-                    android:textColor="@color/black"
-                    android:gravity="center"
-                    android:padding="8dp"
+                    android:layout_marginVertical="8dp"
+
+                    android:text="@string/chart_klasifikasi_filter_label"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+
+                    android:padding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+
+                    android:background="@drawable/kelola_data_linear_layout_background"
                     />
                 <GridLayout
                     android:id="@+id/chart_scatter_kategori_field"
