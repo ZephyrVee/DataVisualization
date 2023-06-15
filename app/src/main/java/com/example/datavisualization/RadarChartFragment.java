@@ -54,8 +54,8 @@ public class RadarChartFragment extends Fragment {
     ArrayList<IRadarDataSet> radarDataSetList;
     ArrayList<Integer> tahunList;
     Map<String, Integer> jenisKelaminMap;
-    String[] kategoriArray, jenisKelaminArray, warnaNamaArray;
-    Integer[] warnaArray;
+    String[] kategoriArray, jenisKelaminArray, warnaNamaArray, jenisKelaminNamaArray;
+    int[] warnaArray;
     int kategori;
 
     public RadarChartFragment() {
@@ -68,18 +68,7 @@ public class RadarChartFragment extends Fragment {
         jenisKelaminMap = new HashMap<>();
 
         jenisKelaminArray = DatasetKetenagakerjaanKabupaten.JENIS_KELAMIN;
-
-        warnaNamaArray = new String[]{"Biru", "Cyan", "Abu-abu gelap", "Abu-abu", "Hijau", "Magenta", "Merah", "Kuning"};
-        warnaArray = new Integer[]{
-                Color.BLUE,
-                Color.CYAN,
-                Color.DKGRAY,
-                Color.GRAY,
-                Color.GREEN,
-                Color.MAGENTA,
-                Color.RED,
-                Color.YELLOW
-        };
+        jenisKelaminNamaArray = new String[]{"(L)", "(P)", "(L+P)"};
     }
 
     @Override
@@ -100,6 +89,10 @@ public class RadarChartFragment extends Fragment {
         radarChart = getView().findViewById(R.id.radarChart);
         ubahWarnaTitle = getView().findViewById(R.id.chart_radar_warna_title);
         ubahWarnaField = getView().findViewById(R.id.chart_radar_warna_field);
+
+        warnaNamaArray = getContext().getResources().getStringArray(R.array.chart_warna_nama_array);
+        warnaArray = getContext().getResources().getIntArray(R.array.chart_warna_array);
+
         getBundle();
         init();
         set();
@@ -127,14 +120,12 @@ public class RadarChartFragment extends Fragment {
         }
         hideUbahWarna();
 
-        //radarChart.setBackgroundColor(Color.rgb(60, 65, 82));
-
         radarChart.getDescription().setEnabled(false);
 
         radarChart.setWebLineWidth(1f);
-        //radarChart.setWebColor(Color.LTGRAY);
-        //radarChart.setWebLineWidthInner(1f);
-        //radarChart.setWebColorInner(Color.LTGRAY);
+        radarChart.setWebColor(Color.BLACK);
+        radarChart.setWebLineWidthInner(1f);
+        radarChart.setWebColorInner(Color.BLACK);
         radarChart.setWebAlpha(100);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
@@ -143,14 +134,14 @@ public class RadarChartFragment extends Fragment {
         mv.setChartView(radarChart); // For bounds control
         radarChart.setMarker(mv); // Set the marker to the chart
 
-        radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad);
+        radarChart.animateXY(1000, 1000, Easing.EaseInOutQuad);
 
         XAxis xAxis = radarChart.getXAxis();
         xAxis.setTextSize(8f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(DatasetKetenagakerjaanKabupaten.getTableList(kategori)));
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.BLACK);
 
         YAxis yAxis = radarChart.getYAxis();
         yAxis.setLabelCount(5, false);
@@ -159,13 +150,14 @@ public class RadarChartFragment extends Fragment {
         yAxis.setDrawLabels(false);
 
         Legend l = radarChart.getLegend();
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
         l.setDrawInside(false);
+        l.setWordWrapEnabled(true);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(5f);
-        l.setTextColor(Color.WHITE);
+        l.setTextColor(Color.BLACK);
 
         radarChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -242,12 +234,12 @@ public class RadarChartFragment extends Fragment {
                     for(int k = 0; k < dataEntry.size(); k++){
                         radarEntry.add(new RadarEntry((float)dataEntry.get(k) / (float)jumlah * 100));
                     }
-                    RadarDataSet radarDataSet = new RadarDataSet(radarEntry, jenisKelaminArray[i] + " " + t);
-                    radarDataSet.setColor(warnaArray[(i + t) % 8]);
+                    RadarDataSet radarDataSet = new RadarDataSet(radarEntry, t + "" + jenisKelaminNamaArray[i]);
+                    radarDataSet.setColor(warnaArray[(i + t) % warnaNamaArray.length]);
                     radarDataSet.setDrawFilled(true);
-                    radarDataSet.setFillColor(warnaArray[(i + t) % 8]);
+                    radarDataSet.setFillColor(warnaArray[(i + t) % warnaNamaArray.length]);
                     radarDataSet.setFillAlpha(100);
-                    radarDataSet.setLineWidth(4f);
+                    radarDataSet.setLineWidth(2f);
                     radarDataSet.setDrawHighlightCircleEnabled(true);
                     radarDataSet.setDrawHighlightIndicators(false);
                     radarDataSetList.add(radarDataSet);
@@ -256,12 +248,15 @@ public class RadarChartFragment extends Fragment {
         }
     }
     private void refreshData(){
-        RadarData radarData = new RadarData(radarDataSetList);
-        radarData.setValueTextSize(8f);
-        radarData.setDrawValues(false);
-        radarData.setValueTextColor(Color.WHITE);
-        radarChart.setData(radarData);
-        radarChart.invalidate();
+        if(!radarDataSetList.isEmpty()) {
+            RadarData radarData = new RadarData(radarDataSetList);
+            radarData.setDrawValues(false);
+            radarChart.setData(radarData);
+            radarChart.invalidate();
+        }
+        else {
+            radarChart.clear();
+        }
     }
     private void hideUbahWarna(){
         ((LinearLayout)getView().findViewById(R.id.chart_radar_warna)).removeAllViews();
