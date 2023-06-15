@@ -178,6 +178,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(visualisasiActivity);
             }
         });
+        findViewById((R.id.main_combined_button)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                visualisasiActivity.putExtra("Chart", "Combined");
+                startActivity(visualisasiActivity);
+            }
+        });
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},

@@ -89,6 +89,10 @@ public class VisualisasiActivity extends AppCompatActivity {
                 fragment.add(new InputFragment());
                 fragment.add(new RadarChartFragment());
                 break;
+            case "Combined":
+                fragment.add(new CombinedInputFragment());
+                fragment.add(new CombinedChartFragment());
+                break;
         }
 
         frameLayout = findViewById(R.id.visualisasi_frame_layout);

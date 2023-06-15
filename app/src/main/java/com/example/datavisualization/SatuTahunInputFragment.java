@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class SatuTahunInputFragment extends Fragment {
     final int DEFAULT_KATEGORI = 0;
-    final int DEFAULT_TAHUN = 2021;
+    final int DEFAULT_TAHUN = 2022;
 
     DatasetKetenagakerjaanKabupaten data;
     int kategori, tahun;
