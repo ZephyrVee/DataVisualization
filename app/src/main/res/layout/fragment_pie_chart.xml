@@ -30,16 +30,19 @@
                 >
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/chart_pie_warna_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pilih Warna"
-                    android:textColor="@color/black"
-                    android:gravity="center"
+                    android:layout_marginVertical="8dp"
+
                     android:padding="8dp"
+                    android:text="@string/vwl"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:background="@string/green_label"
                     />
                 <GridLayout
                     android:id="@+id/chart_pie_warna_field"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:rowCount="4"
@@ -50,15 +53,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp"
                 >
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Jenis Kelamin"
-                    android:textColor="@color/black"
-                    android:gravity="center"
+                    android:layout_marginVertical="8dp"
+
+                    android:text="@string/vjkl"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
                     android:padding="8dp"
+                    android:background="@string/green_label"
                     />
                 <RadioGroup
                     android:id="@+id/chart_pie_jenis_kelamin_field"

@@ -19,4 +19,28 @@
     <color name="page_background">#CCAFFFFF</color>
     <color name="chart_button_background">#059C41</color>
     <color name="chart_button_pressed_background">#BF059C41</color>
+
+    <color name="chart_pink">#FBA0A0</color>
+    <color name="chart_red">#FF647D</color>
+    <color name="chart_orange">#FF9664</color>
+    <color name="chart_yellow">#FFE682</color>
+    <color name="chart_light_green">#B4FF78</color>
+    <color name="chart_green">#50B450</color>
+    <color name="chart_blue">#64A0FF</color>
+    <color name="chart_light_blue">#63FFFA</color>
+    <color name="chart_magenta">#EB78FF</color>
+    <color name="chart_purple">#B964BE</color>
+
+    <array name="chart_warna_array">
+        <item>@color/chart_pink</item>
+        <item>@color/chart_red</item>
+        <item>@color/chart_orange</item>
+        <item>@color/chart_yellow</item>
+        <item>@color/chart_light_green</item>
+        <item>@color/chart_green</item>
+        <item>@color/chart_blue</item>
+        <item>@color/chart_light_blue</item>
+        <item>@color/chart_magenta</item>
+        <item>@color/chart_purple</item>
+    </array>
 </resources>

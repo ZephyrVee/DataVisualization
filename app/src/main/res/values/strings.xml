@@ -5,7 +5,16 @@
     <string name="p">Hello \n blank fragment</string>
     <string name="cell_padding">4dp</string>
 
+    <string name="vkl">Filter klasifikasi</string>
+    <string name="vjkl">Filter Jenis Kelamin</string>
+    <string name="vwl">Ubah Warna</string>
+
+    <string name="wl">
+
+    </string>
+
 
     <string name="login_page_background" tools:ignore="ReferenceType">@drawable/kelola_data_activity_background</string>
     <string name="login_panel_background" tools:ignore="ReferenceType">@drawable/kelola_data_linear_layout_background</string>
+    <string name="green_label" tools:ignore="referenceType">@drawable/kelola_data_linear_layout_background</string>
 </resources>
