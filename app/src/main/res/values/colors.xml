@@ -20,7 +20,7 @@
     <color name="chart_button_background">#059C41</color>
     <color name="chart_button_pressed_background">#BF059C41</color>
 
-    <color name="chart_pink">#FF87A0</color>
+    <color name="chart_pink">#2B2B2B</color>
     <color name="chart_red">#FF647D</color>
     <color name="chart_orange">#FFA57D</color>
     <color name="chart_yellow">#FFE682</color>

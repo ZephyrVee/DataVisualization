@@ -10,12 +10,17 @@
     <string name="chart_ubah_warna_label">Ubah Warna</string>
     <string name="chart_bar_type_label">Klik untuk mengubah jenis diagram</string>
 
-    <string name="wl">
-
-    </string>
-
 
     <string name="login_page_background" tools:ignore="ReferenceType">@drawable/kelola_data_activity_background</string>
     <string name="login_panel_background" tools:ignore="ReferenceType">@drawable/kelola_data_linear_layout_background</string>
     <string name="green_label" tools:ignore="referenceType">@drawable/kelola_data_linear_layout_background</string>
+
+    <string-array name="chart_title">
+        <item>Penduduk Usia 15 Tahun Menurut Golongan Umur</item>
+        <item>Penduduk Usia 15 Tahun Menurut Pendidikan Terakhir yang Ditamatkan</item>
+        <item>Penduduk Usia 15 Tahun Menurut Jenis Kegiatan Selama Seminggu Lalu</item>
+        <item>Penduduk Usia 15 Tahun Menurut Lapangan Pekerjaan Utama</item>
+        <item>Penduduk Usia 15 Tahun Menurut Status Pekerjaan Utama</item>
+        <item>Penduduk Usia 15 Tahun yang Termasuk Pengangguran Terbuka</item>
+    </string-array>
 </resources>

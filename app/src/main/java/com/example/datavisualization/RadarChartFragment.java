@@ -127,14 +127,14 @@ public class RadarChartFragment extends Fragment {
         }
         hideUbahWarna();
 
-        radarChart.setBackgroundColor(Color.rgb(60, 65, 82));
+        //radarChart.setBackgroundColor(Color.rgb(60, 65, 82));
 
         radarChart.getDescription().setEnabled(false);
 
         radarChart.setWebLineWidth(1f);
-        radarChart.setWebColor(Color.LTGRAY);
-        radarChart.setWebLineWidthInner(1f);
-        radarChart.setWebColorInner(Color.LTGRAY);
+        //radarChart.setWebColor(Color.LTGRAY);
+        //radarChart.setWebLineWidthInner(1f);
+        //radarChart.setWebColorInner(Color.LTGRAY);
         radarChart.setWebAlpha(100);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
@@ -146,7 +146,7 @@ public class RadarChartFragment extends Fragment {
         radarChart.animateXY(1400, 1400, Easing.EaseInOutQuad);
 
         XAxis xAxis = radarChart.getXAxis();
-        xAxis.setTextSize(9f);
+        xAxis.setTextSize(8f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(DatasetKetenagakerjaanKabupaten.getTableList(kategori)));
