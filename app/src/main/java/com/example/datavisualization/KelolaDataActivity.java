@@ -218,12 +218,11 @@ public class KelolaDataActivity extends AppCompatActivity {
 
         tv.setLayoutParams(pr);
         tv.setGravity(Gravity.CENTER);
-        tv.setTextColor(Color.WHITE);
 
         int pd = dpToInt(8);
         tv.setPadding(pd, pd, pd, pd);
         tv.setBackground(ContextCompat.getDrawable(this, R.drawable.kelola_data_cell));
-        tv.setTextColor(Color.BLACK);
+        tv.setTextColor(Color.WHITE);
 
         tv.setText(str);
         return tv;
