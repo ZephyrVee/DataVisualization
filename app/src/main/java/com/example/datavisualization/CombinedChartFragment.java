@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -91,10 +92,44 @@ public class CombinedChartFragment extends Fragment {
         warnaBar = warnaArray[0];
         warnaLine = warnaArray[6];
 
+
         init();
         initChart();
         set();
         refreshData();
+
+        ImageButton ib = getView().findViewById(R.id.chart_keterangan_button);
+        if(kategori == DatasetKetenagakerjaanKabupaten.UMUR || kategori == DatasetKetenagakerjaanKabupaten.PENDIDIKAN){
+            LinearLayout ll = getView().findViewById(R.id.chart_keterangan_field);
+            ll.removeAllViews();
+        }
+        else{
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout ll = getView().findViewById(R.id.chart_adjustment);
+                    TextView tv = getView().findViewById(R.id.chart_keterangan);
+                    if(ll.getVisibility() == View.VISIBLE){
+                        ll.setVisibility(View.INVISIBLE);
+                        tv.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+                        String s = "";
+                        String[] s1 = DatasetKetenagakerjaanKabupaten.getList(kategori);
+                        String[] s2 = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
+                        for(int i = 0; i < s1.length; i++){
+                            s += s2[i] +": " +s1[i] + System.getProperty("line.separator");
+                        }
+                        tv.setText(s);
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.remove));
+                    }
+                    else {
+                        ll.setVisibility(View.VISIBLE);
+                        tv.setText("");
+                        tv.getLayoutParams().height = 0;
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.add));
+                    }
+                }
+            });
+        }
     }
 
     private void init(){

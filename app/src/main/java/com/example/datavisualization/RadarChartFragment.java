@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,6 +102,59 @@ public class RadarChartFragment extends Fragment {
         refreshData();
 
         ((TextView)getView().findViewById(R.id.chart_radar_title)).setText(getContext().getResources().getStringArray(R.array.chart_title)[kategori]);
+
+        ImageButton ib = getView().findViewById(R.id.chart_keterangan_button);
+        if(kategori == DatasetKetenagakerjaanKabupaten.UMUR || kategori == DatasetKetenagakerjaanKabupaten.PENDIDIKAN){
+            LinearLayout ll = getView().findViewById(R.id.chart_keterangan_field);
+            ll.removeViewAt(2);
+            ll.removeViewAt(1);
+            ll.removeViewAt(0);
+        }
+        else{
+            ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LinearLayout ll = getView().findViewById(R.id.chart_adjustment);
+                    TextView tv = getView().findViewById(R.id.chart_keterangan);
+                    if(ll.getVisibility() == View.VISIBLE){
+                        ll.setVisibility(View.INVISIBLE);
+                        tv.getLayoutParams().height = LinearLayout.LayoutParams.MATCH_PARENT;
+                        String s = "";
+                        String[] s1 = DatasetKetenagakerjaanKabupaten.getList(kategori);
+                        String[] s2 = DatasetKetenagakerjaanKabupaten.getTableList(kategori);
+                        for(int i = 0; i < s1.length; i++){
+                            s += s2[i] +": " +s1[i] + System.getProperty("line.separator");
+                        }
+                        tv.setText(s);
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.remove));
+                    }
+                    else {
+                        ll.setVisibility(View.VISIBLE);
+                        tv.setText("");
+                        tv.getLayoutParams().height = 0;
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.add));
+                    }
+                }
+            });
+        }
+
+        ((SwitchCompat)getView().findViewById(R.id.chart_radar_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    for(IRadarDataSet i : radarDataSetList){
+                        ((RadarDataSet)i).setDrawFilled(true);
+                    }
+                    refreshData();
+                }
+                else {
+                    for(IRadarDataSet i : radarDataSetList){
+                        ((RadarDataSet)i).setDrawFilled(false);
+                    }
+                    refreshData();
+                }
+            }
+        });
     }
 
     private void getBundle(){
@@ -136,8 +191,6 @@ public class RadarChartFragment extends Fragment {
         MarkerView mv = new CustomMarkerView(getContext(), R.layout.custom_marker_view);
         mv.setChartView(radarChart); // For bounds control
         radarChart.setMarker(mv); // Set the marker to the chart
-
-        radarChart.animateXY(1000, 1000, Easing.EaseInOutQuad);
 
         XAxis xAxis = radarChart.getXAxis();
         xAxis.setTextSize(8f);
@@ -239,7 +292,12 @@ public class RadarChartFragment extends Fragment {
                     }
                     RadarDataSet radarDataSet = new RadarDataSet(radarEntry, t + "" + jenisKelaminNamaArray[i]);
                     radarDataSet.setColor(warnaArray[(i + t) % warnaNamaArray.length]);
-                    radarDataSet.setDrawFilled(true);
+                    if(((SwitchCompat)getView().findViewById(R.id.chart_radar_switch)).isChecked()){
+                        radarDataSet.setDrawFilled(true);
+                    }
+                    else {
+                        radarDataSet.setDrawFilled(false);
+                    }
                     radarDataSet.setFillColor(warnaArray[(i + t) % warnaNamaArray.length]);
                     radarDataSet.setFillAlpha(100);
                     radarDataSet.setLineWidth(2f);
@@ -256,6 +314,7 @@ public class RadarChartFragment extends Fragment {
             radarData.setDrawValues(false);
             radarChart.setData(radarData);
             radarChart.invalidate();
+            radarChart.animateXY(1000, 1000, Easing.EaseInOutQuad);
         }
         else {
             radarChart.clear();

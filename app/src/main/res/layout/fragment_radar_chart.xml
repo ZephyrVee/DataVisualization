@@ -32,64 +32,134 @@
                 android:layout_height="400dp"
                 />
             <LinearLayout
-                android:id="@+id/chart_radar_warna"
+                android:id="@+id/chart_keterangan_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginVertical="8dp"
+
+                android:orientation="horizontal"
                 >
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/chart_radar_warna_title"
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/chart_keterangan_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
 
-                    android:text="@string/chart_ubah_warna_label"
+                    android:checked="true"
+                    android:src="@drawable/add"
+                    android:background="@drawable/chart_button_selector"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:text="Lihat Keterangan"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-
                     android:padding="4dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-
-                    android:background="@drawable/kelola_data_linear_layout_background"
-                    />
-                <GridLayout
-                    android:id="@+id/chart_radar_warna_field"
+                    android:checked="true"
+                    android:background="@drawable/chart_button_idle"/>
+                <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:rowCount="6"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/chart_radar_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+
+                    android:text="Warna Tengah   "
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:padding="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:checked="true"
+                    android:background="@drawable/chart_button_idle"/>
             </LinearLayout>
+            <TextView
+                android:id="@+id/chart_keterangan"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                />
             <LinearLayout
-                android:id="@+id/chart_radar_jenis_kelamin"
+                android:id="@+id/chart_adjustment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp"
 
-                    android:text="@string/chart_jenis_kelamin_filter_label"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-
-                    android:padding="4dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-
-                    android:background="@drawable/kelola_data_linear_layout_background"
-                    />
-                <GridLayout
-                    android:id="@+id/chart_radar_jenis_kelamin_field"
+                <LinearLayout
+                    android:id="@+id/chart_radar_warna"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:rowCount="2"
-                    />
+                    >
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/chart_radar_warna_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+
+                        android:text="@string/chart_ubah_warna_label"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        android:padding="4dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+
+                        android:background="@drawable/kelola_data_linear_layout_background"
+                        />
+                    <GridLayout
+                        android:id="@+id/chart_radar_warna_field"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:rowCount="6"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/chart_radar_jenis_kelamin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"
+
+                        android:text="@string/chart_jenis_kelamin_filter_label"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+
+                        android:padding="4dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+
+                        android:background="@drawable/kelola_data_linear_layout_background"
+                        />
+
+
+
+                    <GridLayout
+                        android:id="@+id/chart_radar_jenis_kelamin_field"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:rowCount="2"
+                        />
+                </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
 
