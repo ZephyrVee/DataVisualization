@@ -5,12 +5,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,11 +36,7 @@ public class VisualisasiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //hide status bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getSupportActionBar().hide();
-        //hide status bar
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.chart_button_background)));
 
         setContentView(R.layout.activity_visualisasi);
 
@@ -166,6 +168,7 @@ public class VisualisasiActivity extends AppCompatActivity {
         });
 
         switchFragment(0);
+        showGuide();
     }
 
     @Override
@@ -181,6 +184,19 @@ public class VisualisasiActivity extends AppCompatActivity {
         MainActivity.thread.remove("visualisasi_loading");
     }
 
+    @Override
+    public boolean onCreatePanelMenu(int featureId, Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.visualisasi, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        showGuide();
+        return true;
+    }
+
     private void switchFragment(int position){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -193,5 +209,20 @@ public class VisualisasiActivity extends AppCompatActivity {
         }
         ft.replace(R.id.visualisasi_frame_layout, fragment.get(position));
         ft.commit();
+    }
+
+    private void showGuide(){
+        Dialog dialog = new Dialog(VisualisasiActivity.this);
+        dialog.setContentView(R.layout.visualisasi_popup);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        dialog.getWindow().setLayout(-1, -1);
+        dialog.show();
+        Button popupClose = dialog.findViewById(R.id.visualisasi_popup_close);
+        popupClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 }

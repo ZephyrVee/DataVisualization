@@ -9,7 +9,7 @@
         android:id="@+id/marker_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/kelola_data_linear_layout_background"
+        android:background="@string/green_label"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="4dp"

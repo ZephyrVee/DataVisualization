@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="128dp"
+
+        android:background="@string/popup_background">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/white_line" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="128dp"
+                android:scaleType="fitEnd"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/women1" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_popup_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+
+                android:background="@drawable/close"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="12dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="32dp"
+
+                        android:gravity="center"
+
+                        android:text="COMING SOON"
+                        android:textColor="@color/white"
+                        android:textSize="28dp"
+                        android:textStyle="bold"
+
+                        app:fontFamily="sans-serif-condensed-medium" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="8dp"
+
+                        android:gravity="center"
+                        >
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="8dp"
+
+                            android:padding="8dp"
+                            app:srcCompat="@mipmap/box_plot_button"
+                            android:background="@drawable/chart_button_selector" />
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="8dp"
+
+                            android:background="@drawable/chart_button_selector"
+                            android:padding="8dp"
+                            app:srcCompat="@mipmap/sided_bar_button" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+
+                            android:gravity="center|start"
+
+                            android:text="- Box Plot\n- Sided Bar Chart"
+                            android:textColor="@color/white"
+
+                            app:fontFamily="sans-serif-condensed-medium"
+                            />
+                    </LinearLayout>
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center"
+
+                        android:text="Visualize Data from files"
+                        android:textColor="@color/white"
+
+                        app:fontFamily="sans-serif-condensed-medium"
+                        />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="8dp"
+
+                        android:gravity="center"
+                        >
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="8dp"
+
+                            android:gravity="center"
+
+                            android:text="CSV/\nXLSX"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+
+                            app:fontFamily="sans-serif-condensed-medium"
+
+                            android:background="@drawable/chart_button_selector"
+                            />
+                        <ImageView
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_margin="8dp"
+
+                            android:background="@drawable/chart_button_selector"
+                            android:padding="8dp"
+                            app:srcCompat="@mipmap/bar_button" />
+                        <TextView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:layout_margin="8dp"
+
+                            android:gravity="center"
+
+                            android:text="PDF"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+
+                            app:fontFamily="sans-serif-condensed-medium"
+
+                            android:background="@drawable/chart_button_selector"
+                            />
+                    </LinearLayout>
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="128dp"
+                        />
+                </LinearLayout>
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

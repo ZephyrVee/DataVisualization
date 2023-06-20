@@ -96,7 +96,7 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
 
-                        android:background="@drawable/kelola_data_linear_layout_background"
+                        android:background="@string/green_label"
                         />
                     <GridLayout
                         android:id="@+id/chart_scatter_warna_field"
@@ -125,7 +125,7 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
 
-                        android:background="@drawable/kelola_data_linear_layout_background"
+                        android:background="@string/green_label"
                         />
                     <GridLayout
                         android:id="@+id/chart_scatter_jenis_kelamin_field"
@@ -154,7 +154,7 @@
                         android:paddingStart="12dp"
                         android:paddingEnd="12dp"
 
-                        android:background="@drawable/kelola_data_linear_layout_background"
+                        android:background="@string/green_label"
                         />
                     <GridLayout
                         android:id="@+id/chart_scatter_kategori_field"

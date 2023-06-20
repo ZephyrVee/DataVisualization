@@ -2,6 +2,8 @@ package com.example.datavisualization;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     Handler handler;
 
     Intent kelolaDataActivity, loginActivity, visualisasiActivity;
-    ArrayList<String> content = null;
     ActivityResultLauncher<Intent> login = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -185,6 +186,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(visualisasiActivity);
             }
         });
+
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.main_popup);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        dialog.getWindow().setLayout(-1, -1);
+        dialog.show();
+        Button popupClose = dialog.findViewById(R.id.main_popup_close);
+        popupClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
