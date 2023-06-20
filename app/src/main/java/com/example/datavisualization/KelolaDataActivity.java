@@ -158,6 +158,32 @@ public class KelolaDataActivity extends AppCompatActivity {
                 }
             }
         });
+        findViewById(R.id.kelola_data_hapus_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(KelolaDataActivity.this);
+                View dialogView = getLayoutInflater().inflate(R.layout.dialog_hapus_data, null);
+                dialog.setView(dialogView);
+                dialog.setTitle("Hapus Data");
+
+                dialog.setPositiveButton("Yakin", null);
+                dialog.setNegativeButton("Tidak", null);
+
+                AlertDialog ad = dialog.show();
+                ad.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity.database.data.delete(tahun);
+                        for(int i = 1; i < page.getChildCount(); i++){
+                            page.getChildAt(i).setVisibility(View.INVISIBLE);
+                        }
+                        tahun = -1;
+                        tahunPopup.setText("Pilih Tahun ");
+                        ad.dismiss();
+                    }
+                });
+            }
+        });
         page.getChildAt(1).setVisibility(View.VISIBLE);
         page.removeViewAt(0);
     }
@@ -297,7 +323,7 @@ public class KelolaDataActivity extends AppCompatActivity {
                             }
                         }
                     });
-                    ;                }
+                }
                 else {
                     changeTahun(Integer.parseInt(menuItem.getTitle().toString()));
                 }

@@ -291,4 +291,8 @@ public class DatasetKetenagakerjaanKabupaten {
     public ArrayList<ArrayList<Integer>> getAll(int t, int jk){
         return tahun.get(getTahunIndex(t)).getAll(jk);
     }
+    public synchronized void delete(int t){
+        tahun.remove(getTahunIndex(t));
+        MainActivity.database.delete(t);
+    }
 }

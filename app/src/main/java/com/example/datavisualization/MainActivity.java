@@ -237,11 +237,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void showMenu(){
         PopupMenu menu = new PopupMenu(MainActivity.this, MainActivity.this.findViewById(R.id.account));
-        menu.getMenu().add("Login");
+        menu.getMenu().add("Admin? Login disini!");
         menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                if(menuItem.getTitle().equals("Login")){
+                if(menuItem.getTitle().equals("Admin? Login disini!")){
                     login.launch(loginActivity);
                 }
                 return true;

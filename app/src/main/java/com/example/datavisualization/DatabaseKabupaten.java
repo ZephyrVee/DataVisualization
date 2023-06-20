@@ -5,11 +5,14 @@ import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.SetOptions;
@@ -137,5 +140,10 @@ public class DatabaseKabupaten {
                 }
             }
         }
+    }
+    public void delete(int tahun){
+        Map<String, Object> del = new HashMap<>();
+        del.put(Enkripsi.encrypt(Integer.toString(tahun)), FieldValue.delete());
+        db.collection(databaseName).document(tahunDocument).update(del);
     }
 }
