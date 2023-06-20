@@ -13,12 +13,9 @@
 
     <color name="red">#FFFF0000</color>
 
-    <color name="pink_1">#FFE11BD7</color>
-    <color name="blue_1">#4000FFFF</color>
-    <color name="pink_2">#40F786FF</color>
     <color name="page_background">#CCAFFFFF</color>
     <color name="chart_button_background">#059C41</color>
-    <color name="background_dark_green">#1EB464</color>
+    <color name="background_green">#1EB464</color>
     <color name="chart_button_pressed_background">#BF059C41</color>
 
     <color name="chart_pink">#FFAAAA</color>

@@ -46,12 +46,14 @@
                     android:layout_height="wrap_content"
 
                     android:checked="true"
-                    android:src="@drawable/add"
-                    android:background="@drawable/chart_button_selector"/>
+                    android:src="@drawable/icon_add"
+                    android:background="@string/background_green_button"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+
+                    android:gravity="center"
 
                     android:text="Lihat Keterangan"
                     android:textColor="@color/white"
@@ -60,7 +62,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:checked="true"
-                    android:background="@drawable/chart_button_idle"/>
+                    android:background="@string/background_green_label"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/chart_keterangan"
@@ -106,7 +108,6 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/chart_bar_jenis_kelamin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -152,7 +153,6 @@
                     android:background="@string/green_label"
                     />
                 <LinearLayout
-                    android:id="@+id/chart_bar_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
@@ -164,7 +164,7 @@
                         android:id="@+id/chart_bar_multiple"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:background="@drawable/image_button_selector"
+                        android:background="@drawable/background_white_button_selector"
                         android:src="@mipmap/mulltiple"
                         android:scaleType="fitCenter"
                         android:layout_marginRight="16dp"
@@ -173,7 +173,7 @@
                         android:id="@+id/chart_bar_stacked"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:background="@drawable/image_button_selector"
+                        android:background="@drawable/background_white_button_selector"
                         android:src="@mipmap/stacked"
                         android:scaleType="fitCenter"
                         />

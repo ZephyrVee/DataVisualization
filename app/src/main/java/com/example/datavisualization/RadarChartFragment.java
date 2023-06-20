@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -24,18 +23,14 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.RadarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
@@ -126,13 +121,13 @@ public class RadarChartFragment extends Fragment {
                             s += s2[i] +": " +s1[i] + System.getProperty("line.separator");
                         }
                         tv.setText(s);
-                        ib.setImageDrawable(getResources().getDrawable(R.drawable.remove));
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.icon_remove));
                     }
                     else {
                         ll.setVisibility(View.VISIBLE);
                         tv.setText("");
                         tv.getLayoutParams().height = 0;
-                        ib.setImageDrawable(getResources().getDrawable(R.drawable.add));
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.icon_add));
                     }
                 }
             });
@@ -260,11 +255,11 @@ public class RadarChartFragment extends Fragment {
 
         Button b = new Button(getContext());
         b.setLayoutParams(bpr);
-        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
+        b.setBackground(getResources().getDrawable(R.drawable.background_white_button_selector));
         b.setTextSize(12);
         b.setTextColor(Color.BLACK);
         b.setText(warnaNamaArray[index]);
-        Drawable d = getResources().getDrawable(R.drawable.warna);
+        Drawable d = getResources().getDrawable(R.drawable.icon_warna);
         d.mutate();
         d.setColorFilter(new PorterDuffColorFilter(warnaArray[index], PorterDuff.Mode.SRC_IN));
         b.setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
@@ -347,7 +342,7 @@ public class RadarChartFragment extends Fragment {
             Toast.makeText(getContext(), "Saved at DCIM folder", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getContext(), "Failed to save Chart", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Failed to icon_save Chart", Toast.LENGTH_SHORT).show();
         }
     }
 }

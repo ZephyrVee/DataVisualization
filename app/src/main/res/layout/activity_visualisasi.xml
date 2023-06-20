@@ -7,7 +7,6 @@
     tools:context=".VisualisasiActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -50,7 +49,7 @@
         android:layout_marginBottom="24dp"
 
         android:backgroundTint="@color/chart_button_background"
-        android:src="@drawable/save"
+        android:src="@drawable/icon_save"
         app:tint="@color/white"
 
         app:layout_constraintBottom_toBottomOf="parent"

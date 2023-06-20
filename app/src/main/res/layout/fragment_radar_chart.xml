@@ -46,12 +46,13 @@
                     android:layout_height="wrap_content"
 
                     android:checked="true"
-                    android:src="@drawable/add"
-                    android:background="@drawable/chart_button_selector"/>
+                    android:src="@drawable/icon_add"
+                    android:background="@string/background_green_button"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:gravity="center"
 
                     android:text="Lihat Keterangan"
                     android:textColor="@color/white"
@@ -60,7 +61,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:checked="true"
-                    android:background="@drawable/chart_button_idle"/>
+                    android:background="@string/background_green_label"/>
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -72,6 +73,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp"
 
+                    android:gravity="center"
+
                     android:text="Warna Tengah   "
                     android:textColor="@color/white"
                     android:textStyle="bold"
@@ -79,7 +82,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:checked="true"
-                    android:background="@drawable/chart_button_idle"/>
+                    android:background="@string/background_green_label"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/chart_keterangan"
@@ -126,7 +129,6 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/chart_radar_jenis_kelamin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

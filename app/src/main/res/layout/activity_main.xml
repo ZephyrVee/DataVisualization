@@ -46,7 +46,6 @@
                 app:srcCompat="@drawable/women" />
 
             <ImageView
-                android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="450dp"
                 android:scaleType="fitXY"
@@ -57,7 +56,6 @@
                 app:srcCompat="@drawable/white_line" />
 
             <TextView
-                android:id="@+id/main_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
@@ -115,7 +113,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         android:src="@mipmap/bar_button"
-                        android:background="@drawable/chart_button_selector"/>
+                        android:background="@string/background_green_button"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -144,7 +142,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         app:srcCompat="@mipmap/line_button"
-                        android:background="@drawable/chart_button_selector" />
+                        android:background="@string/background_green_button" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -173,7 +171,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         app:srcCompat="@mipmap/pie_button"
-                        android:background="@drawable/chart_button_selector"  />
+                        android:background="@string/background_green_button"  />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -209,7 +207,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         app:srcCompat="@mipmap/scatter_button"
-                        android:background="@drawable/chart_button_selector" />
+                        android:background="@string/background_green_button" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -237,7 +235,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         app:srcCompat="@mipmap/radar_button"
-                        android:background="@drawable/chart_button_selector" />
+                        android:background="@string/background_green_button" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -266,7 +264,7 @@
                         android:adjustViewBounds="true"
                         android:scaleType="fitCenter"
                         app:srcCompat="@mipmap/combined_button"
-                        android:background="@drawable/chart_button_selector" />
+                        android:background="@string/background_green_button" />
 
                     <TextView
                         android:layout_width="wrap_content"

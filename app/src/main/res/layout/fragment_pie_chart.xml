@@ -47,8 +47,8 @@
                     android:layout_height="wrap_content"
 
                     android:checked="true"
-                    android:src="@drawable/add"
-                    android:background="@drawable/chart_button_selector"/>
+                    android:src="@drawable/icon_add"
+                    android:background="@string/background_green_button"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:checked="true"
-                    android:background="@drawable/chart_button_idle"/>
+                    android:background="@string/background_green_button"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/chart_keterangan"
@@ -107,7 +107,6 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:id="@+id/chart_pie_jenis_kelamin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"

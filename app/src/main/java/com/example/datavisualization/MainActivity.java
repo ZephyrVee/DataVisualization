@@ -2,17 +2,13 @@ package com.example.datavisualization;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.DocumentsContract;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,14 +26,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     public static Map<String, Thread> thread;
@@ -59,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                         Button kelolaDataButton = new Button(MainActivity.this);
                         kelolaDataButton.setLayoutParams(pr);
                         kelolaDataButton.setText("Masuk ke halaman kelola data ketenagakerjaan");
-                        kelolaDataButton.setBackground(getResources().getDrawable(R.drawable.chart_button_selector));
+                        kelolaDataButton.setBackground(getResources().getDrawable(R.drawable.background_green_button_selector));
                         kelolaDataButton.setTextColor(Color.WHITE);
                         kelolaDataButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -95,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 for(Object t : threads){
                     String s = t.toString();
                     if(!thread.get(s).isAlive()){
-                        thread.remove(s);
+                        thread.icon_remove(s);
                     }
                 }
                 handler.postDelayed(this, 3000);

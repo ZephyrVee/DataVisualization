@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/account"
-        android:icon="@drawable/info"
-        android:title="Account"
+        android:icon="@drawable/icon_info"
+        android:title="Guide"
         app:showAsAction="always" />
 </menu>

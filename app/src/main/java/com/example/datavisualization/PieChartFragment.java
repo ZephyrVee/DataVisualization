@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -24,7 +23,6 @@ import android.widget.Toast;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -115,13 +113,13 @@ public class PieChartFragment extends Fragment {
                             s += s2[i] +": " +s1[i] + System.getProperty("line.separator");
                         }
                         tv.setText(s);
-                        ib.setImageDrawable(getResources().getDrawable(R.drawable.remove));
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.icon_remove));
                     }
                     else {
                         ll.setVisibility(View.VISIBLE);
                         tv.setText("");
                         tv.getLayoutParams().height = 0;
-                        ib.setImageDrawable(getResources().getDrawable(R.drawable.add));
+                        ib.setImageDrawable(getResources().getDrawable(R.drawable.icon_add));
                     }
                 }
             });
@@ -195,11 +193,11 @@ public class PieChartFragment extends Fragment {
 
         Button b = new Button(getContext());
         b.setLayoutParams(bpr);
-        b.setBackground(getResources().getDrawable(R.drawable.image_button_selector));
+        b.setBackground(getResources().getDrawable(R.drawable.background_white_button_selector));
         b.setTextSize(12);
         b.setTextColor(Color.BLACK);
         b.setText(warnaNameArray[index]);
-        Drawable d = getResources().getDrawable(R.drawable.warna);
+        Drawable d = getResources().getDrawable(R.drawable.icon_warna);
         d.mutate();
         d.setColorFilter(new PorterDuffColorFilter(warnaArray[index], PorterDuff.Mode.SRC_IN));
         b.setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
@@ -271,7 +269,7 @@ public class PieChartFragment extends Fragment {
             Toast.makeText(getContext(), "Saved at DCIM folder", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getContext(), "Failed to save Chart", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Failed to icon_save Chart", Toast.LENGTH_SHORT).show();
         }
     }
 }

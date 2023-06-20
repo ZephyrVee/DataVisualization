@@ -34,7 +34,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/imageView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/visualisasi_top_background"
@@ -60,7 +59,7 @@
                 android:id="@+id/input_3_kategori"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/image_button_selector"
+                android:background="@drawable/background_white_button_selector"
                 android:text="Pilih Kategori"
                 android:layout_margin="8dp"/>
 

@@ -11,9 +11,7 @@
         android:theme="@style/Theme.DataVisualization">
         <activity android:name=".KelolaDataActivity"></activity>
         <activity android:name=".VisualisasiActivity" />
-        <activity android:name=".VisualisasiTestActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RadarChartActivity" />
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

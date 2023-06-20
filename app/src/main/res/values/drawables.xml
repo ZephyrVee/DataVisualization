@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources
     xmlns:tools="http://schemas.android.com/tools">
-    <string name="login_page_background" tools:ignore="ReferenceType">@drawable/kelola_data_activity_background</string>
 
-    <string name="login_panel_background" tools:ignore="ReferenceType">@drawable/background_green_radius</string>
-    <string name="green_label" tools:ignore="referenceType">@drawable/background_green_radius</string>
+    <string name="green_label" tools:ignore="referenceType">@drawable/background_green_radius_24</string>
     <string name="popup_background" tools:ignore="referenceType">@drawable/background_dark_green_radius_32</string>
+    <string name="background_green_button" tools:ignore="referenceType">@drawable/background_green_button_selector</string>
+    <string name="background_green_label" tools:ignore="referenceType">@drawable/background_green_button_idle</string>
 </resources>
