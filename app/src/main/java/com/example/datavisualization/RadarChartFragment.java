@@ -266,6 +266,8 @@ public class RadarChartFragment extends Fragment {
         return b;
     }
     private void set(){
+        radarChart.highlightValues(null);
+        hideUbahWarna();
         radarDataSetList.clear();
         for(Integer t : tahunList){
             for(int i = 0; i < jenisKelaminArray.length; i++){

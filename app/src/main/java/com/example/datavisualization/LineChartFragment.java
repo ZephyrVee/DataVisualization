@@ -225,6 +225,8 @@ public class LineChartFragment extends Fragment {
     }
 
     private void set(){
+        lineChart.highlightValues(null);
+        hideUbahWarna();
         lineDataSetArrayList.clear();
         for(int i = 0; i < jenisKelaminList.length; i++){
             if(jenisKelaminMap.get(jenisKelaminList[i]) == 1){
@@ -251,7 +253,6 @@ public class LineChartFragment extends Fragment {
                             }
                         });
 
-                        System.out.println(entry);
                         LineDataSet lineDataSet = new LineDataSet(entry, kategoriList[k] + "" + jenisKelaminLegendArray[i]);
                         lineDataSet.setColor(warnaArray[(i + k) % warnaNamaArray.length]);
                         lineDataSet.setCircleColor(Color.BLACK);

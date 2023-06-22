@@ -205,6 +205,8 @@ public class PieChartFragment extends Fragment {
     }
 
     private void set(){
+        pieChart.highlightValues(null);
+        hideUbahWarna();
         ArrayList<PieEntry> pieEntry = new ArrayList<>();
         ArrayList<Integer> dataEntry;
 

@@ -1,11 +1,15 @@
 package com.example.datavisualization;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.Gravity;
@@ -34,6 +38,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -240,6 +245,8 @@ public class BarChartFragment extends Fragment{
     }
 
     private void set(){
+        barChart.highlightValues(null);
+        hideUbahWarna();
         multipleBarDataSetArrayList = new ArrayList<>();
         for(Integer t : tahunArrayList){
             for(int i = 0; i < jenisKelaminArray.length; i++){
@@ -323,7 +330,6 @@ public class BarChartFragment extends Fragment{
         barChart.getDescription().setEnabled(false);
         barChart.setDrawGridBackground(false);
         barChart.setExtraRightOffset(10);
-
     }
     private void multiple(){
         if(multipleBarDataSetArrayList.size() > 1){
@@ -366,20 +372,27 @@ public class BarChartFragment extends Fragment{
     }
 
     private void refreshData(String type){
-        if(type.equals("Multiple")) {
-            BarData barData = new BarData(multipleBarDataSetArrayList);
-            if(multipleBarDataSetArrayList.size() > 1) {
-                barData.setBarWidth(barWidth / multipleBarDataSetArrayList.size());
-            }
-            barData.setDrawValues(false);
-            barChart.setData(barData);
-            multiple();
+        if(multipleBarDataSetArrayList.size() == 0){
+            barChart.clear();
+            barChart.invalidate();
         }
         else {
-            BarData barData = new BarData(stackedBarDataSetArrayList);
-            barData.setDrawValues(false);
-            barChart.setData(barData);
-            stacked();
+            hideUbahWarna();
+            if (type.equals("Multiple")) {
+                BarData barData = new BarData(multipleBarDataSetArrayList);
+                if (multipleBarDataSetArrayList.size() > 1) {
+                    barData.setBarWidth(barWidth / multipleBarDataSetArrayList.size());
+                }
+                barData.setDrawValues(false);
+                barChart.setData(barData);
+                multiple();
+            }
+            else {
+                BarData barData = new BarData(stackedBarDataSetArrayList);
+                barData.setDrawValues(false);
+                barChart.setData(barData);
+                stacked();
+            }
         }
     }
 
@@ -417,5 +430,8 @@ public class BarChartFragment extends Fragment{
         else {
             Toast.makeText(getContext(), "Failed to icon_save Chart", Toast.LENGTH_SHORT).show();
         }
+
     }
+
+
 }

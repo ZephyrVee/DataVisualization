@@ -228,6 +228,8 @@ public class ScatterChartFragment extends Fragment {
     }
 
     private void set(){
+        scatterChart.highlightValues(null);
+        hideUbahWarna();
         scatterDataSetArrayList.clear();
         for(int i = 0; i < jenisKelaminList.length; i++){
             if(jenisKelaminMap.get(jenisKelaminList[i]) == 1){

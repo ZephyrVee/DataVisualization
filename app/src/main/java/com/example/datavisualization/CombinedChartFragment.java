@@ -232,6 +232,8 @@ public class CombinedChartFragment extends Fragment {
     }
 
     private void set(){
+        combinedChart.highlightValues(null);
+        hideUbahWarna();
         ArrayList<BarEntry> barEntry = new ArrayList<>();
         ArrayList<Entry> lineEntry = new ArrayList<>();
 

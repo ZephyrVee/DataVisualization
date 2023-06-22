@@ -1,11 +1,15 @@
 package com.example.datavisualization;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -20,6 +24,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -81,7 +86,13 @@ public class VisualisasiActivity extends AppCompatActivity {
                 findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bar.save();
+                        if(ContextCompat.checkSelfPermission(VisualisasiActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(VisualisasiActivity.this, "Butuh izin untuk mengunduh visualisasi", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(VisualisasiActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                        }
+                        else{
+                            bar.save();
+                        }
                     }
                 });
                 break;
@@ -92,7 +103,13 @@ public class VisualisasiActivity extends AppCompatActivity {
                 findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        line.save();
+                        if(ContextCompat.checkSelfPermission(VisualisasiActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(VisualisasiActivity.this, "Butuh izin untuk mengunduh visualisasi", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(VisualisasiActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                        }
+                        else{
+                            line.save();
+                        }
                     }
                 });
                 break;
@@ -103,7 +120,13 @@ public class VisualisasiActivity extends AppCompatActivity {
                 findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        pie.save();
+                        if(ContextCompat.checkSelfPermission(VisualisasiActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(VisualisasiActivity.this, "Butuh izin untuk mengunduh visualisasi", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(VisualisasiActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                        }
+                        else{
+                            pie.save();
+                        }
                     }
                 });
                 break;
@@ -114,7 +137,13 @@ public class VisualisasiActivity extends AppCompatActivity {
                 findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        scatter.save();
+                        if(ContextCompat.checkSelfPermission(VisualisasiActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(VisualisasiActivity.this, "Butuh izin untuk mengunduh visualisasi", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(VisualisasiActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                        }
+                        else{
+                            scatter.save();
+                        }
                     }
                 });
                 break;
@@ -125,7 +154,13 @@ public class VisualisasiActivity extends AppCompatActivity {
                 findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        radar.save();
+                        if(ContextCompat.checkSelfPermission(VisualisasiActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(VisualisasiActivity.this, "Butuh izin untuk mengunduh visualisasi", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(VisualisasiActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                        }
+                        else{
+                            radar.save();
+                        }
                     }
                 });
                 break;
@@ -136,7 +171,13 @@ public class VisualisasiActivity extends AppCompatActivity {
                 findViewById(R.id.visualisasi_save).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        combined.save();
+                        if(ContextCompat.checkSelfPermission(VisualisasiActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(VisualisasiActivity.this, "Butuh izin untuk mengunduh visualisasi", Toast.LENGTH_SHORT).show();
+                            ActivityCompat.requestPermissions(VisualisasiActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
+                        }
+                        else{
+                            combined.save();
+                        }
                     }
                 });
                 break;
@@ -169,6 +210,7 @@ public class VisualisasiActivity extends AppCompatActivity {
 
         switchFragment(0);
         showGuide();
+
     }
 
     @Override
